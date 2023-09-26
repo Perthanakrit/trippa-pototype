@@ -30,7 +30,7 @@ export default function Navbar() {
     <nav className=" flex flex-col items-center gap-y-4 fixed h-max bottom-0 mt-auto  z-50 top-0 w-full">
       <div
         className="flex w-full  items-center justify-between  gap-y-10  px-4 md:px-40 h-[80px]  py-8 
-        backdrop-blur-sm text-3xl bg-black/5"
+        backdrop-blur-sm text-3xl bg-black shadow-md"
       >
         {menus.map((menu) => (
           <Link
