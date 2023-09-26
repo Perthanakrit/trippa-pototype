@@ -9,7 +9,7 @@ export default function Layout({ children }: Props) {
   return (
     <div>
       <Header />
-      {children}
+      <div className=" mx-auto max-w-[850px]">{children}</div>
     </div>
   );
 }

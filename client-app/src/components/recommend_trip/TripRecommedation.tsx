@@ -2,31 +2,31 @@ import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 import { ClassValue, clsx } from "clsx";
-const articles = [
-  {
-    title:
-      "Building a fully customisable carousel slider with swipe gestures and navigation using Framer Motion",
-    url: "https://medium.com/@jeyprox/building-a-fully-customisable-input-component-with-nextjs-reacthookfrom-tailwindcss-and-ts-58874a2e3450",
-  },
-  {
-    title:
-      "Building a customisable Input component with NextJS, ReactHookForm, TailwindCSS and TypeScript",
-    url: "https://medium.com/@jeyprox/building-a-fully-customisable-input-component-with-nextjs-reacthookfrom-tailwindcss-and-ts-58874a2e3450",
-  },
-  {
-    title: "Handling Forms in NextJS with busboy, ReactHookForm and TypeScript",
-    url: "https://medium.com/@jeyprox/handling-forms-in-nextjs-with-busboy-reacthookform-and-ts-3f86c70545b3",
-  },
-];
+import img1 from "../../assets/images/img-1.jpg";
+import trips from "../../data";
+
 // this function is used to combine (conditional) classNames and uses clsx and tailwind-merge
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-
 export default function TripRecommedation() {
   return (
-    <div className="wrapper">
-      <div></div>
+    <div className="flex px-0 py-9 items-center justify-center">
+      <div className="wrapper flex max-w-7xl relative">
+        <i id="left" className="fa-solid fa-angle-left"></i>
+        <div className="carousel cursor-pointer overflow-hidden whitespace-nowrap scroll-smooth flex">
+          {trips.map((trip: any) => (
+            <img
+              className=" h-[340px] object-cover select-none ml-4 w-[calc(100% / 3)] first:ml-0 md:w-[calc(100% / 2)] sm:w-full"
+              key={trip.name}
+              src={trip.image}
+              draggable="false"
+            />
+          ))}
+        </div>
+
+        <i id="right" className="fa-solid fa-angle-right"></i>
+      </div>
     </div>
   );
 }
