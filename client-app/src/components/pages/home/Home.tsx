@@ -1,5 +1,3 @@
-import React from "react";
-import Header from "../../header/Header";
 import TripRecommedation from "../../recommend_trip/TripRecommedation";
 import Layout from "../../layout/Layout";
 import Navbar from "../../header/Navbar";
@@ -29,7 +27,9 @@ export default function Home() {
       </div>
 
       {/* Recommad trip */}
-      <TripRecommedation />
+      <div className=" bg-slate-300/60 p-5">
+        <TripRecommedation />
+      </div>
     </Layout>
   );
 }
