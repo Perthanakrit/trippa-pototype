@@ -1,6 +1,6 @@
 import React from "react";
 import { RiPinDistanceFill } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 interface Props {
   trip: any;
@@ -23,10 +23,14 @@ export default function TripItem({ trip }: Props) {
         <p className="mt-1">{trip.description}</p>
       </div>
       <div className=" flex p-3 items-center">
-        <Link to="" className=" bg-slate-50 p-2 rounded-full ">
+        <Link
+          to={`/favmu/${trip.id}`}
+          className=" bg-slate-50 p-2 rounded-full "
+        >
           ดูรายละเอียด
         </Link>
       </div>
+      <Outlet />
     </div>
   );
 }

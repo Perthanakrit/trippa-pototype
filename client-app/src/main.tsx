@@ -25,7 +25,16 @@ const router = createBrowserRouter([
   },
   {
     path: "/favmu",
-    element: <Favmu />,
+    children: [
+      {
+        index: true,
+        element: <Favmu />,
+      },
+      {
+        path: ":tripId",
+        element: <TripInfo />,
+      },
+    ],
   },
   {
     path: "*",

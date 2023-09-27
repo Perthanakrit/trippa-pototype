@@ -36,7 +36,7 @@ export const trips = [
 
 export const muteluhTrips = [
   {
-    id:"1",
+    id:1,
     name: "ไหว้พระ 1",
     description: "วัดสวยงาม",
     image: img1,
@@ -48,7 +48,7 @@ export const muteluhTrips = [
     fee: "5"
   },
   {
-    id: "2",
+    id: 2,
     name: "ไหว้พระ 2",
     description: "วัดน่าเที่ยว",
     image: img2,
