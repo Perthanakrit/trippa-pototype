@@ -37,24 +37,24 @@ export const trips = [
 export const muteluhTrips = [
   {
     id:1,
-    name: "ไหว้พระ 1",
-    description: "วัดสวยงาม",
+    name: "เที่ยวเชียงใหม่-ลำปาง",
+    description: "เดินทางไหว้ไปวัดต่างๆ ตั้งแต่เชียงใหม่ถึงลำปาง ",
     image: img1,
     origin: "เมืองเชียงใหม่",
     destination: "เมืองลำปาง",
     landmark: "วัดพระธาตุลำปางหลวง",
-    duration: "1 วัน 1 คืน",
+    duration: "2 วัน 1 คืน",
     price: "1000",
     fee: "5"
   },
   {
     id: 2,
-    name: "ไหว้พระ 2",
-    description: "วัดน่าเที่ยว",
+    name: "กลางสู่อีสาน",
+    description: "เดินทางไหว้ไปวัดต่างๆ ตั้งแต่ออกจากกรุงเทพถถึงสุดอีสานตอนล่าง อย่างจังหวัดอุบลราชธานี พร้อมดื่มดำ่ไปกับธรรมชาติ ",
     image: img2,
     origin: "กรุงเทพ",
     destination: "เมืองอุบล",
-    landmark: "วัดพระธาตุลำปางหลวง",
+    landmark: "วัดสิรินธรวรารามภูพร้าว",
     duration: "3 วัน 2 คืน",
     price: "2000",
     fee: "7"

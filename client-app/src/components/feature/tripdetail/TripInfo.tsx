@@ -1,23 +1,67 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { muteluhTrips, trips } from "../../../data";
 import Layout from "../../layout/Layout";
+import { Carousel } from "../../carousel/Carousel";
+import tamples from "../../../data/tamples";
 
 export default function TripInfo() {
   const [currentTrip, setCurrentTrip] = useState<any>({});
+  const [currentTample, setCurrentTample] = useState<any>({});
   const { tripId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setCurrentTrip(
       muteluhTrips.find((trip: any) => trip.id.toString() === tripId)
     );
-    console.log("load");
+  }, []);
+
+  useEffect(() => {
+    setCurrentTample(
+      tamples.find((tample: any) => tample.id.toString() === tripId)
+    );
   }, []);
 
   return (
     <Layout>
       <div>
-        <h1>{currentTrip.name}</h1>
+        <h1 className=" text-3xl font-bold mb-4">{currentTrip.name}</h1>
+        {/* <p>{currentTample}</p> */}
+        {/* <Carousel data={currentTample.gralley} /> */}
+        <div className="">
+          <img
+            className=" w-full h-[400px] object-cover"
+            src={currentTrip.image}
+            alt="trip image"
+          />
+        </div>
+        <div className="mt-6 border-[1px] border-slate-400/60 p-4">
+          <h1 className="text-xl font-bold">Details</h1>
+          {/* detail content */}
+          <div className=" flex justify-between items-center">
+            <div className="">
+              <h4 className="flex">
+                <p className=" italic">From</p>
+                <p className=" ml-2">{currentTrip.origin}</p>
+              </h4>
+              <h4 className="flex">
+                <p className=" italic">To</p>
+                <p className=" ml-2">{currentTrip.destination}</p>
+              </h4>
+            </div>
+            <div className="mx-auto">
+              <h4>Duration</h4>
+              <p>{currentTrip.duration}</p>
+            </div>
+            <button
+              onClick={() => navigate(-1)}
+              className=" bg-orange-400 rounded-full py-2 px-4 text-center"
+            >
+              จองทัวร์นี้
+            </button>
+          </div>
+        </div>
       </div>
     </Layout>
   );
