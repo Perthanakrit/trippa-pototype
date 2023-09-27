@@ -8,6 +8,7 @@ import FavEat from "./components/pages/faveat/FavEat.tsx";
 import FavNature from "./components/pages/favnature/FavNature.tsx";
 import NotFound from "./NotFound.tsx";
 import Favmu from "./components/pages/muteuh/Favmu.tsx";
+import TripInfo from "./components/feature/tripdetail/TripInfo.tsx";
 
 const router = createBrowserRouter([
   {
