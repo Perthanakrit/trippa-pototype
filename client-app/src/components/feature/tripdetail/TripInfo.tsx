@@ -26,7 +26,9 @@ export default function TripInfo() {
   return (
     <Layout>
       <div>
-        <h1 className=" text-3xl font-bold mb-4">{currentTrip.name}</h1>
+        <h1 className=" text-3xl font-bold mb-4 text-zinc-50">
+          {currentTrip.name}
+        </h1>
         {/* <p>{currentTample}</p> */}
         {/* <Carousel data={currentTample.gralley} /> */}
         <div className="">

@@ -12,8 +12,9 @@ export default function Favmu() {
   return (
     <Layout>
       <div className="mx-4 xl:mx-1">
-        <h1 className=" text-4xl mb-2">
-          ยอดนิยมสำหรับ <span className=" font-medium">สายมู</span>
+        <h1 className=" text-3xl mb-2 text-slate-50">
+          ยอดนิยมสำหรับ{" "}
+          <span className=" font-medium text-yellow-300 text-4xl">สายมู</span>
         </h1>
         <TripList trips={trips} />
       </div>

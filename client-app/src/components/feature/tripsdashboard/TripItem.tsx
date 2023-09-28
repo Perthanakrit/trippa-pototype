@@ -15,18 +15,18 @@ export default function TripItem({ trip }: Props) {
         className=" w-full h-[400px] md:h-[280px] object-cover md:object-fill bg-no-repeat bg-contain"
       />
       <div className=" p-2 mt-2 ml-5">
-        <h1 className=" text-2xl mb-1">{trip.name}</h1>
+        <h1 className=" text-2xl mb-1 ">{trip.name}</h1>
         <a className="flex items-center text-gray-500 mb-2">
           <RiPinDistanceFill size={20} />
           <span className="ml-[0.25rem] text-sm">{trip.destination}</span>
         </a>
         <p className="mt-1">{trip.description}</p>
       </div>
-      <div className=" flex p-3 items-center">
+      <div className=" flex p-3 items-center ">
         <div className=" bg-slate-400 h-[230px] w-[0.1px] mx-6 hidden md:block"></div>
         <Link
           to={`/favmu/${trip.id}`}
-          className=" bg-slate-50 p-2 rounded-full mx-auto w-[15rem] text-center "
+          className=" bg-slate-50 p-2 rounded-full mx-auto w-[15rem] text-center text-orange-400 hover:text-zinc-50 hover:bg-orange-400"
         >
           ดูรายละเอียด
         </Link>
