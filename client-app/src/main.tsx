@@ -7,6 +7,8 @@ import Home from "./components/pages/home/Home.tsx";
 import FavEat from "./components/pages/faveat/FavEat.tsx";
 import FavNature from "./components/pages/favnature/FavNature.tsx";
 import NotFound from "./NotFound.tsx";
+import Favmu from "./components/pages/muteuh/Favmu.tsx";
+import TripInfo from "./components/feature/tripdetail/TripInfo.tsx";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,19 @@ const router = createBrowserRouter([
   {
     path: "/favnature",
     element: <FavNature />,
+  },
+  {
+    path: "/favmu",
+    children: [
+      {
+        index: true,
+        element: <Favmu />,
+      },
+      {
+        path: ":tripId",
+        element: <TripInfo />,
+      },
+    ],
   },
   {
     path: "*",
