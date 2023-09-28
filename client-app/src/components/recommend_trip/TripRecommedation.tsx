@@ -1,12 +1,12 @@
-import { twMerge } from "tailwind-merge";
-import { ClassValue, clsx } from "clsx";
+// import { twMerge } from "tailwind-merge";
+// import { ClassValue, clsx } from "clsx";
 import { trips } from "../../data";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 // this function is used to combine (conditional) classNames and uses clsx and tailwind-merge
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+// function cn(...inputs: ClassValue[]) {
+//   return twMerge(clsx(inputs));
+// }
 export default function TripRecommedation() {
   return (
     <div className="flex items-center justify-center">
