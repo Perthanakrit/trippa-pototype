@@ -1,4 +1,4 @@
-import { useState } from "react";
+//import { useState } from "react";
 
 //import "./Carousel.css";
 
@@ -7,15 +7,15 @@ type Props = {
 };
 
 export const Carousel = ({ data }: Props) => {
-  const [slide, setSlide] = useState(0);
+  //const [slide, setSlide] = useState(0);
 
-  const nextSlide = () => {
-    setSlide(slide === data.length - 1 ? 0 : slide + 1);
-  };
+  // const nextSlide = () => {
+  //   setSlide(slide === data.length - 1 ? 0 : slide + 1);
+  // };
 
-  const prevSlide = () => {
-    setSlide(slide === 0 ? data.length - 1 : slide - 1);
-  };
+  // const prevSlide = () => {
+  //   setSlide(slide === 0 ? data.length - 1 : slide - 1);
+  // };
 
   console.log(data);
 
