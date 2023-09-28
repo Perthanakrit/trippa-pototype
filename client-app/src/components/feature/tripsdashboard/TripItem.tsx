@@ -1,11 +1,13 @@
 import { RiPinDistanceFill } from "react-icons/ri";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 interface Props {
   trip: any;
 }
 
 export default function TripItem({ trip }: Props) {
+  const location = useLocation();
+  console.log(location.pathname);
   return (
     <div className=" bg-slate-200 block md:grid md:grid-cols-3 my-5 relative rounded-md">
       <img
@@ -24,7 +26,7 @@ export default function TripItem({ trip }: Props) {
       <div className=" flex p-3 items-center ">
         <div className=" bg-slate-400 h-[230px] w-[0.1px] mx-6 hidden md:block"></div>
         <Link
-          to={`/favmu/${trip.id}`}
+          to={`/trips/${trip.id}`}
           className=" bg-slate-50 p-2 rounded-full mx-auto w-[15rem] text-center text-orange-400 hover:text-zinc-50 hover:bg-orange-400"
         >
           ดูรายละเอียด

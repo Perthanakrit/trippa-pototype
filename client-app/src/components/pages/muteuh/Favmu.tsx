@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
 import Layout from "../../layout/Layout";
 import TripList from "../../feature/tripsdashboard/TripList";
-import { muteluhTrips } from "../../../data";
+import trips from "../../../data/trips";
 
 export default function Favmu() {
-  const [trips, SetTrips] = useState<Array<any>>([]);
+  const [gettrips, SetTrips] = useState<Array<any>>([]);
+  const tripTag = 1;
+
   useEffect(() => {
-    SetTrips(muteluhTrips);
+    var tripArray: Array<any> = [];
+    trips.forEach((trip: any) => {
+      if (trip.tag === tripTag) {
+        tripArray.push(trip);
+      }
+    });
+    SetTrips(tripArray);
   }, []);
 
   return (
@@ -16,7 +24,7 @@ export default function Favmu() {
           ยอดนิยมสำหรับ{" "}
           <span className=" font-medium text-yellow-300 text-4xl">สายมู</span>
         </h1>
-        <TripList trips={trips} />
+        <TripList trips={gettrips} />
       </div>
     </Layout>
   );

@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
 import Layout from "../../layout/Layout";
-import { travelTrips } from "../../../data";
 import TripList from "../../feature/tripsdashboard/TripList";
+import trips from "../../../data/trips";
 
 export default function FavNature() {
-  const [trips, SetTrips] = useState<Array<any>>([]);
+  const [gettrips, SetTrips] = useState<Array<any>>([]);
+  const tripTag = 2;
+
   useEffect(() => {
-    SetTrips(travelTrips);
+    var tripArray: Array<any> = [];
+    trips.forEach((trip: any) => {
+      if (trip.tag === tripTag) {
+        tripArray.push(trip);
+      }
+    });
+    SetTrips(tripArray);
   }, []);
 
   return (
@@ -18,7 +26,7 @@ export default function FavNature() {
             สายเที่ยว
           </span>
         </h1>
-        <TripList trips={trips} />
+        <TripList trips={gettrips} />
       </div>
     </Layout>
   );

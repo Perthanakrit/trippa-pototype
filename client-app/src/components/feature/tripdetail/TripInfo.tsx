@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { muteluhTrips } from "../../../data";
 import Layout from "../../layout/Layout";
+import trips from "../../../data/trips";
 //import tamples from "../../../data/tamples";
 
 export default function TripInfo() {
@@ -11,9 +11,7 @@ export default function TripInfo() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setCurrentTrip(
-      muteluhTrips.find((trip: any) => trip.id.toString() === tripId)
-    );
+    setCurrentTrip(trips.find((trip: any) => trip.id.toString() === tripId));
   }, []);
 
   // useEffect(() => {
@@ -52,7 +50,7 @@ export default function TripInfo() {
               </h4>
             </div>
             <div className="mx-auto">
-              <h4>Duration</h4>
+              <h1>Duration</h1>
               <p>{currentTrip.duration}</p>
             </div>
             <button
