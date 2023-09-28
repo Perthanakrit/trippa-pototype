@@ -1,4 +1,3 @@
-import React from "react";
 import { RiPinDistanceFill } from "react-icons/ri";
 import { Link, Outlet } from "react-router-dom";
 

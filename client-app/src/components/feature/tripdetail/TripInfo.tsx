@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { muteluhTrips, trips } from "../../../data";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { muteluhTrips } from "../../../data";
 import Layout from "../../layout/Layout";
-import { Carousel } from "../../carousel/Carousel";
-import tamples from "../../../data/tamples";
+//import tamples from "../../../data/tamples";
 
 export default function TripInfo() {
   const [currentTrip, setCurrentTrip] = useState<any>({});
-  const [currentTample, setCurrentTample] = useState<any>({});
+  //const [currentTample, setCurrentTample] = useState<any>({});
   const { tripId } = useParams();
   const navigate = useNavigate();
 
@@ -17,11 +16,11 @@ export default function TripInfo() {
     );
   }, []);
 
-  useEffect(() => {
-    setCurrentTample(
-      tamples.find((tample: any) => tample.id.toString() === tripId)
-    );
-  }, []);
+  // useEffect(() => {
+  //   setCurrentTample(
+  //     tamples.find((tample: any) => tample.id.toString() === tripId)
+  //   );
+  // }, []);
 
   return (
     <Layout>

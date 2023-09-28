@@ -1,5 +1,3 @@
-import React from "react";
-import Navbar from "./Navbar";
 import { RiLoginBoxFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import banner from "../../assets/images/banner2.png";

@@ -1,4 +1,3 @@
-import React from "react";
 import TripItem from "./TripItem";
 
 interface Props {

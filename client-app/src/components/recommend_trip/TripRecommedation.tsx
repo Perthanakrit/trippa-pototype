@@ -1,6 +1,5 @@
 import { twMerge } from "tailwind-merge";
 import { ClassValue, clsx } from "clsx";
-import img1 from "../../assets/images/img-1.jpg";
 import { trips } from "../../data";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 

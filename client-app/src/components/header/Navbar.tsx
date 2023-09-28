@@ -1,4 +1,4 @@
-import { FaAmazon, FaHome, FaInvision } from "react-icons/fa";
+import { FaAmazon, FaInvision } from "react-icons/fa";
 import { RiBardFill } from "react-icons/ri";
 
 const menus = [

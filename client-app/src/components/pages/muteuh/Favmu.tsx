@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../../layout/Layout";
 import TripList from "../../feature/tripsdashboard/TripList";
 import { muteluhTrips } from "../../../data";
