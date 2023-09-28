@@ -2,7 +2,7 @@ import Layout from "../../layout/Layout";
 import Navbar from "../../header/Navbar";
 import { FaSearchLocation } from "react-icons/fa";
 import TripCarousel from "../../carousel/TripCarousel";
-import trips from "../../../data/trips";
+import { trips } from "../../../data/trips";
 
 export default function Home() {
   return (

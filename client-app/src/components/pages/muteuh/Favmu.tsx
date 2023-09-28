@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "../../layout/Layout";
 import TripList from "../../feature/tripsdashboard/TripList";
-import trips from "../../../data/trips";
+import { trips } from "../../../data/trips";
 
 export default function Favmu() {
   const [gettrips, SetTrips] = useState<Array<any>>([]);

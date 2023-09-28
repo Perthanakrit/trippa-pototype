@@ -7,7 +7,7 @@ interface Props {
 
 export default function TripItem({ trip }: Props) {
   const location = useLocation();
-  console.log(location.pathname);
+
   return (
     <div className=" bg-slate-200 block md:grid md:grid-cols-3 my-5 relative rounded-md">
       <img
