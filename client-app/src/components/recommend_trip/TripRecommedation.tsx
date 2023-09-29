@@ -1,6 +1,6 @@
 // import { twMerge } from "tailwind-merge";
 // import { ClassValue, clsx } from "clsx";
-import trips from "../../data/trips";
+import { trips } from "../../data/trips";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 // this function is used to combine (conditional) classNames and uses clsx and tailwind-merge
