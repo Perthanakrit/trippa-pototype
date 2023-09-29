@@ -1,5 +1,5 @@
 import { FaAmazon, FaInvision } from "react-icons/fa";
-import { RiBardFill } from "react-icons/ri";
+import { RiBardFill, RiCommunityFill } from "react-icons/ri";
 
 const menus = [
   {
@@ -19,6 +19,12 @@ const menus = [
     path: "/favmu",
     title: "สายมู",
     icon: <RiBardFill />,
+  },
+  {
+    name: "Community",
+    path: "/community",
+    title: "ชุมชน",
+    icon: <RiCommunityFill />,
   },
 ];
 
