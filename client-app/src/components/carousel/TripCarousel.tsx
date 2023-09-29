@@ -1,6 +1,6 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 type Props = {
   trips: any;
@@ -14,7 +14,6 @@ type Props = {
 // ];
 
 export default function TripCarousel({ trips }: Props) {
-  const navigate = useNavigate();
   return (
     <>
       {/* className=" flex justify-center items-center h-[250px] w-full my-0 mx-[0.9rem] text-[4rem]" */}
