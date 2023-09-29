@@ -14,7 +14,12 @@ export default function Home() {
           {/* Serach bar */}
           <div className=" w-[50%] bg-white mx-auto mt-4 p-3 rounded-full">
             <form action="/" className=" flex">
-              <button className=" bg-stone-700 p-1 rounded-full focus:bg-slate-100 focus:text-stone-700">
+              <button
+                onClick={(e: React.FormEvent) => {
+                  e.preventDefault;
+                }}
+                className=" bg-stone-700 p-1 rounded-full focus:bg-slate-100 focus:text-stone-700"
+              >
                 <FaSearchLocation size={15} />
               </button>
               <input
