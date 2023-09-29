@@ -9,6 +9,7 @@ import NotFound from "./NotFound.tsx";
 import Favmu from "./components/pages/muteuh/Favmu.tsx";
 import TripInfo from "./components/feature/tripdetail/TripInfo.tsx";
 import Community from "./components/pages/community/Community.tsx";
+import PostDetail from "./components/feature/postdetail/PostDetail.tsx";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +30,16 @@ const router = createBrowserRouter([
   },
   {
     path: "/community",
-    element: <Community />,
+    children: [
+      {
+        index: true,
+        element: <Community />,
+      },
+      {
+        path: ":postId/:name",
+        element: <PostDetail />,
+      },
+    ],
   },
   {
     path: "/trips",
