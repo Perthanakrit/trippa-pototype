@@ -1,7 +1,3 @@
-import { useEffect, useState } from "react";
-import { timeLines } from "../../../data/trips";
-import { it } from "node:test";
-
 type Props = {
   agenda: any;
 };

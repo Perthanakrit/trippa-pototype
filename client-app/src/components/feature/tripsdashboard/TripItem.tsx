@@ -1,12 +1,12 @@
 import { RiPinDistanceFill } from "react-icons/ri";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 interface Props {
   trip: any;
 }
 
 export default function TripItem({ trip }: Props) {
-  const location = useLocation();
+  //const location = useLocation();
 
   return (
     <div className=" bg-slate-200 block md:grid md:grid-cols-3 my-5 relative rounded-md">
