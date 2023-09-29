@@ -1,18 +1,19 @@
-import { FaAmazon, FaInvision } from "react-icons/fa";
 import { RiBardFill, RiCommunityFill } from "react-icons/ri";
+import { MdFoodBank } from "react-icons/md";
+import { SiYourtraveldottv } from "react-icons/si";
 
 const menus = [
   {
     name: "FavEat",
     path: "/faveat",
     title: "สายกิน",
-    icon: <FaAmazon />,
+    icon: <MdFoodBank />,
   },
   {
     name: "FavNature",
     path: "/favnature",
     title: "สายเที่ยว",
-    icon: <FaInvision />,
+    icon: <SiYourtraveldottv />,
   },
   {
     name: "FavMuteuh",
@@ -30,14 +31,17 @@ const menus = [
 
 export default function Navbar() {
   return (
-    <nav className=" bg-slate-300/50  w-[40%] mx-auto p-2 rounded-full mt-4">
+    <nav className=" bg-slate-300/50  w-[45%] mx-auto p-2 rounded-full mt-4">
       <div className=" mx-2">
-        <ul className="flex justify-between">
+        <ul className="flex justify-between items-center">
           {menus.map((menu) => (
             <li key={menu.path}>
-              <a href={menu.path} className=" flex items-center">
+              <a
+                href={menu.path}
+                className=" flex items-center md:text-lg hover:text-[#ffec3f] hover:text-xl focus:text-[#ffec3f]"
+              >
                 {menu.icon}{" "}
-                <span className=" hidden md:block bottom-4 ml-1">
+                <span className=" hidden md:block bottom-4 ml-1 text-zinc-50">
                   {menu.title}
                 </span>
               </a>

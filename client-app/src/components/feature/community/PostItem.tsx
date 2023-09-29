@@ -11,18 +11,19 @@ export default function PostItem({ post }: Props) {
       // to={`/community/${post.id}/${post.name}`}
       className=" bg-zinc-50/40 border-none border-[1.1px] p-5 md:mb-0 mb-4 rounded-md"
     >
-      <Link to={`/community/${post.id}/${post.name}`}>
-        <div className=" flex items-center">
+      <Link
+        to={`/community/${post.id}/${post.name}`}
+        className=" flex md:block"
+      >
+        <div className=" md:flex md:gap-0 md:items-center">
           <img
             src={post.image}
-            width={46}
-            height={46}
             alt="profile"
-            className=" rounded-sm"
+            className=" md:w-[46px] md:h-[42px]   w-[130px] h-auto  rounded"
           />
-          <p className=" font-semibold ml-2 ">{post.name}</p>
+          <p className=" font-semibold md:ml-2 mt-1">{post.name}</p>
         </div>
-        <div>
+        <div className="mt-4 ml-4 md:ml-0">
           <p>
             <span>ไปไหน?</span>
             {post.destination}

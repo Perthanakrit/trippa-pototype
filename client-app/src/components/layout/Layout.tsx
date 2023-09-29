@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../header/Header";
 
 import "./layout.css";
+import Footer from "../footer/Footer";
 
 type Props = {
   children: React.ReactNode;
@@ -9,11 +10,10 @@ type Props = {
 
 export default function Layout({ children }: Props) {
   return (
-    <>
+    <div className="mybg">
       <Header />
-      <div className="mybg">
-        <div className=" mx-auto max-w-[850px] p-4">{children}</div>
-      </div>
-    </>
+      <div className=" mx-auto max-w-[850px] p-4">{children}</div>
+      <Footer />
+    </div>
   );
 }

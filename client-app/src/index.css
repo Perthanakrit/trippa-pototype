@@ -73,9 +73,10 @@ button:focus-visible {
 } */
 
 :root {
-   background-color: rgb(238, 238, 238);
+  background-color: #fffff37f;
     /* For browsers that do not support gradients */
-    color:rgb(250,250,250);
+  color:rgb(250,250,250);
+  height: 100%;
 }
 
 h1, p{
@@ -83,6 +84,6 @@ h1, p{
 }
 /* 
 #FD924B : orange
-#FFDE59 : yellow
+#ffec3f : yellow
 #FFFFFF : white
 */

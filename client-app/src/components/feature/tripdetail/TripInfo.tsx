@@ -26,7 +26,7 @@ export default function TripInfo() {
 
   return (
     <Layout>
-      <div>
+      <>
         <h1 className=" text-3xl font-bold mb-4 text-zinc-50">
           {currentTrip.name}
         </h1>
@@ -41,27 +41,31 @@ export default function TripInfo() {
         </div>
         {/* agenda */}
         <div className="mt-6 border-[1px] bg-zinc-50 border-slate-400/60 p-4">
-          <h1 className=" text-lg font-bold">Agenda</h1>
+          <h1 className=" text-lg font-bold">กำหนดการ</h1>
           {currentAgenda != null && <AgendaTrip agenda={currentAgenda} />}
         </div>
 
         <div className="mt-6 border-[1px] border-slate-400/60 p-4">
-          <h1 className="text-xl font-bold">Details</h1>
+          <h1 className="text-xl font-bold">รายละเอียด</h1>
           {/* detail content */}
           <div className=" flex justify-between items-center">
             <div className="">
               <h4 className="flex">
-                <p className=" italic">From</p>
+                <p className=" italic font-medium">From</p>
                 <p className=" ml-2">{currentTrip.origin}</p>
               </h4>
               <h4 className="flex">
-                <p className=" italic">To</p>
+                <p className=" italic font-medium">To</p>
                 <p className=" ml-2">{currentTrip.destination}</p>
               </h4>
             </div>
-            <div className="mx-auto">
-              <h1>Duration</h1>
+            <div>
+              <h1 className="font-medium">ระยะเวลา</h1>
               <p>{currentTrip.duration}</p>
+            </div>
+            <div className="text-center">
+              <h1 className="font-medium">ราคา</h1>
+              <p>{currentTrip.price} บาท</p>
             </div>
             <button
               onClick={(e: React.FormEvent) => {
@@ -74,7 +78,7 @@ export default function TripInfo() {
             </button>
           </div>
         </div>
-      </div>
+      </>
     </Layout>
   );
 }

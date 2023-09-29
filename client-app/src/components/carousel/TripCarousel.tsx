@@ -1,5 +1,6 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
+import { Link, useNavigate } from "react-router-dom";
 
 type Props = {
   trips: any;
@@ -13,20 +14,26 @@ type Props = {
 // ];
 
 export default function TripCarousel({ trips }: Props) {
+  const navigate = useNavigate();
   return (
-    <div>
+    <>
       {/* className=" flex justify-center items-center h-[250px] w-full my-0 mx-[0.9rem] text-[4rem]" */}
-      <Carousel showArrows={true} autoPlay infiniteLoop showThumbs={false}>
+      <Carousel autoPlay infiniteLoop showThumbs={false} showStatus={false}>
         {trips.map((trip: any) => (
-          <div key={trip.id} className=" flex items-center w-full my-0 mx-auto">
+          <Link
+            key={trip.id}
+            className=" flex items-center w-full my-0 mx-auto"
+            to={`trips/${trip.id}`}
+          >
             <img
               className="w-full h-[400px] object-cover "
               src={trip.image}
               alt={trip.title}
             />
-          </div>
+            <p className="legend">{trip.name}</p>
+          </Link>
         ))}
       </Carousel>
-    </div>
+    </>
   );
 }

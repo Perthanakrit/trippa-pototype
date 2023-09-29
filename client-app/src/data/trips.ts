@@ -1,8 +1,3 @@
-import img1 from "../assets/images/img-1.jpg";
-import img2 from "../assets/images/img-2.jpg";
-import img3 from "../assets/images/img-3.jpg";
-import img4 from "../assets/images/img-4.jpg";
-import img5 from "../assets/images/img-5.jpg";
 
 export const trips = [
     {
@@ -10,7 +5,7 @@ export const trips = [
         name: "ไหว้พระขอพรจากเที่ยวเชียงใหม่-ลำปาง",
         tag: 1,
         description: "เดินทางไหว้ไปวัดต่างๆ ตั้งแต่เชียงใหม่ถึงลำปาง ",
-        image: img1,
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/%E0%B8%9E%E0%B8%A3%E0%B8%B0%E0%B8%98%E0%B8%B2%E0%B8%95%E0%B8%B8%E0%B9%81%E0%B8%AB%E0%B9%88%E0%B8%87%E0%B8%A8%E0%B8%A3%E0%B8%B1%E0%B8%97%E0%B8%98%E0%B8%B2.jpg/1200px-%E0%B8%9E%E0%B8%A3%E0%B8%B0%E0%B8%98%E0%B8%B2%E0%B8%95%E0%B8%B8%E0%B9%81%E0%B8%AB%E0%B9%88%E0%B8%87%E0%B8%A8%E0%B8%A3%E0%B8%B1%E0%B8%97%E0%B8%98%E0%B8%B2.jpg",
         origin: "เมืองเชียงใหม่",
         destination: "เมืองลำปาง",
         landmark: "วัดพระธาตุลำปางหลวง",
@@ -23,9 +18,9 @@ export const trips = [
         name: "กลางสู่อีสาน",
         tag: 1,
         description: "เดินทางไหว้ไปวัดต่างๆ ตั้งแต่ออกจากกรุงเทพถถึงสุดอีสานตอนล่าง อย่างจังหวัดอุบลราชธานี พร้อมดื่มดำ่ไปกับธรรมชาติ ",
-        image: img2,
+        image: "https://upload.wikimedia.org/wikipedia/commons/a/ab/%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%AA%E0%B8%B4%E0%B8%A3%E0%B8%B4%E0%B8%99%E0%B8%98%E0%B8%A3%E0%B8%A7%E0%B8%A3%E0%B8%B2%E0%B8%A3%E0%B8%B2%E0%B8%A1%E0%B8%A0%E0%B8%B9%E0%B8%9E%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%A7%E0%B8%A2%E0%B8%B2%E0%B8%A1%E0%B8%84%E0%B9%88%E0%B8%B3%E0%B8%84%E0%B8%B7%E0%B8%99.jpg",
         origin: "กรุงเทพ",
-        destination: "เมืองอุบล",
+        destination: "อุบลราชธานี",
         landmark: "วัดสิรินธรวรารามภูพร้าว",
         duration: "3 วัน 2 คืน",
         price: "2000",
@@ -36,7 +31,7 @@ export const trips = [
         name: "เที่ยวเชียงใหม่ตามใจฉัน",
         tag: 2,
         description: "ท่องเที่ยวเดินทางชมวิวไปตามสถานที่ต่างในเชียงใหม่",
-        image: img5,
+        image: "https://images.pexels.com/photos/733028/pexels-photo-733028.jpeg",
         origin: "กรุงเทพ",
         destination: "เชียงใหม่",
         landmark: "สถานีรถไฟขุนตาล",
@@ -49,7 +44,7 @@ export const trips = [
         name: "เที่ยวเชียงใหม่-ลำปาง",
         tag: 2,
         description: "ท่องเที่ยวเดินทางชมวิว ตั้งแต่เชียงใหม่ถึงลำปาง ด้วยรถไฟ",
-        image: img3,
+        image: "https://readthecloud.co/wp-content/uploads/2019/03/travel-rail-khuntan-share-1.jpg",
         origin: "เมืองเชียงใหม่",
         destination: "เมืองลำปาง",
         landmark: "สถานีรถไฟขุนตาล",
@@ -62,9 +57,9 @@ export const trips = [
         name: "ล่องเรือกลางแม่น้ำเจ้าพระยา",
         tag: 2,
         description: "ชมวิวแม่น้ำเจ้าพระยา ด้วยเรือท่องเที่ยว",
-        image: img4,
-        origin: "เมืองเชียงใหม่",
-        destination: "เมืองลำปาง",
+        image: "https://thethaiger.com/th/wp-content/uploads/2022/10/bangkok-gd796adf6f_1280.jpg",
+        origin: "กรุงเทพ",
+        destination: "กรุงเทพ",
         landmark: "สะพานพระราม 9",
         duration: "1 วัน 1 คืน",
         price: "1000",
@@ -75,7 +70,7 @@ export const trips = [
         name: "เที่ยวใกล้กรุง",
         tag: 2,
         description: "สูดบรรยากาศนอกเมื่อยามว่าง",
-        image: img5,
+        image: "https://chillpainai.com/src/wewakeup/scoop/images/45cf55c22666a50574326744c75bae94d4974afd.jpg",
         origin: "กรุงเทพ",
         destination: "นครปฐม",
         landmark: "",

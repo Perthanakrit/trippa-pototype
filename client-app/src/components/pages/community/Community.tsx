@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../../layout/Layout";
 import CommunityList from "../../feature/community/CommunityList";
 import posts from "../../../data/community";

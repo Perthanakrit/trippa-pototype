@@ -1,10 +1,5 @@
 import defaultImg from "../assets/images/profiesImg/profiesDefault.png"
-import img1 from "../assets/images/img-7.jpg";
-import img2 from "../assets/images/img-8.jpg";
-import img3 from "../assets/images/img-4.jpg";
-import img4 from "../assets/images/img-1.jpg";
-import img5 from "../assets/images/img-2.jpg";
-import img6 from "../assets/images/img-5.jpg";
+
 /*
 ไปไหน เกาะล้าน
 กี่คน 2-100
@@ -15,13 +10,15 @@ import img6 from "../assets/images/img-5.jpg";
 กี่วัน 2วัน 1คืน
 */
 
+const place1:string = "https://upload.wikimedia.org/wikipedia/commons/4/44/Ko_Lan_sunset.jpg"
+const place2:string = "https://f.ptcdn.info/590/074/000/qybxkklum4lU94rjdUc-o.jpg"
 const posts = [
     {
         id: 1,
         name: 'John Doe',
         image: defaultImg,
         destination: "เกาะล้าน",
-        tripImg: img1,
+        tripImg: place1,
         people: "2-100",
         time: "12.00",
         place: "สถานีกรุงเทพ",
@@ -35,7 +32,7 @@ const posts = [
         name: 'Bob',
         image: defaultImg,
         destination: "หาดบางแสน",
-        tripImg: img2,
+        tripImg: place2,
         people: "2-10",
         time: "8.00",
         place: "สถานีกรุงเทพ",
@@ -49,7 +46,7 @@ const posts = [
         name: 'Per',
         image: defaultImg,
         destination: "หาดบางแสน",
-        tripImg: img3,
+        tripImg: place2,
         people: "2-10",
         time: "8.00",
         place: "สถานีกรุงเทพ",
@@ -63,7 +60,7 @@ const posts = [
         name: 'Pocky',
         image: defaultImg,
         destination: "หาดบางแสน",
-        tripImg: img4,
+        tripImg: place2,
         people: "2-10",
         time: "8.00",
         place: "สถานีกรุงเทพ",
@@ -76,8 +73,8 @@ const posts = [
         id: 5,
         name: 'Top',
         image: defaultImg,
-        destination: "หาดบางแสน",
-        tripImg: img5,
+        destination: "เกาะล้าน",
+        tripImg: place1,
         people: "2-10",
         time: "8.00",
         place: "สถานีกรุงเทพ",
@@ -91,7 +88,7 @@ const posts = [
         name: 'One',
         image: defaultImg,
         destination: "หาดบางแสน",
-        tripImg: img6,
+        tripImg: place2,
         people: "2-10",
         time: "8.00",
         place: "สถานีกรุงเทพ",

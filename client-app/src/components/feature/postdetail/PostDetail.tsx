@@ -16,16 +16,16 @@ export default function PostDetail() {
 
   return (
     <Layout>
-      <div className=" container md:grid md:grid-cols-2 h-[720px]">
+      <div className=" container md:grid md:grid-cols-2 mt-4 md:items-center ">
         <div>
           <img
             src={post.tripImg}
             alt="activity"
-            className=" w-full h-[300px] object-none rounded"
+            className=" w-full h-[300px] object-fill rounded"
           />
           {/* <p className=" font-semibold ml-2 ">{post.name}</p> */}
         </div>
-        <div className=" ml-5 mt-4 md:mt-0">
+        <div className="ml-5 mt-4 md:mt-0 md:py-3 ">
           <div>
             <p>
               <span>ไปไหน?</span>
@@ -46,7 +46,7 @@ export default function PostDetail() {
             </p>
           </div>
           <div className=" flex items-center my-3">
-            <h1>นัดหมาย</h1>
+            <span className=" font-bold text-lg">นัดหมาย</span>
             <div className=" h-[60px] bg-black w-[1px] mx-3 "></div>
             <div>
               <p>วันที่ {post.date}</p>
@@ -55,8 +55,8 @@ export default function PostDetail() {
             </div>
           </div>
           <p className="inline-flex items-center">
-            ติดต่อ <BsTelephoneFill size={18} className=" ml-1 mr-2" />{" "}
-            {post.contact}
+            <span>ติดต่อ</span>{" "}
+            <BsTelephoneFill size={18} className=" ml-1 mr-2" /> {post.contact}
           </p>
         </div>
       </div>
