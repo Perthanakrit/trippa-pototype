@@ -8,6 +8,7 @@ import FavNature from "./components/pages/favnature/FavNature.tsx";
 import NotFound from "./NotFound.tsx";
 import Favmu from "./components/pages/muteuh/Favmu.tsx";
 import TripInfo from "./components/feature/tripdetail/TripInfo.tsx";
+import Community from "./components/pages/community/Community.tsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/favmu",
     element: <Favmu />,
+  },
+  {
+    path: "/community",
+    element: <Community />,
   },
   {
     path: "/trips",
