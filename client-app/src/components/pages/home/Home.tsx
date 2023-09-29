@@ -3,7 +3,6 @@ import Navbar from "../../header/Navbar";
 import { FaSearchLocation } from "react-icons/fa";
 import TripCarousel from "../../carousel/TripCarousel";
 import { trips } from "../../../data/trips";
-
 export default function Home() {
   return (
     <Layout>
@@ -16,7 +15,7 @@ export default function Home() {
             <form action="/" className=" flex">
               <button
                 onClick={(e: React.FormEvent) => {
-                  e.preventDefault;
+                  e.preventDefault();
                 }}
                 className=" bg-stone-700 p-1 rounded-full focus:bg-slate-100 focus:text-stone-700"
               >
