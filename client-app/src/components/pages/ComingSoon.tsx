@@ -10,9 +10,9 @@ export default function ComingSoon() {
           e.preventDefault();
           navigate(-1);
         }}
-        className=" text-slate-300 "
+        className=" text-slate-300 underline "
       >
-        Back to home page
+        Back prevoiur page
       </a>
     </div>
   );
