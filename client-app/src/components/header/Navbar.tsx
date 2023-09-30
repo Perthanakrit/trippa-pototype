@@ -31,17 +31,16 @@ const menus = [
 
 export default function Navbar() {
   return (
-    <nav className=" bg-slate-300/50  w-[45%] mx-auto p-2 rounded-full mt-4">
-      <div className=" mx-2">
+    <nav className=" bg-slate-300/50 w-[65%] sm:w-[60%] mx-auto p-2 rounded-full mt-4">
+      <div className=" mx-1">
         <ul className="flex justify-between items-center">
           {menus.map((menu) => (
             <li key={menu.path}>
-              <a
-                href={menu.path}
-                className=" flex items-center md:text-lg hover:text-[#ffec3f] hover:text-xl focus:text-[#ffec3f]"
-              >
-                {menu.icon}{" "}
-                <span className=" hidden md:block bottom-4 ml-1 text-zinc-50">
+              <a href={menu.path} className=" flex items-center md:text-lg">
+                <span className=" hidden md:block text-zinc-50 hover:text-[#ffec3f] hover:text-xl focus:text-[#ffec3f]">
+                  {menu.icon}
+                </span>
+                <span className="bottom-4 ml-1 text-zinc-50 text-xs sm:text-lg">
                   {menu.title}
                 </span>
               </a>

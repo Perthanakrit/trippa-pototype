@@ -46,7 +46,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <NotFound />,
+        element: <Home />,
       },
       {
         path: ":tripId",
