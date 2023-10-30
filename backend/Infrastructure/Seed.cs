@@ -1,0 +1,88 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Domain.Entities;
+using Infrastructure.Database;
+
+namespace Infrastructure
+{
+    public class Seed
+    {
+        public static async Task SeedData(DatabaseContext context)
+        {
+            if (!context.Trips.Any())
+            {
+                List<Trip> trips = new List<Trip>
+                {
+                    new Trip
+                    {
+                        Name = "Trip 1",
+                        Description = "Trip 1 Description",
+                        Landmark = "Landmark 1",
+                        Duration = "Duration 1",
+                        Price = 100,
+                        Fee = 10,
+                        Origin = "Origin 1",
+                        Destination = "Destination 1"
+                    },
+                    new Trip
+                    {
+                        Name = "Trip 2",
+                        Description = "Trip 2 Description",
+                        Landmark = "Landmark 2",
+                        Duration = "Duration 2",
+                        Price = 200,
+                        Fee = 20,
+                        Origin = "Origin 2",
+                        Destination = "Destination 2"
+                    },
+                    new Trip
+                    {
+                        Name = "Trip 3",
+                        Description = "Trip 3 Description",
+                        Landmark = "Landmark 3",
+                        Duration = "Duration 3",
+                        Price = 300,
+                        Fee = 30,
+                        Origin = "Origin 3",
+                        Destination = "Destination 3"
+                    },
+                    new Trip
+                    {
+                        Name = "Trip 4",
+                        Description = "Trip 4 Description",
+                        Landmark = "Landmark 4",
+                        Duration = "Duration 4",
+                        Price = 400,
+                        Fee = 40,
+                        Origin = "Origin 4",
+                        Destination = "Destination 4"
+                    },
+                    new Trip
+                    {
+                        Name = "Trip 5",
+                        Description = "Trip 5 Description",
+                        Landmark = "Landmark 5",
+                        Duration = "Duration 5",
+                        Price = 500,
+                        Fee = 50,
+                        Origin = "Origin 5",
+                        Destination = "Destination 5"
+                    },
+                    new Trip
+                    {
+                        Name = "Trip 6",
+                        Description = "Trip 6 Description",
+                        Landmark = "Landmark 6",
+                        Duration = "Duration 6",
+                        Price = 600,
+                        Fee = 60,
+                        Origin = "Origin 6",
+                        Destination = "Destination 6"
+                    },
+                };
+            }
+        }
+    }
+}
