@@ -56,7 +56,7 @@ namespace Infrastructure.Database.Repositories
         {
             entity.UpdatedAt = DateTime.UtcNow;
             entity.IsActive = false;
-
+            _context.Remove(entity);
             return entity;
         }
 

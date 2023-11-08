@@ -24,7 +24,10 @@ namespace Infrastructure
                         Price = 100,
                         Fee = 10,
                         Origin = "Origin 1",
-                        Destination = "Destination 1"
+                        Destination = "Destination 1",
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow,
+                        IsActive = true
                     },
                     new Trip
                     {
@@ -35,7 +38,10 @@ namespace Infrastructure
                         Price = 200,
                         Fee = 20,
                         Origin = "Origin 2",
-                        Destination = "Destination 2"
+                        Destination = "Destination 2",
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow,
+                        IsActive = true
                     },
                     new Trip
                     {
@@ -46,7 +52,10 @@ namespace Infrastructure
                         Price = 300,
                         Fee = 30,
                         Origin = "Origin 3",
-                        Destination = "Destination 3"
+                        Destination = "Destination 3",
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow,
+                        IsActive = true
                     },
                     new Trip
                     {
@@ -57,7 +66,10 @@ namespace Infrastructure
                         Price = 400,
                         Fee = 40,
                         Origin = "Origin 4",
-                        Destination = "Destination 4"
+                        Destination = "Destination 4",
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow,
+                        IsActive = true
                     },
                     new Trip
                     {
@@ -68,7 +80,10 @@ namespace Infrastructure
                         Price = 500,
                         Fee = 50,
                         Origin = "Origin 5",
-                        Destination = "Destination 5"
+                        Destination = "Destination 5",
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow,
+                        IsActive = true
                     },
                     new Trip
                     {
@@ -79,9 +94,15 @@ namespace Infrastructure
                         Price = 600,
                         Fee = 60,
                         Origin = "Origin 6",
-                        Destination = "Destination 6"
+                        Destination = "Destination 6",
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow,
+                        IsActive = true
                     },
                 };
+
+                await context.Trips.AddRangeAsync(trips);
+                await context.SaveChangesAsync();
             }
         }
     }
