@@ -59,7 +59,7 @@ namespace Core.Services
             }
 
             existedTrip = _repository.Remove(existedTrip); // TODO: Check if the entity is removed successfully
-
+            await _repository.SaveChangesAsync();
             return ConvertToResponseModel(existedTrip);
         }
 

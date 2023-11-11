@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
@@ -104,6 +105,35 @@ namespace Infrastructure
                 await context.Trips.AddRangeAsync(trips);
                 await context.SaveChangesAsync();
             }
+
+            if (!await context.CustomTrips.AnyAsync())
+            {
+                List<CustomTrip> customTrips = new List<CustomTrip> {
+                    new CustomTrip
+                    {
+                        Trip = new Trip {
+                            Name = "My Trip 1",
+                            Description = "My Trip 1 Description",
+                            Landmark = "Landmark 1",
+                            Duration = "Duration 1",
+                            Price = 500,
+                            Fee = 5,
+                            Origin = "Origin 1",
+                            Destination = "Destination 1",
+                            CreatedAt = DateTime.UtcNow,
+                            UpdatedAt = DateTime.UtcNow,
+                            IsActive = true
+                        },
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow,
+                        IsActive = true
+                    },
+                };
+                await context.CustomTrips.AddRangeAsync(customTrips);
+                await context.SaveChangesAsync();
+            }
+
+
         }
     }
 }

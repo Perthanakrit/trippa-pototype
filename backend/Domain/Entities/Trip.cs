@@ -16,6 +16,6 @@ namespace Domain.Entities
         public string Origin { get; set; }
         public string Destination { get; set; }
 
-
+        public CustomTrip customTrip { get; set; }
     }
 }

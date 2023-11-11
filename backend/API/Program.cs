@@ -1,4 +1,5 @@
 using Core.Interface.Infrastructure.Database;
+using Core.Interface.Services;
 using Core.Services;
 using Infrastructure.Database;
 using Infrastructure.Database.Repositories;
@@ -25,10 +26,12 @@ builder.Services.AddDbContext<DatabaseContext>(opt =>
 
 #region Configure DI Container - Service Lifetimes - Infrastructure
 builder.Services.AddTransient<ITripRepository, TripRepository>();
+builder.Services.AddTransient<ICustomTripRepository, CustomTripRepository>();
 #endregion
 
 #region  Configure DI Container - Service Lifetimes - Business Services
 builder.Services.AddScoped<ITripService, TripService>();
+builder.Services.AddScoped<ICustomTripService, CustomTripService>();
 #endregion
 
 var app = builder.Build();

@@ -33,6 +33,6 @@ namespace Core.Services
         public int TotalRows { get; set; }
         //public int PageNumber { get; set; }
         //public int PageSize { get; set; }
-        public List<TripServiceResponse> Trips { get; set; }
+        public List<TripServiceResponse> Trips { get; set; } = new List<TripServiceResponse>();
     }
 }

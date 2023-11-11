@@ -11,7 +11,7 @@ namespace Infrastructure.Database.Repositories
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
     {
-        private readonly DatabaseContext _context;
+        protected readonly DatabaseContext _context;
 
         public BaseRepository(DatabaseContext context)
         {

@@ -16,12 +16,13 @@ namespace Infrastructure.Database
 
         #region DbSet List
         public DbSet<Trip> Trips { get; set; }
+        public DbSet<CustomTrip> CustomTrips { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new TripConfiguration());
-
+            builder.ApplyConfiguration(new CustomTripConfiguration());
         }
     }
 }
