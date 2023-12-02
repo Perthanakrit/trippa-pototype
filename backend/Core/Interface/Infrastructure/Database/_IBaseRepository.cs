@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace Core.Interface.Infrastructure.Database
 {

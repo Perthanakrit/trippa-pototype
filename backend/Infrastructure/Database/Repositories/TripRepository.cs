@@ -14,7 +14,6 @@ namespace Infrastructure.Database.Repositories
         {
 
         }
-
         // Inherit the methods from the base repository
 
     }

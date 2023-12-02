@@ -11,6 +11,6 @@ namespace Domain.Entities
         public Guid TripId { get; set; }
         [JsonIgnore]
         public Trip Trip { get; set; }
-
+        public Guid UserId { get; set; }
     }
 }

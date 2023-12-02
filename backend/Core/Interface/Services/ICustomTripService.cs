@@ -12,7 +12,7 @@ namespace Core.Interface.Services
         Task<CustomTripServiceResponse> CreateNewTripAsync(CustomTripServiceInput input);
         Task<CustomTripServiceResponse> UpdateTripAsync(Guid provinceId, CustomTripServiceInput input);
         Task<CustomTripServiceResponse> DeleteTripAsync(Guid provinceId);
-        Task<CustomTripServiceResponseWithTrip> GetTripAsync(Guid provinceId);
+        Task<CustomTripServiceResponse> GetTripAsync(Guid provinceId);
         Task<TripsServiceResponseWithPaging> GetListOfAllTripsAsync();
 
     }
@@ -21,8 +21,9 @@ namespace Core.Interface.Services
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public int Duration { get; set; }
+        public string Duration { get; set; }
         public float Price { get; set; }
+        public string Landmark { get; set; }
         public string Origin { get; set; }
         public string Destination { get; set; }
     }
@@ -36,6 +37,7 @@ namespace Core.Interface.Services
         // public string Origin { get; set; }
         // public string Destination { get; set; }
         public Trip Trip { get; set; }
+        public Guid TripId { get; set; }
     }
 
     public class CustomTripServiceResponseWithTrip

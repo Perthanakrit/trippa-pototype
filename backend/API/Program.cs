@@ -1,8 +1,11 @@
 using Core.Interface.Infrastructure.Database;
 using Core.Interface.Services;
+using Core.Mapping;
 using Core.Services;
+using Domain.Entities;
 using Infrastructure.Database;
 using Infrastructure.Database.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,14 +27,19 @@ builder.Services.AddDbContext<DatabaseContext>(opt =>
 #region Configure IOption Pattern 
 #endregion
 
+builder.Services.AddAutoMapper(typeof(CustomTripMapping).Assembly);
+
 #region Configure DI Container - Service Lifetimes - Infrastructure
 builder.Services.AddTransient<ITripRepository, TripRepository>();
 builder.Services.AddTransient<ICustomTripRepository, CustomTripRepository>();
+builder.Services.AddTransient<IAuthRespository, AuthRespository>();
 #endregion
 
 #region  Configure DI Container - Service Lifetimes - Business Services
 builder.Services.AddScoped<ITripService, TripService>();
 builder.Services.AddScoped<ICustomTripService, CustomTripService>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DatabaseContext>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 #endregion
 
 var app = builder.Build();

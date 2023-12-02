@@ -19,6 +19,25 @@ namespace API.Controllers
             _customTripService = customTripService;
         }
 
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> CreateCustomTrip(CustomTripServiceInput input)
+        {
+            try
+            {
+                var result = await _customTripService.CreateNewTripAsync(input);
+                return Ok(new { result, message = "Create successfully" });
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         [HttpGet]
         [Route("[action]/{id}")]
         public async Task<IActionResult> GetCustomTrip(Guid id)
@@ -26,6 +45,25 @@ namespace API.Controllers
             try
             {
                 var result = await _customTripService.GetTripAsync(id);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("[action]/{id}")]
+        public async Task<IActionResult> UpdateCustomTrip(Guid id, CustomTripServiceInput input)
+        {
+            try
+            {
+                var result = await _customTripService.UpdateTripAsync(id, input);
                 return Ok(result);
             }
             catch (ArgumentException ex)
