@@ -5,16 +5,25 @@ using System.Threading.Tasks;
 using Core.Interface.Infrastructure.Database;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database.Repositories
 {
     public class AuthRespository : IAuthRespository
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly DatabaseContext _db;
 
-        public AuthRespository(UserManager<ApplicationUser> userManager)
+        public AuthRespository(UserManager<ApplicationUser> userManager, DatabaseContext db)
         {
             _userManager = userManager;
+            _db = db;
+        }
+
+        public async Task<ApplicationUser> FindByUsername(string userName)
+        {
+            ApplicationUser user = await _db.ApplicationUsers.FirstOrDefaultAsync(u => u.UserName.ToLower() == userName.ToLower());
+            return user;
         }
 
         public async Task<IdentityResult> CheckPassword(ApplicationUser entity, string password)
@@ -25,10 +34,15 @@ namespace Infrastructure.Database.Repositories
             {
                 return IdentityResult.Success;
             }
-            return IdentityResult.Failed(new IdentityError { Description = "Password is not correct" });
+            return IdentityResult.Failed(new IdentityError { Description = "Username or Password is not correct" });
         }
 
-        public async Task<IdentityResult> CreateAsync(ApplicationUser entity, string password) => await _userManager.CreateAsync(entity, password);
+        public async Task<IdentityResult> CreateAsync(ApplicationUser entity, string password)
+        {
+            IdentityResult result = await _userManager.CreateAsync(entity, password);
+            await _db.Contacts.AddAsync(entity.Contact);
+            return result;
+        }
 
         public async Task<IdentityResult> ExistedEmail(string email)
         {

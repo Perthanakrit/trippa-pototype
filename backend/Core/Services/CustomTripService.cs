@@ -27,7 +27,6 @@ namespace Core.Services
                 Id = entity.Id,
                 Trip = entity.Trip,
                 TripId = entity.TripId,
-                UpdateUTC = entity.UpdateUTC,
                 CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt,
             };

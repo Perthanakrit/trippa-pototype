@@ -13,7 +13,6 @@ namespace Core.Mapping
         public CustomTripMapping()
         {
             CreateMap<CustomTripServiceInput, Trip>();
-            CreateMap<RegisterServiceInput, ApplicationUser>();
         }
     }
 }

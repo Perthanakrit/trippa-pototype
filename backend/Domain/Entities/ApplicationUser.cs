@@ -11,7 +11,8 @@ namespace Domain.Entities
         public string DisplayName { get; set; }
         public string Bio { get; set; }
         public string Image { get; set; }
-        public ICollection<Contact> Contacts { get; set; }
+        public Guid ContactId { get; set; }
+        public Contact Contact { get; set; }
         public ICollection<CustomTrip> CustomTrips { get; set; }
     }
 }

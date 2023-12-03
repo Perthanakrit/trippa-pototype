@@ -1,12 +1,16 @@
+using System.Text;
 using Core.Interface.Infrastructure.Database;
 using Core.Interface.Services;
 using Core.Mapping;
 using Core.Services;
+using Core.Utility;
 using Domain.Entities;
 using Infrastructure.Database;
 using Infrastructure.Database.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +31,30 @@ builder.Services.AddDbContext<DatabaseContext>(opt =>
 #region Configure IOption Pattern 
 #endregion
 
+#region JWT Authentication
+JwtSettings jWTSettings = new();
+builder.Configuration.Bind(nameof(jWTSettings), jWTSettings);
+builder.Services.AddSingleton(jWTSettings);
+builder.Services.AddAuthentication(u =>
+{
+    u.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    u.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(u =>
+{
+    u.RequireHttpsMetadata = false;
+    u.SaveToken = true;
+    u.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jWTSettings.SecertKey)),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+#endregion
+
 builder.Services.AddAutoMapper(typeof(CustomTripMapping).Assembly);
+builder.Services.AddAutoMapper(typeof(AuthServiceMapping).Assembly);
 
 #region Configure DI Container - Service Lifetimes - Infrastructure
 builder.Services.AddTransient<ITripRepository, TripRepository>();
@@ -52,6 +79,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+//app.UseAuthentication();
 
 app.UseAuthorization();
 

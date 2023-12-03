@@ -12,6 +12,7 @@ namespace Core.Interface.Infrastructure.Database
         Task<IdentityResult> CreateAsync(ApplicationUser entity, string password);
         Task<IdentityResult> ExistedUserName(string userName);
         Task<IdentityResult> ExistedEmail(string email);
+        Task<ApplicationUser> FindByUsername(string userName);
         Task<IdentityResult> CheckPassword(ApplicationUser entity, string password);
     }
 }

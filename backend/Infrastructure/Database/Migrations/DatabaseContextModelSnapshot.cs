@@ -22,21 +22,6 @@ namespace Infrastructure.Database.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ApplicationUserContact", b =>
-                {
-                    b.Property<Guid>("ContactsId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasKey("ContactsId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ApplicationUserContact");
-                });
-
             modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -51,6 +36,9 @@ namespace Infrastructure.Database.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
+
+                    b.Property<Guid>("ContactId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("DisplayName")
                         .HasColumnType("text");
@@ -142,10 +130,13 @@ namespace Infrastructure.Database.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Contacts", (string)null);
                 });
@@ -363,19 +354,13 @@ namespace Infrastructure.Database.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ApplicationUserContact", b =>
+            modelBuilder.Entity("Domain.Entities.Contact", b =>
                 {
-                    b.HasOne("Domain.Entities.Contact", null)
-                        .WithMany()
-                        .HasForeignKey("ContactsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Domain.Entities.ApplicationUser", "ApplicationUser")
+                        .WithOne("Contact")
+                        .HasForeignKey("Domain.Entities.Contact", "UserId");
 
-                    b.HasOne("Domain.Entities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("Domain.Entities.CustomTrip", b =>
@@ -446,6 +431,8 @@ namespace Infrastructure.Database.Migrations
 
             modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
                 {
+                    b.Navigation("Contact");
+
                     b.Navigation("CustomTrips");
                 });
 

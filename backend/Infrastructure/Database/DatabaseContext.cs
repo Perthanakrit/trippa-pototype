@@ -26,6 +26,7 @@ namespace Infrastructure.Database
         {
 
             base.OnModelCreating(builder);
+            builder.ApplyConfiguration(new ApplictionUserConfiguration());
             builder.ApplyConfiguration(new TripConfiguration());
             builder.ApplyConfiguration(new CustomTripConfiguration());
             builder.ApplyConfiguration(new ContactConfiguration());
