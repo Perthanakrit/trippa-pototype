@@ -26,6 +26,7 @@ namespace Core.Interface.Services
         public string Landmark { get; set; }
         public string Origin { get; set; }
         public string Destination { get; set; }
+        public string UserId { get; set; }
     }
 
     public class CustomTripServiceResponse : BaseEntity

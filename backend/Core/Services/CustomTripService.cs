@@ -11,11 +11,13 @@ namespace Core.Services
 {
     public class CustomTripService : ICustomTripService
     {
+        private readonly IAuthRespository _authRepository;
         private readonly ICustomTripRepository _repository;
         private readonly IMapper _mapper;
 
-        public CustomTripService(ICustomTripRepository repository, IMapper mapper)
+        public CustomTripService(IAuthRespository authRepository, ICustomTripRepository repository, IMapper mapper)
         {
+            _authRepository = authRepository;
             _repository = repository;
             _mapper = mapper;
         }
@@ -83,6 +85,12 @@ namespace Core.Services
 
         public async Task<CustomTripServiceResponse> CreateNewTripAsync(CustomTripServiceInput input)
         {
+            // TODO: Check if the user is exist
+            bool isUserExit = await _authRepository.ExistedUserId(input.UserId);
+            if (!isUserExit)
+            {
+                throw new ArgumentException("The user is not exist");
+            }
             // TODO: Check if the name is already taken
             bool isNameAlreadyTaken = await _repository.Exists(t => t.Trip.Name == input.Name);
             if (isNameAlreadyTaken)
@@ -103,6 +111,7 @@ namespace Core.Services
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
                 Trip = trip,
+                ApplicationUserId = input.UserId,
             };
 
             var result = await _repository.AddAsync(customTrip);

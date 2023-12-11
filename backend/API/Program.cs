@@ -53,6 +53,10 @@ builder.Services.AddAuthentication(u =>
 });
 #endregion
 
+#region  External Authentication
+
+#endregion
+
 builder.Services.AddAutoMapper(typeof(CustomTripMapping).Assembly);
 builder.Services.AddAutoMapper(typeof(AuthServiceMapping).Assembly);
 

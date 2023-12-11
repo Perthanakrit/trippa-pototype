@@ -63,5 +63,15 @@ namespace Infrastructure.Database.Repositories
             }
             return IdentityResult.Success;
         }
+
+        public async Task<bool> ExistedUserId(string id)
+        {
+            var user = await _db.ApplicationUsers.FirstOrDefaultAsync(u => u.Id == id);
+            if (user != null)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
