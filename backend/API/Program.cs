@@ -1,14 +1,10 @@
 using System.Text;
-using Core.Interface.Infrastructure.Database;
-using Core.Interface.Services;
-using Core.Mapping;
-using Core.Services;
+using Core.Extension;
+using Core.Middleware;
 using Core.Utility;
-using Domain.Entities;
 using Infrastructure.Database;
-using Infrastructure.Database.Repositories;
+using Infrastructure.Extension;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -20,13 +16,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddDbContext<DatabaseContext>(opt =>
-{
-    opt.UseNpgsql(builder.Configuration.GetConnectionString(
-      "DefaultConnection"));
-});
-
 
 #region Configure IOption Pattern 
 #endregion
@@ -57,20 +46,14 @@ builder.Services.AddAuthentication(u =>
 
 #endregion
 
-builder.Services.AddAutoMapper(typeof(CustomTripMapping).Assembly);
-builder.Services.AddAutoMapper(typeof(AuthServiceMapping).Assembly);
+builder.Services.AddMapping();
 
 #region Configure DI Container - Service Lifetimes - Infrastructure
-builder.Services.AddTransient<ITripRepository, TripRepository>();
-builder.Services.AddTransient<ICustomTripRepository, CustomTripRepository>();
-builder.Services.AddTransient<IAuthRespository, AuthRespository>();
+builder.Services.AddInfraDependencyInjection(builder.Configuration);
 #endregion
 
 #region  Configure DI Container - Service Lifetimes - Business Services
-builder.Services.AddScoped<ITripService, TripService>();
-builder.Services.AddScoped<ICustomTripService, CustomTripService>();
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DatabaseContext>();
-builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddCoreDependencyInjection();
 #endregion
 
 var app = builder.Build();
@@ -85,6 +68,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 //app.UseAuthentication();
+app.UseMiddleware<ApiKeyMiddleware>();
 
 app.UseAuthorization();
 
