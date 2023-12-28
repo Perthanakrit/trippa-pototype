@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Core.Interface.Infrastructure.Database;
 using Domain.Entities;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 
 namespace Core.Services
 {
@@ -23,6 +25,12 @@ namespace Core.Services
                 Id = entity.Id,
                 Name = entity.Name,
                 Description = entity.Description,
+                Landmark = entity.Landmark,
+                Duration = entity.Duration,
+                Price = entity.Price,
+                Fee = entity.Fee,
+                Origin = entity.Origin,
+                Destination = entity.Destination,
                 CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt,
                 IsActive = entity.IsActive
@@ -37,7 +45,7 @@ namespace Core.Services
                 throw new ArgumentException("The name is already taken");
             }
 
-            Trip entity = new Trip
+            Trip entity = new()
             {
                 Name = input.Name,
                 Description = input.Description
@@ -65,7 +73,7 @@ namespace Core.Services
 
         public async Task<TripServiceResponse> GetTripAsync(Guid tripId)
         {
-            Trip existedTrip = await _repository.GetById(tripId);
+            Trip existedTrip = await _repository.GetByIdCache(tripId);
             bool theTripIsNotExist = existedTrip == null;
             if (theTripIsNotExist)
             {

@@ -39,6 +39,21 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> GetAllCustomTrips()
+        {
+            try
+            {
+                var result = await _customTripService.GetListOfAllTripsAsync();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
         [Route("[action]/{id}")]
         public async Task<IActionResult> GetCustomTrip(Guid id)
         {

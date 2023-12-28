@@ -1,6 +1,7 @@
 using Core.Interface.Infrastructure.Database;
 using Domain.Entities;
 using Infrastructure.Database;
+using Infrastructure.Database.Cache.Repositories;
 using Infrastructure.Database.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,11 @@ namespace Infrastructure.Extension
             services.AddTransient<ICustomTripRepository, CustomTripRepository>();
             services.AddTransient<IAuthRespository, AuthRespository>();
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DatabaseContext>();
+            services.AddStackExchangeRedisCache(redisOptions =>
+            {
+                string connection = config.GetConnectionString("Redis");
+                redisOptions.Configuration = connection;
+            });
             return services;
         }
 

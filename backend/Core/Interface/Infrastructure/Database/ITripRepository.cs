@@ -8,6 +8,6 @@ namespace Core.Interface.Infrastructure.Database
 {
     public interface ITripRepository : IBaseRepository<Trip>
     {
-
+        Task<Trip> GetByIdCache(Guid id);
     }
 }

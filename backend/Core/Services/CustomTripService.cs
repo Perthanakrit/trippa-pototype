@@ -39,9 +39,10 @@ namespace Core.Services
             throw new NotImplementedException();
         }
 
-        public Task<TripsServiceResponseWithPaging> GetListOfAllTripsAsync()
+        public Task<List<CustomTrip>> GetListOfAllTripsAsync()
         {
-            throw new NotImplementedException();
+            var customTrips = _repository.GetAll();
+            return customTrips;
         }
 
         public async Task<CustomTripServiceResponse> GetTripAsync(Guid customTripId)

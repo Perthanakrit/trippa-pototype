@@ -80,15 +80,13 @@ app.Run();
 
 async Task SeedDatabase()
 {
-    using (var scope = app.Services.CreateScope())
-    {
-        var dbcontext =
-          scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+    using var scope = app.Services.CreateScope();
+    var dbcontext =
+      scope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
-        // Run migration scripts
-        await dbcontext.Database.MigrateAsync();
+    // Run migration scripts
+    await dbcontext.Database.MigrateAsync();
 
-        // Seed data to the project
-        await Infrastructure.Seed.SeedData(dbcontext);
-    }
+    // Seed data to the project
+    await Infrastructure.Seed.SeedData(dbcontext);
 }

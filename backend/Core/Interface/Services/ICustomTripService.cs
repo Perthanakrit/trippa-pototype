@@ -13,7 +13,7 @@ namespace Core.Interface.Services
         Task<CustomTripServiceResponse> UpdateTripAsync(Guid provinceId, CustomTripServiceInput input);
         Task<CustomTripServiceResponse> DeleteTripAsync(Guid provinceId);
         Task<CustomTripServiceResponse> GetTripAsync(Guid provinceId);
-        Task<TripsServiceResponseWithPaging> GetListOfAllTripsAsync();
+        Task<List<CustomTrip>> GetListOfAllTripsAsync();
 
     }
 

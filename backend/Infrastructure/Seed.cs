@@ -39,9 +39,9 @@ namespace Infrastructure
                 await context.SaveChangesAsync();
             }
 
-            if (!context.Trips.Any())
+            if (!await context.Trips.AnyAsync())
             {
-                List<Trip> trips = new List<Trip>
+                List<Trip> trips = new()
                 {
                     new Trip
                     {
