@@ -1,1 +1,3 @@
 # Trippa Potoptype
+
+# Valiadtion

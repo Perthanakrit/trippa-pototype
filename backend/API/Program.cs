@@ -42,10 +42,6 @@ builder.Services.AddAuthentication(u =>
 });
 #endregion
 
-#region  External Authentication
-
-#endregion
-
 builder.Services.AddMapping();
 
 #region Configure DI Container - Service Lifetimes - Infrastructure
@@ -68,7 +64,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 //app.UseAuthentication();
-app.UseMiddleware<ApiKeyMiddleware>();
+app.UseApiKeyMiddleware();
+app.UseExceptionMiddleware();
 
 app.UseAuthorization();
 

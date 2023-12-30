@@ -14,6 +14,7 @@ namespace Core.Middleware
             _next = next;
             _apiKeyValidation = apiKeyValidation;
         }
+
         public async Task InvokeAsync(HttpContext context)
         {
             if (string.IsNullOrWhiteSpace(context.Request.Headers[SD.ApiKeyHeaderName]))
@@ -29,5 +30,6 @@ namespace Core.Middleware
             }
             await _next(context);
         }
+
     }
 }
