@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Interface.Infrastructure.Database;
+using Core.Interface.security;
 using Domain.Entities;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
@@ -12,10 +13,14 @@ namespace Core.Services
     public class TripService : ITripService
     {
         private readonly ITripRepository _repository;
+        private readonly IAuthRespository _authRepo;
+        private readonly IUserAccessor _userAccessor;
 
-        public TripService(ITripRepository repository) // Inject the repository
+        public TripService(ITripRepository repository, IAuthRespository authRepo, IUserAccessor userAccessor) // Inject the repository
         {
             _repository = repository; // Assign the repository to the private field
+            _authRepo = authRepo;
+            _userAccessor = userAccessor;
         }
 
         private TripServiceResponse ConvertToResponseModel(Trip entity)
@@ -110,18 +115,46 @@ namespace Core.Services
             return ConvertToResponseModel(existedTrip);
         }
 
-        public async Task UpdateAttendeeAsync(Guid tripId, Guid userId)
+        public async Task UpdateAttendeeAsync(Guid tripId)
         {
             // ExistedTrip
-            Trip trip = await _repository.GetById(tripId);
+            Trip trip = await _repository.ExistedTripAsync(tripId);
+            if (trip == null)
+            {
+                throw new ArgumentException("The trip is not found");
+            }
 
             // ExistedUser
+            ApplicationUser user = await _authRepo.FindByUsername(_userAccessor.GetUsername());
+            if (user == null)
+            {
+                throw new ArgumentException("The user is not found");
+            }
 
-            // If the user is the host -> Able to cancel
+            string Host = trip.HostId;
 
-            // If the user is not the host ->
+            TripAttendee attendee = trip.Attendee.FirstOrDefault(x => x.ApplicationUser.UserName == user.UserName);
+            // If the user is the host, cancel the activity
+            if (attendee != null && Host == user.Id)
+                trip.IsActive = !trip.IsActive;
 
-            throw new NotImplementedException();
+            // If the user is not the host, add or remove the user from the attendees
+            if (attendee != null && Host != user.Id)
+                trip.Attendee.Remove(attendee);
+
+            // AddAttendee
+            if (attendee == null)
+            {
+                attendee = new TripAttendee
+                {
+                    Trip = trip,
+                    ApplicationUser = user,
+                    IsHost = false
+                };
+                trip.Attendee.Add(attendee);
+            }
+
+            await _repository.SaveChangesAsync();
         }
     }
 }

@@ -16,6 +16,8 @@ namespace Core.Extension
             services.AddScoped<ICustomTripService, CustomTripService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddTransient<IApiKeyValidation, ApiKeyValidation>();
+            services.AddHttpContextAccessor();
+            services.AddScoped<IUserAccessor, UserAccessor>();
 
             return services;
         }

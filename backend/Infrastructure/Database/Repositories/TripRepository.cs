@@ -19,6 +19,12 @@ namespace Infrastructure.Database.Repositories
             _cache = cache;
             _mapper = mapper;
         }
+
+        public Task AddAttendeeAsync(Trip trip)
+        {
+            throw new NotImplementedException();
+        }
+
         // Inherit the methods from the base repository
 
         public async Task<Trip> GetByIdCache(Guid id)
@@ -66,6 +72,15 @@ namespace Infrastructure.Database.Repositories
                             .ProjectTo<TripServiceResponse>(_mapper.ConfigurationProvider)
                             .ToListAsync();
 
+        }
+
+        public async Task<Trip> ExistedTripAsync(Guid tripId)
+        {
+            Trip trip = await base._context.Trips
+                            .Include(x => x.Attendee).ThenInclude(a => a.ApplicationUser)
+                            .FirstOrDefaultAsync(x => x.Id == tripId);
+
+            return trip;
         }
     }
 }

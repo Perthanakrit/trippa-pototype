@@ -6,7 +6,9 @@ using Domain.Entities;
 using Infrastructure.Database;
 using Infrastructure.Extension;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -26,14 +28,10 @@ builder.Services.AddSwaggerGen();
 JwtSettings jWTSettings = new();
 builder.Configuration.Bind(nameof(jWTSettings), jWTSettings);
 builder.Services.AddSingleton(jWTSettings);
-builder.Services.AddAuthentication(u =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(u =>
 {
-    u.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    u.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(u =>
-{
-    u.RequireHttpsMetadata = false;
-    u.SaveToken = true;
+    // u.RequireHttpsMetadata = false;
+    // u.SaveToken = true;
     u.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
@@ -42,6 +40,14 @@ builder.Services.AddAuthentication(u =>
         ValidateAudience = false
     };
 });
+
+builder.Services.AddAuthorization(opt =>
+{
+    var defaultAuthBuilder = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme);
+    defaultAuthBuilder = defaultAuthBuilder.RequireAuthenticatedUser();
+    opt.DefaultPolicy = defaultAuthBuilder.Build();
+});
+
 #endregion
 
 builder.Services.AddMapping();
@@ -65,10 +71,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//app.UseAuthentication();
 app.UseApiKeyMiddleware();
 app.UseExceptionMiddleware();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

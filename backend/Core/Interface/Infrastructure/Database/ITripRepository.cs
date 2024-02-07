@@ -8,5 +8,7 @@ namespace Core.Interface.Infrastructure.Database
         Task<Trip> GetByIdCache(Guid id);
         Task<List<TripServiceResponse>> GetTripsAsync();
         Task<TripServiceResponse> GetTripAsync(Guid provinceId);
+        Task<Trip> ExistedTripAsync(Guid tripId);
+        Task AddAttendeeAsync(Trip trip);
     }
 }

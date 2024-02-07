@@ -13,6 +13,5 @@ namespace Domain.Entities
         public string Image { get; set; }
         public ICollection<Contact> Contacts { get; set; }
         public ICollection<TripAttendee> AttendeedTrips { get; set; }
-        public ICollection<Trip> Trips { get; set; }
     }
 }

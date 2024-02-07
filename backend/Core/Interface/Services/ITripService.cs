@@ -13,7 +13,7 @@ namespace Core.Services
         Task<TripServiceResponse> DeleteTripAsync(Guid provinceId);
         Task<TripServiceResponse> GetTripAsync(Guid provinceId);
         Task<TripsServiceResponseWithPaging> GetListOfAllTripsAsync();
-        Task UpdateAttendeeAsync(Guid tripId, Guid userId);
+        Task UpdateAttendeeAsync(Guid tripId);
         //Task<ProvinceServiceResponseWithPaging> GetListOfAllActiveProvincesAsync(int pageNumber, int pageSize);
     }
 
@@ -59,4 +59,8 @@ namespace Core.Services
         public string Value { get; set; }
     }
 
+    public class Input
+    {
+        public string Mail { get; set; }
+    }
 }

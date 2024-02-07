@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class TripController : ControllerBase
     {
@@ -45,15 +47,16 @@ namespace API.Controllers
             }
             catch (ArgumentException ex)
             {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
             }
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("[action]")]
         public async Task<IActionResult> GetListOfAllTrips()
         {
@@ -95,6 +98,26 @@ namespace API.Controllers
             {
                 var result = await _tripService.DeleteTripAsync(id);
                 return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("[action]/{tripId}")]
+        public async Task<IActionResult> UpdateAttendee(Guid tripId)
+        {
+            try
+            {
+                await _tripService.UpdateAttendeeAsync(tripId);
+                return Ok();
             }
             catch (ArgumentException ex)
             {
