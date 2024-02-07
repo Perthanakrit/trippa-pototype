@@ -55,6 +55,18 @@ namespace Infrastructure.database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TypeOfTrips",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(125)", maxLength: 125, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TypeOfTrips", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -195,7 +207,7 @@ namespace Infrastructure.database.Migrations
                     Destination = table.Column<string>(type: "text", nullable: false),
                     HostId = table.Column<string>(type: "text", nullable: false),
                     IsCustomTrip = table.Column<bool>(type: "boolean", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "text", nullable: true),
+                    TypeOfTripId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false)
@@ -204,10 +216,11 @@ namespace Infrastructure.database.Migrations
                 {
                     table.PrimaryKey("PK_Trips", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Trips_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        name: "FK_Trips_TypeOfTrips_TypeOfTripId",
+                        column: x => x.TypeOfTripId,
+                        principalTable: "TypeOfTrips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -225,6 +238,27 @@ namespace Infrastructure.database.Migrations
                     table.PrimaryKey("PK_CustomTrips", x => x.Id);
                     table.ForeignKey(
                         name: "FK_CustomTrips_Trips_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TripAgendas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    TripId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Time = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    Description = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TripAgendas", x => new { x.TripId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_TripAgendas_Trips_TripId",
                         column: x => x.TripId,
                         principalTable: "Trips",
                         principalColumn: "Id",
@@ -311,9 +345,9 @@ namespace Infrastructure.database.Migrations
                 column: "TripId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Trips_ApplicationUserId",
+                name: "IX_Trips_TypeOfTripId",
                 table: "Trips",
-                column: "ApplicationUserId");
+                column: "TypeOfTripId");
         }
 
         /// <inheritdoc />
@@ -341,16 +375,22 @@ namespace Infrastructure.database.Migrations
                 name: "CustomTrips");
 
             migrationBuilder.DropTable(
+                name: "TripAgendas");
+
+            migrationBuilder.DropTable(
                 name: "TripAttendees");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
                 name: "Trips");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "TypeOfTrips");
         }
     }
 }

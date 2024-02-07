@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240207075707_InitialMigrations")]
+    [Migration("20240207201629_InitialMigrations")]
     partial class InitialMigrations
     {
         /// <inheritdoc />
@@ -151,9 +151,6 @@ namespace Infrastructure.database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -196,14 +193,41 @@ namespace Infrastructure.database.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
+                    b.Property<Guid>("TypeOfTripId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("TypeOfTripId");
 
                     b.ToTable("Trips", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.TripAgenda", b =>
+                {
+                    b.Property<Guid>("TripId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<TimeSpan>("Time")
+                        .HasColumnType("interval");
+
+                    b.HasKey("TripId", "Id");
+
+                    b.ToTable("TripAgendas", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.TripAttendee", b =>
@@ -228,6 +252,22 @@ namespace Infrastructure.database.Migrations
                     b.HasIndex("TripId");
 
                     b.ToTable("TripAttendees", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.TypeOfTrip", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(125)
+                        .HasColumnType("character varying(125)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TypeOfTrips", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -385,9 +425,24 @@ namespace Infrastructure.database.Migrations
 
             modelBuilder.Entity("Domain.Entities.Trip", b =>
                 {
-                    b.HasOne("Domain.Entities.ApplicationUser", null)
+                    b.HasOne("Domain.Entities.TypeOfTrip", "TypeOfTrip")
                         .WithMany("Trips")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("TypeOfTripId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TypeOfTrip");
+                });
+
+            modelBuilder.Entity("Domain.Entities.TripAgenda", b =>
+                {
+                    b.HasOne("Domain.Entities.Trip", "Trip")
+                        .WithMany("TripAgenda")
+                        .HasForeignKey("TripId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Trip");
                 });
 
             modelBuilder.Entity("Domain.Entities.TripAttendee", b =>
@@ -465,13 +520,18 @@ namespace Infrastructure.database.Migrations
                     b.Navigation("AttendeedTrips");
 
                     b.Navigation("Contacts");
-
-                    b.Navigation("Trips");
                 });
 
             modelBuilder.Entity("Domain.Entities.Trip", b =>
                 {
                     b.Navigation("Attendee");
+
+                    b.Navigation("TripAgenda");
+                });
+
+            modelBuilder.Entity("Domain.Entities.TypeOfTrip", b =>
+                {
+                    b.Navigation("Trips");
                 });
 #pragma warning restore 612, 618
         }

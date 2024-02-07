@@ -16,7 +16,13 @@ namespace Domain.Entities
         public string Origin { get; set; }
         public string Destination { get; set; }
         public string HostId { get; set; }
-        public ICollection<TripAttendee> Attendee { get; set; } = new List<TripAttendee>();
         public bool IsCustomTrip { get; set; }
+
+        #region Relationships
+        public Guid TypeOfTripId { get; set; } // Foreign key
+        public TypeOfTrip TypeOfTrip { get; set; } // Navigation property
+        public ICollection<TripAgenda> TripAgenda { get; set; } = new List<TripAgenda>(); // Navigation property
+        public ICollection<TripAttendee> Attendee { get; set; } = new List<TripAttendee>(); // Navigation property
+        #endregion
     }
 }

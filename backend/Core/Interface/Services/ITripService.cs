@@ -34,6 +34,8 @@ namespace Core.Services
         public string Origin { get; set; }
         public string Destination { get; set; }
         public string Hostname { get; set; }
+        public TypeOfTripDto TypeOfTrip { get; set; }
+        public ICollection<TripAgendaDto> Agenda { get; set; }
         public ICollection<TripAttendeeDto> Attendee { get; set; }
     }
 
@@ -59,8 +61,15 @@ namespace Core.Services
         public string Value { get; set; }
     }
 
-    public class Input
+    public class TypeOfTripDto
     {
-        public string Mail { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class TripAgendaDto
+    {
+        public string Description { get; set; }
+        public DateTime Date { get; set; }
+        public TimeSpan Time { get; set; }
     }
 }

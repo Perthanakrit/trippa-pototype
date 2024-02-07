@@ -14,6 +14,25 @@ namespace Infrastructure
         public static async Task SeedData(DatabaseContext context, UserManager<ApplicationUser> userManager)
         {
             List<ApplicationUser> users = null;
+            List<TypeOfTrip> typeOfTrips = new List<TypeOfTrip>()
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "สายเที่ยว"
+                },
+                new ()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "สายมู"
+                },
+                new ()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "สายกิน"
+                },
+            };
+
             if (!await context.Users.AnyAsync())
             {
                 users = new List<ApplicationUser> {
@@ -86,6 +105,12 @@ namespace Infrastructure
 
             }
 
+            if (!await context.TypeOfTrips.AnyAsync())
+            {
+                await context.TypeOfTrips.AddRangeAsync(typeOfTrips);
+                await context.SaveChangesAsync();
+            }
+
             if (!await context.Trips.AnyAsync())
             {
                 List<Trip> trips = new()
@@ -110,6 +135,25 @@ namespace Infrastructure
                                 AttendAt = DateTime.UtcNow,
                                 CancelAt = null,
                             },
+                        },
+                        TypeOfTripId = typeOfTrips[0].Id,
+                        TypeOfTrip = typeOfTrips[0],
+                        TripAgenda = new List<TripAgenda>
+                        {
+                            new TripAgenda
+                            {
+                                Id = 1,
+                                Date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day ),
+                                Time = DateTime.UtcNow.TimeOfDay,
+                                Description = "Start Trip"
+                            },
+                            new TripAgenda
+                            {
+                                Id = 2,
+                                Date = DateTime.UtcNow,
+                                Time = DateTime.UtcNow.TimeOfDay,
+                                Description = "End Trip"
+                            }
                         },
                         IsCustomTrip = false,
                         CreatedAt = DateTime.UtcNow,
@@ -136,6 +180,25 @@ namespace Infrastructure
                                 AttendAt = DateTime.UtcNow,
                                 CancelAt = null,
                             },
+                        },
+                        TypeOfTripId = typeOfTrips[2].Id,
+                        TypeOfTrip = typeOfTrips[2],
+                        TripAgenda = new List<TripAgenda>
+                        {
+                            new TripAgenda
+                            {
+                                Id = 1,
+                                Date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day ),
+                                Time = DateTime.UtcNow.TimeOfDay,
+                                Description = "Start Trip"
+                            },
+                            new TripAgenda
+                            {
+                                Id = 2,
+                                Date = DateTime.UtcNow,
+                                Time = DateTime.UtcNow.TimeOfDay,
+                                Description = "End Trip"
+                            }
                         },
                         IsCustomTrip = false,
                         CreatedAt = DateTime.UtcNow,
@@ -181,6 +244,25 @@ namespace Infrastructure
                                     CancelAt = null,
                                 }
                             },
+                            TypeOfTripId = typeOfTrips[2].Id,
+                            TypeOfTrip = typeOfTrips[2],
+                            TripAgenda = new List<TripAgenda>
+                            {
+                                new TripAgenda
+                                {
+                                    Id = 1,
+                                    Date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day ),
+                                    Time = DateTime.UtcNow.TimeOfDay,
+                                    Description = "Start Trip"
+                                },
+                                new TripAgenda
+                                {
+                                    Id = 2,
+                                    Date = DateTime.UtcNow,
+                                    Time = DateTime.UtcNow.TimeOfDay,
+                                    Description = "End Trip"
+                                }
+                            },
                             IsCustomTrip = true,
                             CreatedAt = DateTime.UtcNow,
                             UpdatedAt = DateTime.UtcNow,
@@ -218,6 +300,25 @@ namespace Infrastructure
                                     IsHost = true,
                                     AttendAt = DateTime.UtcNow,
                                     CancelAt = null,
+                                }
+                            },
+                            TypeOfTripId = typeOfTrips[0].Id,
+                            TypeOfTrip = typeOfTrips[0],
+                            TripAgenda = new List<TripAgenda>
+                            {
+                                new TripAgenda
+                                {
+                                    Id = 1,
+                                    Date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day ),
+                                    Time = DateTime.UtcNow.TimeOfDay,
+                                    Description = "Start Trip"
+                                },
+                                new TripAgenda
+                                {
+                                    Id = 2,
+                                    Date = DateTime.UtcNow,
+                                    Time = DateTime.UtcNow.TimeOfDay,
+                                    Description = "End Trip"
                                 }
                             },
                             IsCustomTrip = true,

@@ -16,7 +16,10 @@ namespace Infrastructure.Database
         }
 
         #region DbSet List
+
         public DbSet<Trip> Trips { get; set; }
+        public DbSet<TypeOfTrip> TypeOfTrips { get; set; }
+        public DbSet<TripAgenda> TripAgendas { get; set; }
         public DbSet<CustomTrip> CustomTrips { get; set; }
         public DbSet<TripAttendee> TripAttendees { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
@@ -31,6 +34,8 @@ namespace Infrastructure.Database
             builder.ApplyConfiguration(new TripConfiguration());
             builder.ApplyConfiguration(new CustomTripConfiguration());
             builder.ApplyConfiguration(new TripAttendeeConfiguration());
+            builder.ApplyConfiguration(new TripAgendaConfiguration());
+            builder.ApplyConfiguration(new TypeOfTripConfiguration());
         }
     }
 }

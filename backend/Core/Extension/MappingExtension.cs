@@ -11,7 +11,7 @@ namespace Core.Extension
     {
         public static IServiceCollection AddMapping(this IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(CustomTripMapping).Assembly);
+            services.AddAutoMapper(typeof(TripMapping).Assembly);
             services.AddAutoMapper(typeof(AuthServiceMapping).Assembly);
             services.AddAutoMapper(typeof(UserMapping).Assembly);
             return services;

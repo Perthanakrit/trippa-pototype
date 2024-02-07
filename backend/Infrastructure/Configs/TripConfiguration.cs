@@ -29,6 +29,12 @@ namespace Infrastructure.Configs
             builder.Property(e => e.Destination).IsRequired();
             builder.Property(e => e.HostId).IsRequired();
 
+            // TripAgenda
+            builder
+                .HasMany(a => a.TripAgenda)
+                .WithOne(a => a.Trip)
+                .HasForeignKey(a => a.TripId);
+
             builder
                 .ToTable("Trips");
         }
