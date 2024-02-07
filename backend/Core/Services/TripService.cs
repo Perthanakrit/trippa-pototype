@@ -73,25 +73,23 @@ namespace Core.Services
 
         public async Task<TripServiceResponse> GetTripAsync(Guid tripId)
         {
-            Trip existedTrip = await _repository.GetByIdCache(tripId);
-            bool theTripIsNotExist = existedTrip == null;
-            if (theTripIsNotExist)
+            TripServiceResponse result = await _repository.GetTripAsync(tripId);
+            if (result == null)
             {
                 throw new ArgumentException("The trip is not found");
             }
 
-            return ConvertToResponseModel(existedTrip);
+            return result;
         }
 
         public async Task<TripsServiceResponseWithPaging> GetListOfAllTripsAsync()
         {
-            List<Trip> listOfTrips = await _repository.GetAll();
-            List<TripServiceResponse> listOfTripServiceResponse = listOfTrips.Select(x => ConvertToResponseModel(x)).ToList();
+            List<TripServiceResponse> listOfTrips = await _repository.GetTripsAsync();
 
             return new TripsServiceResponseWithPaging
             {
                 TotalRows = listOfTrips.Count,
-                Trips = listOfTripServiceResponse
+                Trips = listOfTrips
             };
         }
 
@@ -110,6 +108,20 @@ namespace Core.Services
             await _repository.SaveChangesAsync();
 
             return ConvertToResponseModel(existedTrip);
+        }
+
+        public async Task UpdateAttendeeAsync(Guid tripId, Guid userId)
+        {
+            // ExistedTrip
+            Trip trip = await _repository.GetById(tripId);
+
+            // ExistedUser
+
+            // If the user is the host -> Able to cancel
+
+            // If the user is not the host ->
+
+            throw new NotImplementedException();
         }
     }
 }

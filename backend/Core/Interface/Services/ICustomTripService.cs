@@ -12,11 +12,12 @@ namespace Core.Interface.Services
         Task<CustomTripServiceResponse> CreateNewTripAsync(CustomTripServiceInput input);
         Task<CustomTripServiceResponse> UpdateTripAsync(Guid provinceId, CustomTripServiceInput input);
         Task<CustomTripServiceResponse> DeleteTripAsync(Guid provinceId);
-        Task<CustomTripServiceResponse> GetTripAsync(Guid provinceId);
-        Task<List<CustomTrip>> GetListOfAllTripsAsync();
+        Task<CustomTripAndTrip> GetTripAsync(Guid provinceId);
+        Task<List<CustomTripAndTrip>> GetListOfAllTripsAsync();
 
     }
 
+    // DTOs
     public class CustomTripServiceInput
     {
         public string Name { get; set; }
@@ -48,11 +49,17 @@ namespace Core.Interface.Services
 
     }
 
+    public class CustomTripAndTrip
+    {
+        public Guid CustomTripId { get; set; }
+        public TripServiceResponse Trip { get; set; }
+    }
+
     public class CustomTripsServiceResponseWithPaging
     {
         public int TotalRows { get; set; }
         //public int PageNumber { get; set; }
         //public int PageSize { get; set; }
-        public List<TripServiceResponse> Trips { get; set; } = new List<TripServiceResponse>();
+        public List<CustomTripAndTrip> CustomTrips { get; set; } = new List<CustomTripAndTrip>();
     }
 }

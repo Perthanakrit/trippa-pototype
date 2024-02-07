@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Contact : BaseEntity, IBaseEntity
+    public class Contact
     {
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public string Facebook { get; set; }
-        public string Line { get; set; }
-
+        [JsonIgnore]
+        public Guid Id { get; set; }
+        [JsonIgnore]
         public string UserId { get; set; }
         [JsonIgnore]
-        public ApplicationUser ApplicationUser { get; set; }
+        public ApplicationUser User { get; set; }
+        public string Channel { get; set; }
+        public string Name { get; set; }
     }
 }

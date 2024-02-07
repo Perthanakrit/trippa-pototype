@@ -23,10 +23,11 @@ namespace Infrastructure.Configs
 
             builder.Property(e => e.Landmark);
             builder.Property(e => e.Duration);
-            builder.Property(e => e.Price);
-            builder.Property(e => e.Fee);
-            builder.Property(e => e.Origin);
-            builder.Property(e => e.Destination);
+            builder.Property(e => e.Price).IsRequired();
+            builder.Property(e => e.Fee).IsRequired();
+            builder.Property(e => e.Origin).IsRequired();
+            builder.Property(e => e.Destination).IsRequired();
+            builder.Property(e => e.HostId).IsRequired();
 
             builder
                 .ToTable("Trips");

@@ -26,6 +26,12 @@ namespace Infrastructure.Database.Repositories
             return user;
         }
 
+        public async Task<ApplicationUser> FindByEmail(string email)
+        {
+            ApplicationUser user = await _db.ApplicationUsers.FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
+            return user;
+        }
+
         public async Task<IdentityResult> CheckPassword(ApplicationUser entity, string password)
         {
             bool isPasswordValid = await _userManager.CheckPasswordAsync(entity, password);
@@ -40,7 +46,7 @@ namespace Infrastructure.Database.Repositories
         public async Task<IdentityResult> CreateAsync(ApplicationUser entity, string password)
         {
             IdentityResult result = await _userManager.CreateAsync(entity, password);
-            await _db.Contacts.AddAsync(entity.Contact);
+            await _db.Contacts.AddRangeAsync(entity.Contacts);
             return result;
         }
 

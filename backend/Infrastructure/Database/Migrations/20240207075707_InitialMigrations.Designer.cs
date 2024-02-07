@@ -9,18 +9,18 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Infrastructure.Database.Migrations
+namespace Infrastructure.database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231208101011_EditCustomTrip")]
-    partial class EditCustomTrip
+    [Migration("20240207075707_InitialMigrations")]
+    partial class InitialMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.14")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -39,9 +39,6 @@ namespace Infrastructure.Database.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
-
-                    b.Property<Guid>("ContactId")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("DisplayName")
                         .HasColumnType("text");
@@ -107,41 +104,20 @@ namespace Infrastructure.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Channel")
+                        .HasColumnType("text");
 
-                    b.Property<string>("Email")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("Facebook")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Line")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
-                    b.ToTable("Contacts", (string)null);
+                    b.ToTable("Contacts");
                 });
 
             modelBuilder.Entity("Domain.Entities.CustomTrip", b =>
@@ -149,9 +125,6 @@ namespace Infrastructure.Database.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -165,15 +138,9 @@ namespace Infrastructure.Database.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("TripId")
-                        .IsUnique();
+                    b.HasIndex("TripId");
 
                     b.ToTable("CustomTrips", (string)null);
                 });
@@ -184,6 +151,9 @@ namespace Infrastructure.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -192,6 +162,7 @@ namespace Infrastructure.Database.Migrations
                         .HasColumnType("character varying(255)");
 
                     b.Property<string>("Destination")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Duration")
@@ -200,7 +171,14 @@ namespace Infrastructure.Database.Migrations
                     b.Property<float>("Fee")
                         .HasColumnType("real");
 
+                    b.Property<string>("HostId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsCustomTrip")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Landmark")
@@ -212,6 +190,7 @@ namespace Infrastructure.Database.Migrations
                         .HasColumnType("character varying(125)");
 
                     b.Property<string>("Origin")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<float>("Price")
@@ -222,7 +201,33 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.ToTable("Trips", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.TripAttendee", b =>
+                {
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("TripId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("AttendAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("CancelAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsHost")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("ApplicationUserId", "TripId");
+
+                    b.HasIndex("TripId");
+
+                    b.ToTable("TripAttendees", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -359,24 +364,47 @@ namespace Infrastructure.Database.Migrations
 
             modelBuilder.Entity("Domain.Entities.Contact", b =>
                 {
-                    b.HasOne("Domain.Entities.ApplicationUser", "ApplicationUser")
-                        .WithOne("Contact")
-                        .HasForeignKey("Domain.Entities.Contact", "UserId");
+                    b.HasOne("Domain.Entities.ApplicationUser", "User")
+                        .WithMany("Contacts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.Navigation("ApplicationUser");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.CustomTrip", b =>
                 {
-                    b.HasOne("Domain.Entities.ApplicationUser", null)
-                        .WithMany("CustomTrips")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("Domain.Entities.Trip", "Trip")
-                        .WithOne("customTrip")
-                        .HasForeignKey("Domain.Entities.CustomTrip", "TripId")
+                        .WithMany()
+                        .HasForeignKey("TripId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Trip");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Trip", b =>
+                {
+                    b.HasOne("Domain.Entities.ApplicationUser", null)
+                        .WithMany("Trips")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("Domain.Entities.TripAttendee", b =>
+                {
+                    b.HasOne("Domain.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany("AttendeedTrips")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Trip", "Trip")
+                        .WithMany("Attendee")
+                        .HasForeignKey("TripId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Trip");
                 });
@@ -434,14 +462,16 @@ namespace Infrastructure.Database.Migrations
 
             modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
                 {
-                    b.Navigation("Contact");
+                    b.Navigation("AttendeedTrips");
 
-                    b.Navigation("CustomTrips");
+                    b.Navigation("Contacts");
+
+                    b.Navigation("Trips");
                 });
 
             modelBuilder.Entity("Domain.Entities.Trip", b =>
                 {
-                    b.Navigation("customTrip");
+                    b.Navigation("Attendee");
                 });
 #pragma warning restore 612, 618
         }

@@ -18,6 +18,7 @@ namespace Infrastructure.Database
         #region DbSet List
         public DbSet<Trip> Trips { get; set; }
         public DbSet<CustomTrip> CustomTrips { get; set; }
+        public DbSet<TripAttendee> TripAttendees { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         #endregion
@@ -29,7 +30,7 @@ namespace Infrastructure.Database
             builder.ApplyConfiguration(new ApplictionUserConfiguration());
             builder.ApplyConfiguration(new TripConfiguration());
             builder.ApplyConfiguration(new CustomTripConfiguration());
-            builder.ApplyConfiguration(new ContactConfiguration());
+            builder.ApplyConfiguration(new TripAttendeeConfiguration());
         }
     }
 }

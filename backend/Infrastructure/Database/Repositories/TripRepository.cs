@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Core.Interface.Infrastructure.Database;
+using Core.Services;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 
@@ -13,10 +12,12 @@ namespace Infrastructure.Database.Repositories
     public class TripRepository : BaseRepository<Trip>, ITripRepository
     {
         private readonly IDistributedCache _cache;
-        public TripRepository(DatabaseContext context, IDistributedCache cache) : base(context)
+        private readonly IMapper _mapper;
+
+        public TripRepository(DatabaseContext context, IDistributedCache cache, IMapper mapper) : base(context)
         {
             _cache = cache;
-
+            _mapper = mapper;
         }
         // Inherit the methods from the base repository
 
@@ -49,5 +50,22 @@ namespace Infrastructure.Database.Repositories
             return trip;
         }
 
+        public async Task<TripServiceResponse> GetTripAsync(Guid provinceId)
+        {
+            var trip = await base._context.Trips
+                            .Where(x => x.Id == provinceId)
+                            .ProjectTo<TripServiceResponse>(_mapper.ConfigurationProvider)
+                            .FirstOrDefaultAsync();
+            return trip;
+
+        }
+
+        public async Task<List<TripServiceResponse>> GetTripsAsync()
+        {
+            return await base._context.Trips
+                            .ProjectTo<TripServiceResponse>(_mapper.ConfigurationProvider)
+                            .ToListAsync();
+
+        }
     }
 }

@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Core.Interface.Services;
 using Domain.Entities;
 
 namespace Core.Interface.Infrastructure.Database
 {
     public interface ICustomTripRepository : IBaseRepository<CustomTrip>
     {
-        Task<Tuple<Trip, CustomTrip>> GetTripByCustomTripId(Guid customTripId);
+        Task<CustomTripAndTrip> GetTripByCustomTripId(Guid customTripId);
+        Task<List<CustomTripAndTrip>> GetTripsInCustomTrips();
     }
 }

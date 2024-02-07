@@ -1,8 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Core.Interface.Infrastructure.Database;
+using Core.Interface.Services;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,19 +9,32 @@ namespace Infrastructure.Database.Repositories
 {
     public class CustomTripRepository : BaseRepository<CustomTrip>, ICustomTripRepository
     {
-        public CustomTripRepository(DatabaseContext context) : base(context)
+        private readonly IMapper _mapper;
+
+        public CustomTripRepository(DatabaseContext context, IMapper mapper) : base(context)
         {
+            _mapper = mapper;
         }
 
-        public async Task<Tuple<Trip, CustomTrip>> GetTripByCustomTripId(Guid id)
+        public async Task<CustomTripAndTrip> GetTripByCustomTripId(Guid id)
         {
-            CustomTrip customTrip = await base._context.CustomTrips.FirstOrDefaultAsync(c => c.Id == id);
-            Guid tripId = customTrip.TripId;
-            Trip trip = await base._context.Trips.FirstOrDefaultAsync(t => t.Id == tripId);
-            customTrip.Trip = await base._context.Trips.FirstOrDefaultAsync(t => t.Id == tripId); ;
+            var result = await base._context.CustomTrips
+                .Where(x => x.Id == id)
+                .ProjectTo<CustomTripAndTrip>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+
+            return result;
+        }
 
 
-            return new Tuple<Trip, CustomTrip>(trip, customTrip);
+
+        public async Task<List<CustomTripAndTrip>> GetTripsInCustomTrips()
+        {
+            var result = await base._context.CustomTrips
+                .ProjectTo<CustomTripAndTrip>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return result;
         }
     }
 }

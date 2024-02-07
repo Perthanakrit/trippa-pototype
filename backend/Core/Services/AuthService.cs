@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using Core.Interface.Infrastructure.Database;
 using Core.Interface.Services;
-using Core.Mapping;
 using Core.Utility;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -31,7 +26,7 @@ namespace Core.Services
 
         public async Task<LoginServiceOutput> Login(LoginServiceInput input)
         {
-            ApplicationUser user = await _authRespository.FindByUsername(input.UserName);
+            ApplicationUser user = await _authRespository.FindByEmail(input.Email);
             if (user == null)
             {
                 throw new ArgumentException("Username or Password is not correct");
@@ -62,7 +57,7 @@ namespace Core.Services
 
             LoginServiceOutput output = new()
             {
-                Email = user.UserName,
+                Email = user.Email,
                 Token = tokenHandler.WriteToken(token)
             };
 
@@ -81,18 +76,6 @@ namespace Core.Services
                 throw new Exception(existedUserName.Errors.First().Description);
             }
 
-            Contact contact = new()
-            {
-                Id = Guid.NewGuid(),
-                Facebook = input.Contacts.Facebook,
-                Email = input.Contacts.Email,
-                Phone = input.Contacts.Phone,
-                Line = input.Contacts.Line,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
-                IsActive = true
-            };
-
             ApplicationUser newUser = new()
             {
                 UserName = input.UserName,
@@ -101,8 +84,7 @@ namespace Core.Services
                 Bio = input.Bio,
                 Image = input.Image,
                 NormalizedUserName = input.UserName.ToUpper(),
-                ContactId = contact.Id,
-                Contact = contact,
+
             };
             IdentityResult result = await _authRespository.CreateAsync(newUser, input.Password);
             if (result.Succeeded)

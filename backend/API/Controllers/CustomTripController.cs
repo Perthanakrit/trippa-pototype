@@ -39,7 +39,6 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("[action]")]
         public async Task<IActionResult> GetAllCustomTrips()
         {
             try
@@ -54,7 +53,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("[action]/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> GetCustomTrip(Guid id)
         {
             try

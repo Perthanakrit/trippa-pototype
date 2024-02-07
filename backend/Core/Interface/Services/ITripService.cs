@@ -13,6 +13,7 @@ namespace Core.Services
         Task<TripServiceResponse> DeleteTripAsync(Guid provinceId);
         Task<TripServiceResponse> GetTripAsync(Guid provinceId);
         Task<TripsServiceResponseWithPaging> GetListOfAllTripsAsync();
+        Task UpdateAttendeeAsync(Guid tripId, Guid userId);
         //Task<ProvinceServiceResponseWithPaging> GetListOfAllActiveProvincesAsync(int pageNumber, int pageSize);
     }
 
@@ -32,6 +33,8 @@ namespace Core.Services
         public float Fee { get; set; }
         public string Origin { get; set; }
         public string Destination { get; set; }
+        public string Hostname { get; set; }
+        public ICollection<TripAttendeeDto> Attendee { get; set; }
     }
 
     public class TripsServiceResponseWithPaging
@@ -41,4 +44,19 @@ namespace Core.Services
         //public int PageSize { get; set; }
         public List<TripServiceResponse> Trips { get; set; } = new List<TripServiceResponse>();
     }
+
+    public class TripAttendeeDto
+    {
+        public string DisplayName { get; set; }
+        public string Bio { get; set; }
+        public string Image { get; set; }
+        public ICollection<ContactDto> Contacts { get; set; }
+    }
+
+    public class ContactDto
+    {
+        public string Channel { get; set; }
+        public string Value { get; set; }
+    }
+
 }

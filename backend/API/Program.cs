@@ -2,9 +2,11 @@ using System.Text;
 using Core.Extension;
 using Core.Middleware;
 using Core.Utility;
+using Domain.Entities;
 using Infrastructure.Database;
 using Infrastructure.Extension;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -79,11 +81,21 @@ async Task SeedDatabase()
 {
     using var scope = app.Services.CreateScope();
     var dbcontext =
-      scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+        scope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
-    // Run migration scripts
-    await dbcontext.Database.MigrateAsync();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-    // Seed data to the project
-    await Infrastructure.Seed.SeedData(dbcontext);
+    try
+    {
+        // Run migration scripts
+        await dbcontext.Database.MigrateAsync();
+
+        // Seed data to the project
+        await Infrastructure.Seed.SeedData(dbcontext, userManager);
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred during migrating the database.");
+    }
 }

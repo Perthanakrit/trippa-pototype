@@ -13,6 +13,7 @@ namespace Core.Interface.Infrastructure.Database
         Task<IdentityResult> ExistedUserName(string userName);
         Task<IdentityResult> ExistedEmail(string email);
         Task<ApplicationUser> FindByUsername(string userName);
+        Task<ApplicationUser> FindByEmail(string email);
         Task<IdentityResult> CheckPassword(ApplicationUser entity, string password);
         Task<bool> ExistedUserId(string id);
     }

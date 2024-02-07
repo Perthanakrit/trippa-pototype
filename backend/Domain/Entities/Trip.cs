@@ -15,7 +15,8 @@ namespace Domain.Entities
         public float Fee { get; set; }
         public string Origin { get; set; }
         public string Destination { get; set; }
-
-        public CustomTrip customTrip { get; set; }
+        public string HostId { get; set; }
+        public ICollection<TripAttendee> Attendee { get; set; } = new List<TripAttendee>();
+        public bool IsCustomTrip { get; set; }
     }
 }

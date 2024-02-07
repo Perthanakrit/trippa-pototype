@@ -12,9 +12,10 @@ namespace Infrastructure.Configs
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
-            builder.HasOne(a => a.Contact)
-                .WithOne(b => b.ApplicationUser)
-                .HasForeignKey<Contact>(b => b.UserId);
+            builder.HasMany(u => u.Contacts)
+                .WithOne(c => c.User)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

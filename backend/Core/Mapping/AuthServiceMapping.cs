@@ -15,7 +15,7 @@ namespace Core.Mapping
             CreateMap<RegisterServiceInput, ApplicationUser>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.UserName))
-                .ForMember(dest => dest.Contact, opt => opt.MapFrom(src => src.Contacts));
+                .ForMember(dest => dest.Contacts, opt => opt.MapFrom(src => src.Contacts));
         }
     }
 }

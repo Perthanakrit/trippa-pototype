@@ -13,6 +13,7 @@ namespace Core.Extension
         {
             services.AddAutoMapper(typeof(CustomTripMapping).Assembly);
             services.AddAutoMapper(typeof(AuthServiceMapping).Assembly);
+            services.AddAutoMapper(typeof(UserMapping).Assembly);
             return services;
         }
     }

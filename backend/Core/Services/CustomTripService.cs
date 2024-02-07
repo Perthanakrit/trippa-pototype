@@ -39,49 +39,29 @@ namespace Core.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<CustomTrip>> GetListOfAllTripsAsync()
+        public async Task<List<CustomTripAndTrip>> GetListOfAllTripsAsync()
         {
-            var customTrips = _repository.GetAll();
-            return customTrips;
+            return await _repository.GetTripsInCustomTrips(); ;
         }
 
-        public async Task<CustomTripServiceResponse> GetTripAsync(Guid customTripId)
+        public async Task<CustomTripAndTrip> GetTripAsync(Guid customTripId)
         {
-            var mulitVal = await _repository.GetTripByCustomTripId(customTripId);
-            Trip Trip = mulitVal.Item1;
-            CustomTrip customTrip = mulitVal.Item2;
+            var result = await _repository.GetTripByCustomTripId(customTripId);
             //return ConvertToResponseModel(customTrip);
 
-            bool customTripIsNotExist = Trip == null || customTrip == null;
+            bool customTripIsNotExist = result == null;
 
             if (customTripIsNotExist)
             {
                 throw new ArgumentException("The custom trip or trip is not found");
             }
-            customTrip.Trip = Trip;
-            return ConvertToResponseModel(customTrip);
+
+            return result;
         }
 
         public async Task<CustomTripServiceResponse> UpdateTripAsync(Guid customTripId, CustomTripServiceInput input)
         {
-            var mulitVal = await _repository.GetTripByCustomTripId(customTripId); ;
-            CustomTrip customTrip = mulitVal.Item2;
-
-            bool customTripIsNotExist = customTrip == null;
-            if (customTripIsNotExist)
-            {
-                throw new ArgumentException("The custom trip or trip is not found");
-            }
-
-            Trip trip = mulitVal.Item1;
-            _mapper.Map(input, trip);
-            customTrip.Trip = trip;
-            customTrip.Trip.UpdatedAt = DateTime.UtcNow;
-            customTrip.UpdatedAt = DateTime.UtcNow;
-
-            await _repository.SaveChangesAsync();
-
-            return ConvertToResponseModel(customTrip);
+            throw new NotImplementedException();
         }
 
         public async Task<CustomTripServiceResponse> CreateNewTripAsync(CustomTripServiceInput input)
@@ -111,8 +91,7 @@ namespace Core.Services
             {
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
-                Trip = trip,
-                ApplicationUserId = input.UserId,
+                Trip = trip
             };
 
             var result = await _repository.AddAsync(customTrip);
@@ -120,5 +99,7 @@ namespace Core.Services
 
             return ConvertToResponseModel(result);
         }
+
+
     }
 }

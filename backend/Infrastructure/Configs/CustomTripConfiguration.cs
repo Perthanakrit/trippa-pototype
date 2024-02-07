@@ -13,12 +13,9 @@ namespace Infrastructure.Configs
         public void Configure(EntityTypeBuilder<CustomTrip> builder)
         {
             builder.HasKey(a => a.Id); // Primary Key
-
-            builder.HasOne(e => e.Trip)
-                    .WithOne(e => e.customTrip)
-                    .HasForeignKey<CustomTrip>(ct => ct.TripId)
-                    .IsRequired();
-
+            builder
+                .Property(m => m.TripId)
+                .IsRequired();
             builder
                 .ToTable("CustomTrips");
         }

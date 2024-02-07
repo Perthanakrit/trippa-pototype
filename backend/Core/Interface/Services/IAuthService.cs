@@ -14,7 +14,7 @@ namespace Core.Interface.Services
 
     public class LoginServiceInput
     {
-        public string UserName { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
     }
 
@@ -25,15 +25,13 @@ namespace Core.Interface.Services
         public string Password { get; set; }
         public string Bio { get; set; }
         public string Image { get; set; }
-        public ContactInput Contacts { get; set; }
+        public ICollection<ContactInput> Contacts { get; set; }
     }
 
     public class ContactInput
     {
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public string Facebook { get; set; }
-        public string Line { get; set; }
+        public string Channel { get; set; }
+        public string Name { get; set; }
     }
 
     public class RegisterServiceOutput
