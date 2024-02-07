@@ -128,7 +128,7 @@ namespace Core.Services
             ApplicationUser user = await _authRepo.FindByUsername(_userAccessor.GetUsername());
             if (user == null)
             {
-                throw new ArgumentException("The user is not found");
+                throw new ArgumentException($"The user is not found, {JsonConvert.SerializeObject(_userAccessor.GetUsername())}");
             }
 
             string Host = trip.HostId;

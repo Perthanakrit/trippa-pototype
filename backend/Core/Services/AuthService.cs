@@ -45,9 +45,9 @@ namespace Core.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new ("fullName", user.DisplayName.ToString()),
-                    new ("id", user.Id.ToString()),
-                    new (ClaimTypes.Email, user.UserName.ToString()),
+                    new (ClaimTypes.Name, user.UserName),
+                    new (ClaimTypes.NameIdentifier, user.Id),
+                    new (ClaimTypes.Email, user.Email),
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)// we have to pass key and algo to create token,

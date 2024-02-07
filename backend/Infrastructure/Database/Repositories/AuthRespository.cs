@@ -22,7 +22,7 @@ namespace Infrastructure.Database.Repositories
 
         public async Task<ApplicationUser> FindByUsername(string userName)
         {
-            ApplicationUser user = await _db.ApplicationUsers.FirstOrDefaultAsync(u => u.UserName == userName);
+            ApplicationUser user = await _db.ApplicationUsers.FirstOrDefaultAsync(u => u.UserName.ToLower() == userName.ToLower());
             return user;
         }
 
