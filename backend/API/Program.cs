@@ -24,33 +24,11 @@ builder.Services.AddSwaggerGen();
 #region Configure IOption Pattern 
 #endregion
 
-#region JWT Authentication
-JwtSettings jWTSettings = new();
-builder.Configuration.Bind(nameof(jWTSettings), jWTSettings);
-builder.Services.AddSingleton(jWTSettings);
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(u =>
-{
-    // u.RequireHttpsMetadata = false;
-    // u.SaveToken = true;
-    u.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jWTSettings.SecertKey)),
-        ValidateIssuer = false,
-        ValidateAudience = false
-    };
-});
 
-builder.Services.AddAuthorization(opt =>
-{
-    var defaultAuthBuilder = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme);
-    defaultAuthBuilder = defaultAuthBuilder.RequireAuthenticatedUser();
-    opt.DefaultPolicy = defaultAuthBuilder.Build();
-});
-
-#endregion
 
 builder.Services.AddMapping();
+
+builder.Services.AddJwtExtension(builder.Configuration);
 
 #region Configure DI Container - Service Lifetimes - Infrastructure
 builder.Services.AddInfraDependencyInjection(builder.Configuration);
