@@ -82,5 +82,7 @@ namespace Infrastructure.Database.Repositories
 
             return trip;
         }
+
+
     }
 }

@@ -12,6 +12,15 @@ namespace Core.Extension
     {
         public static IServiceCollection AddCoreDependencyInjection(this IServiceCollection services)
         {
+            services.AddCors(opt =>
+            {
+                string[] hostnames = new string[] { "http://localhost:3000", "http://localhost:3001" };
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins(hostnames);
+                });
+            });
+
             services.AddScoped<ITripService, TripService>();
             services.AddScoped<ICustomTripService, CustomTripService>();
             services.AddScoped<IAuthService, AuthService>();

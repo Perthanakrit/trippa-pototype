@@ -8,7 +8,7 @@ namespace Core.Services
 {
     public interface ITripService
     {
-        Task<TripServiceResponse> CreateNewTripAsync(TripServiceInput input);
+        Task CreateNewTripAsync(TripServiceInput input);
         Task<TripServiceResponse> UpdateTripAsync(Guid provinceId, TripServiceInput input);
         Task<TripServiceResponse> DeleteTripAsync(Guid provinceId);
         Task<TripServiceResponse> GetTripAsync(Guid provinceId);
@@ -21,6 +21,14 @@ namespace Core.Services
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Landmark { get; set; }
+        public string Duration { get; set; }
+        public float Price { get; set; }
+        public float Fee { get; set; }
+        public string Origin { get; set; }
+        public string Destination { get; set; }
+        public List<TripAgendaDto> TripAgendas { get; set; }
+        public Guid TypeOfTripId { get; set; }
     }
 
     public class TripServiceResponse : BaseEntity
@@ -69,7 +77,7 @@ namespace Core.Services
     public class TripAgendaDto
     {
         public string Description { get; set; }
-        public DateTime Date { get; set; }
-        public TimeSpan Time { get; set; }
+        public DateOnly Date { get; set; }
+        public string Time { get; set; }
     }
 }

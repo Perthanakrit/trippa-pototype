@@ -27,13 +27,18 @@ namespace API.Controllers
         {
             try
             {
-                var result = await _tripService.CreateNewTripAsync(input);
-                return Ok(result);
+                await _tripService.CreateNewTripAsync(input);
+                return Created("CreateTrip", new { message = "Success" });
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+
         }
 
         [HttpGet]

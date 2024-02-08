@@ -9,7 +9,7 @@ namespace Core.Interface.Services
 {
     public interface ICustomTripService
     {
-        Task<CustomTripServiceResponse> CreateNewTripAsync(CustomTripServiceInput input);
+        Task CreateNewTripAsync(CustomTripServiceInput input);
         Task<CustomTripServiceResponse> UpdateTripAsync(Guid provinceId, CustomTripServiceInput input);
         Task<CustomTripServiceResponse> DeleteTripAsync(Guid provinceId);
         Task<CustomTripAndTrip> GetTripAsync(Guid provinceId);
@@ -22,12 +22,14 @@ namespace Core.Interface.Services
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Landmark { get; set; }
         public string Duration { get; set; }
         public float Price { get; set; }
-        public string Landmark { get; set; }
+        public float Fee { get; set; }
         public string Origin { get; set; }
         public string Destination { get; set; }
-        public string UserId { get; set; }
+        public List<TripAgendaDto> TripAgendas { get; set; }
+        public Guid TypeOfTripId { get; set; }
     }
 
     public class CustomTripServiceResponse : BaseEntity

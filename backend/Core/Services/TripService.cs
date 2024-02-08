@@ -42,24 +42,60 @@ namespace Core.Services
             };
         }
 
-        public async Task<TripServiceResponse> CreateNewTripAsync(TripServiceInput input)
+        public async Task CreateNewTripAsync(TripServiceInput input)
         {
+
             bool isTheNameAlreadyTaken = await _repository.Exists(x => x.Name == input.Name); // TODO: Check if the name is already taken
             if (isTheNameAlreadyTaken)
             {
                 throw new ArgumentException("The name is already taken");
             }
 
-            Trip entity = new()
+            List<TripAgenda> tripAgendas = new();
+
+            for (int i = 0; i < input.TripAgendas.Count; i++)
+            {
+                // string[] date = input.TripAgendas[i].Date;
+                string[] time = input.TripAgendas[i].Time.Split(":");
+                TripAgenda tripAgenda = new()
+                {
+                    Id = i + 1,
+                    Description = input.TripAgendas[i].Description,
+                    Date = input.TripAgendas[i].Date,
+                    Time = new TimeOnly(int.Parse(time[0]), int.Parse(time[1]))
+                };
+                tripAgendas.Add(tripAgenda);
+            }
+
+            Trip trip = new()
             {
                 Name = input.Name,
-                Description = input.Description
+                Description = input.Description,
+                Landmark = input.Landmark,
+                Duration = input.Duration,
+                Price = input.Price,
+                Fee = input.Fee,
+                Origin = input.Origin,
+                Destination = input.Destination,
+                TypeOfTripId = input.TypeOfTripId,
+                TripAgenda = tripAgendas,
+                Attendee = new List<TripAttendee>()
+                {
+                    new ()
+                    {
+                        ApplicationUserId = _userAccessor.GetUserId(),
+                        IsHost = true,
+                    }
+                },
+                HostId = _userAccessor.GetUserId(),
+                IsCustomTrip = false,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                IsActive = true
             };
 
-            Trip insertedEntity = await _repository.AddAsync(entity); // TODO: Check if the entity is inserted successfully
+            Trip insertedEntity = await _repository.AddAsync(trip); // TODO: Check if the entity is inserted successfully
             await _repository.SaveChangesAsync();
-
-            return ConvertToResponseModel(insertedEntity);
         }
 
         public async Task<TripServiceResponse> DeleteTripAsync(Guid tripId)

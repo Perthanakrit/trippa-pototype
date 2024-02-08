@@ -16,6 +16,12 @@ namespace Core.security
         {
             _httpContextAccessor = httpContextAccessor;
         }
+
+        public string GetUserId()
+        {
+            return _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        }
+
         public string GetUsername()
         {
             return _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);

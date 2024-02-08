@@ -138,23 +138,6 @@ namespace Infrastructure
                         },
                         TypeOfTripId = typeOfTrips[0].Id,
                         TypeOfTrip = typeOfTrips[0],
-                        TripAgenda = new List<TripAgenda>
-                        {
-                            new TripAgenda
-                            {
-                                Id = 1,
-                                Date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day ),
-                                Time = DateTime.UtcNow.TimeOfDay,
-                                Description = "Start Trip"
-                            },
-                            new TripAgenda
-                            {
-                                Id = 2,
-                                Date = DateTime.UtcNow,
-                                Time = DateTime.UtcNow.TimeOfDay,
-                                Description = "End Trip"
-                            }
-                        },
                         IsCustomTrip = false,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
@@ -183,23 +166,6 @@ namespace Infrastructure
                         },
                         TypeOfTripId = typeOfTrips[2].Id,
                         TypeOfTrip = typeOfTrips[2],
-                        TripAgenda = new List<TripAgenda>
-                        {
-                            new TripAgenda
-                            {
-                                Id = 1,
-                                Date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day ),
-                                Time = DateTime.UtcNow.TimeOfDay,
-                                Description = "Start Trip"
-                            },
-                            new TripAgenda
-                            {
-                                Id = 2,
-                                Date = DateTime.UtcNow,
-                                Time = DateTime.UtcNow.TimeOfDay,
-                                Description = "End Trip"
-                            }
-                        },
                         IsCustomTrip = false,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
@@ -251,15 +217,15 @@ namespace Infrastructure
                                 new TripAgenda
                                 {
                                     Id = 1,
-                                    Date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day ),
-                                    Time = DateTime.UtcNow.TimeOfDay,
+                                    Date = new DateOnly(2024, 5, 12),
+                                    Time = new TimeOnly(8, 30),
                                     Description = "Start Trip"
                                 },
                                 new TripAgenda
                                 {
                                     Id = 2,
-                                    Date = DateTime.UtcNow,
-                                    Time = DateTime.UtcNow.TimeOfDay,
+                                    Date = new DateOnly(2024, 5, 15),
+                                    Time = new TimeOnly(17, 30),
                                     Description = "End Trip"
                                 }
                             },
@@ -306,18 +272,18 @@ namespace Infrastructure
                             TypeOfTrip = typeOfTrips[0],
                             TripAgenda = new List<TripAgenda>
                             {
-                                new TripAgenda
+                                    new TripAgenda
                                 {
                                     Id = 1,
-                                    Date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day ),
-                                    Time = DateTime.UtcNow.TimeOfDay,
+                                    Date = new DateOnly(2024, 5, 12),
+                                    Time = new TimeOnly(8, 30),
                                     Description = "Start Trip"
                                 },
                                 new TripAgenda
                                 {
                                     Id = 2,
-                                    Date = DateTime.UtcNow,
-                                    Time = DateTime.UtcNow.TimeOfDay,
+                                    Date = new DateOnly(2024, 5, 15),
+                                    Time = new TimeOnly(17, 30),
                                     Description = "End Trip"
                                 }
                             },

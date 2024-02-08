@@ -12,9 +12,9 @@ namespace Domain.Entities
         public Guid TripId { get; set; } // Foreign key
         public Trip Trip { get; set; } // Navigation property
         [Required]
-        public DateTime Date { get; set; }
+        public DateOnly Date { get; set; }
         [Required]
-        public TimeSpan Time { get; set; }
+        public TimeOnly Time { get; set; }
         [Required]
         [MaxLength(150)]
         public string Description { get; set; }

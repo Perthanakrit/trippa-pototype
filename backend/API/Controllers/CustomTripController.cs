@@ -22,8 +22,8 @@ namespace API.Controllers
         {
             try
             {
-                var result = await _customTripService.CreateNewTripAsync(input);
-                return Ok(new { result, message = "Create successfully" });
+                await _customTripService.CreateNewTripAsync(input);
+                return Created("api/CustomTrip", new { message = "Success" });
             }
             catch (ArgumentException ex)
             {

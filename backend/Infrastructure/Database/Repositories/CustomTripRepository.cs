@@ -26,8 +26,6 @@ namespace Infrastructure.Database.Repositories
             return result;
         }
 
-
-
         public async Task<List<CustomTripAndTrip>> GetTripsInCustomTrips()
         {
             var result = await base._context.CustomTrips

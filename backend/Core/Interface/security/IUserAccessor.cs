@@ -8,5 +8,6 @@ namespace Core.Interface.security
     public interface IUserAccessor
     {
         string GetUsername();
+        string GetUserId();
     }
 }
