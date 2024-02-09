@@ -32,9 +32,9 @@ interface TripAttendee {
     contacts: Contact[];
 }
 
-interface Contact {
-    type: string;
-    name: string;
+export interface Contact {
+    channel: string;
+    value: string;
 }
 
 interface TripAgenda {

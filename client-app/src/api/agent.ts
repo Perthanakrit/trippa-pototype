@@ -58,7 +58,7 @@ const Trips = {
 
 const CustomTrips = {
     list: () => request.get<CustomTrip[]>('/CustomTrip'),
-    details: (id: string) => request.get(`/customTrips/${id}`),
+    details: (id: string) => request.get<CustomTrip>(`/customTrip/${id}`),
     create: (customTrip: any) => request.post('/customTrips', customTrip),
     update: (customTrip: any) => request.put(`/customTrips/${customTrip.id}`, customTrip),
     delete: (id: string) => request.del(`/customTrips/${id}`)

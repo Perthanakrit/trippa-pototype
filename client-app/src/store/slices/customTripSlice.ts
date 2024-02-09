@@ -20,7 +20,7 @@ const orderSlice = createSlice({
     initialState: initialState,
     reducers:{},
     extraReducers: (builder) => {
-        setCustomTrips(builder, loadCustomTrips);
+        setCustomTrips(builder, loadCustomTrips, loadCustomTrip);
     }
 });
 
@@ -34,23 +34,44 @@ const loadCustomTrips = createAsyncThunk<CustomTrip[], void>('customTrip/loadCus
         return [];
     }
 });
+
+const loadCustomTrip = createAsyncThunk<CustomTrip | null, string>('customTrip/loadCustomTrip', async (id:string) => {
+    try {
+        const customTrip:CustomTrip = await agent.CustomTrips.details(id);
+        return customTrip;
+    }
+    catch (error) {
+        console.log(error);
+        return null;
+    }
+});
+
 // AsyncThunk<CustomTrip[] | undefined, void, Async>
-const setCustomTrips = (builder: ActionReducerMapBuilder<CustomTripStates>, loadAction:any) => {
-    builder.addCase(loadAction.fulfilled, (state, action) => {
+const setCustomTrips = (builder: ActionReducerMapBuilder<CustomTripStates>, loadTrips:any, loadTrip:any) => {
+    builder.addCase(loadTrips.fulfilled, (state, action) => {
         state.customTrips = action.payload;
         state.loading = false;
     });
-
-    builder.addCase(loadAction.pending, (state) => {
+    builder.addCase(loadTrips.pending, (state) => {
         state.loading = true;
     });
-
-    builder.addCase(loadAction.rejected, (state) => {
+    builder.addCase(loadTrips.rejected, (state) => {
         state.customTrips = [];
         state.loading = false;
     });
+
+    builder.addCase(loadTrip.fulfilled, (state, action) => {
+        state.customTrip = action.payload;
+        state.loading = false;
+    }).addCase(loadTrip.pending, (state) => {
+        state.loading = true;
+    }).addCase(loadTrip.rejected, (state) => {
+        state.customTrip = null;
+        state.loading = false;
+    });
+
 }
 
-export { loadCustomTrips };
+export { loadCustomTrips, loadCustomTrip };
 export const customTripSelector = (state:RootState) => state.customTripSlice;
 export default orderSlice.reducer;
