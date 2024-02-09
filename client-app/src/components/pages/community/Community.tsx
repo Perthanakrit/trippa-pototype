@@ -2,13 +2,17 @@ import { useEffect, useState } from "react";
 import Layout from "../../layout/Layout";
 import CommunityList from "../../feature/community/CommunityList";
 import posts from "../../../data/community";
+import { loadCustomTrips } from "../../../store/slices/customTripSlice";
+import { useAppDispatch } from "../../../store/Store";
 
 //RiCommunityFill
 
 export default function Community() {
   const [getPosts, setPosts] = useState<any[]>([]);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     setPosts(posts);
+    dispatch(loadCustomTrips());
   }, []);
 
   return (

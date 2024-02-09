@@ -10,6 +10,8 @@ import Favmu from "./components/pages/muteuh/Favmu.tsx";
 import TripInfo from "./components/feature/tripdetail/TripInfo.tsx";
 import Community from "./components/pages/community/Community.tsx";
 import PostDetail from "./components/feature/postdetail/PostDetail.tsx";
+import { Provider } from "react-redux";
+import store from "./store/Store.ts";
 
 const router = createBrowserRouter([
   {
@@ -62,6 +64,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );

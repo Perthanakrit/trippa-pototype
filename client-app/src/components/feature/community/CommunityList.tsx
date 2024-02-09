@@ -1,4 +1,8 @@
+import { useSelector } from "react-redux";
 import PostItem from "./PostItem";
+import { customTripSelector } from "../../../store/slices/customTripSlice";
+import { CustomTrip } from "../../../types/tirp";
+import { BeatLoader } from "react-spinners";
 
 type Props = {
   posts: Array<any>;
@@ -14,30 +18,19 @@ type Props = {
 */
 
 export default function CommunityList({ posts }: Props) {
-  return (
+  const { customTrips, loading } = useSelector(customTripSelector);
+
+  return customTrips.length > 0 ? (
     <div className=" md:grid md:grid-cols-3 gap-4 mt-4">
-      {/* <div>
-        <div>
-          <img src="" alt="profile" />
-          <p>Name</p>
-        </div>
-        <div>
-          <p>ไปเกาะล้าน</p>
-          <p>2-100</p>
-          <p>จำนวน 2 วัน 1 คืน</p>
-        </div>
-        <div>
-          <p>12/8/23</p>
-          <p>12.00</p>
-          <p>สถานีกรุงเทพ</p>
-        </div>
-        <h4>อายุ 16-20</h4>
-      </div>
-      <div>
-      </div>   */}
-      {posts.map((post: any) => (
-        <PostItem key={post.id} post={post} />
+      {customTrips.map((post: CustomTrip, idx: number) => (
+        <PostItem key={idx} post={post} />
       ))}
+    </div>
+  ) : (
+    <div className="w-full">
+      <div className=" w-fit mx-auto">
+        <BeatLoader color="#FF8000" size="20" margin={5} />
+      </div>
     </div>
   );
 }
