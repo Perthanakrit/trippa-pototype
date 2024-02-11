@@ -86,5 +86,24 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteCustomTrip(Guid id)
+        {
+            try
+            {
+                await _customTripService.DeleteTripAsync(id);
+                return Ok(new { message = "Success" });
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

@@ -34,5 +34,15 @@ namespace Infrastructure.Database.Repositories
 
             return result;
         }
+
+        public async Task DeleteIncludeTripAsync(Guid id)
+        {
+            var trip = await base._context.CustomTrips
+                .Include(x => x.Trip).FirstOrDefaultAsync(x => x.Id == id);
+
+            base._context.CustomTrips.Remove(trip);
+            base._context.Trips.Remove(trip.Trip);
+            await base._context.SaveChangesAsync();
+        }
     }
 }

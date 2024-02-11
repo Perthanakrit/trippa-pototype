@@ -33,16 +33,49 @@ namespace Core.Services
             };
         }
 
-        public Task<CustomTripServiceResponse> DeleteTripAsync(Guid provinceId)
+        public async Task DeleteTripAsync(Guid id)
         {
-            throw new NotImplementedException();
+            CustomTrip customTrip = await _repository.GetById(id);
+            if (customTrip == null)
+            {
+                throw new ArgumentException("The custom trip is not found");
+            }
+            await _repository.DeleteIncludeTripAsync(id);
         }
 
+        /*
+            return {
+                destitaion
+                maxAttendee
+                duration
+                startDate
+                endDate
+                maxAttendee
+                attendees (length)
+                Host {
+                    displayName
+                    image
+                }
+            }
+        */
         public async Task<List<CustomTripAndTrip>> GetListOfAllTripsAsync()
         {
             return await _repository.GetTripsInCustomTrips(); ;
         }
 
+        /*
+            return {
+                destitaion
+                maxAttendee
+                duration
+                startDate
+                endDate
+                Host {
+                    displayName
+                    image
+                    contants
+                }        
+        */
         public async Task<CustomTripAndTrip> GetTripAsync(Guid customTripId)
         {
             var result = await _repository.GetTripByCustomTripId(customTripId);
@@ -108,6 +141,12 @@ namespace Core.Services
                 Fee = input.Fee,
                 Origin = input.Origin,
                 Destination = input.Destination,
+                MaxAttendees = input.MaxAttendee,
+                Photos = input.Photos.Select(x => new TripPhoto
+                {
+                    Id = Guid.NewGuid(),
+                    Url = x.Url,
+                }).ToList(),
                 TypeOfTripId = input.TypeOfTripId,
                 TripAgenda = tripAgendas,
                 Attendee = new List<TripAttendee>()
@@ -128,8 +167,6 @@ namespace Core.Services
             CustomTrip customTrip = new()
             {
                 Trip = trip,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
             };
 
             var result = await _repository.AddAsync(customTrip);

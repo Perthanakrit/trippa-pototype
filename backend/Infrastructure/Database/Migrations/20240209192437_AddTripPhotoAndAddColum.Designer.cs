@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240209192437_AddTripPhotoAndAddColum")]
+    partial class AddTripPhotoAndAddColum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,7 +117,7 @@ namespace Infrastructure.database.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Contacts", (string)null);
+                    b.ToTable("Contacts");
                 });
 
             modelBuilder.Entity("Domain.Entities.CustomTrip", b =>
@@ -271,7 +274,7 @@ namespace Infrastructure.database.Migrations
 
                     b.HasIndex("TripId");
 
-                    b.ToTable("TripPhotos", (string)null);
+                    b.ToTable("TripPhotos");
                 });
 
             modelBuilder.Entity("Domain.Entities.TypeOfTrip", b =>

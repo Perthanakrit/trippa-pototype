@@ -35,11 +35,17 @@ namespace Infrastructure.Configs
                 .WithOne(a => a.Trip)
                 .HasForeignKey(a => a.TripId);
 
-            // TripAttendee
+            // TripAttendee : 
             builder
                 .HasMany(a => a.Attendee)
                 .WithOne(a => a.Trip)
                 .HasForeignKey(a => a.TripId);
+
+            // Photo : One to Many
+            builder
+                .HasMany(a => a.Photos)
+                .WithOne(p => p.Trip)
+                .HasForeignKey(p => p.TripId);
 
             builder
                 .ToTable("Trips");

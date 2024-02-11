@@ -7,5 +7,6 @@ namespace Core.Interface.Infrastructure.Database
     {
         Task<CustomTripAndTrip> GetTripByCustomTripId(Guid customTripId);
         Task<List<CustomTripAndTrip>> GetTripsInCustomTrips();
+        Task DeleteIncludeTripAsync(Guid id);
     }
 }

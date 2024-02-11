@@ -16,8 +16,16 @@ namespace Infrastructure.Configs
             builder
                 .Property(m => m.TripId)
                 .IsRequired();
+
+            builder
+                .HasOne(m => m.Trip)
+                .WithOne()
+                .HasForeignKey<CustomTrip>(m => m.TripId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder
                 .ToTable("CustomTrips");
+
         }
     }
 }

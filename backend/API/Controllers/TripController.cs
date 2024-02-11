@@ -95,8 +95,8 @@ namespace API.Controllers
             }
         }
 
-        [HttpDelete]
-        [Route("[action]/{id}")]
+        [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteTrip(Guid id)
         {
             try

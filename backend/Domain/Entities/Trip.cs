@@ -15,12 +15,13 @@ namespace Domain.Entities
         public float Fee { get; set; }
         public string Origin { get; set; }
         public string Destination { get; set; }
+        public int MaxAttendees { get; set; }
+        public Guid TypeOfTripId { get; set; } // Foreign key
         public string HostId { get; set; }
         public bool IsCustomTrip { get; set; }
-
         #region Relationships
-        public Guid TypeOfTripId { get; set; } // Foreign key
         public TypeOfTrip TypeOfTrip { get; set; } // Navigation property
+        public ICollection<TripPhoto> Photos { get; set; } = new List<TripPhoto>();
         public ICollection<TripAgenda> TripAgenda { get; set; } = new List<TripAgenda>(); // Navigation property
         public ICollection<TripAttendee> Attendee { get; set; } = new List<TripAttendee>(); // Navigation property
         #endregion

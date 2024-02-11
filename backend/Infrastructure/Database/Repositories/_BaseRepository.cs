@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Core.Interface.Infrastructure.Database;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;

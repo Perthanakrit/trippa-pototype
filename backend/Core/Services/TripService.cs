@@ -77,18 +77,24 @@ namespace Core.Services
                 Fee = input.Fee,
                 Origin = input.Origin,
                 Destination = input.Destination,
+                MaxAttendees = input.MaxAttendee,
                 TypeOfTripId = input.TypeOfTripId,
                 TripAgenda = tripAgendas,
                 Attendee = new List<TripAttendee>()
                 {
-                    new ()
+                    new TripAttendee
                     {
                         ApplicationUserId = _userAccessor.GetUserId(),
                         IsHost = true,
                     }
                 },
+                Photos = input.Photos.Select(x => new TripPhoto
+                {
+                    Id = Guid.NewGuid(),
+                    Url = x.Url,
+                }).ToList(),
                 HostId = _userAccessor.GetUserId(),
-                IsCustomTrip = false,
+                IsCustomTrip = true,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
                 IsActive = true
