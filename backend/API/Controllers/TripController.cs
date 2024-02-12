@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Services;
+using Core.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
@@ -23,6 +24,7 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [Authorize(Roles = "GeneralUser")]
         public async Task<IActionResult> CreateTrip(TripServiceInput input)
         {
             try
@@ -43,6 +45,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("[action]/{id}")]
+        [Authorize(Roles = SD.TourUser)]
         public async Task<IActionResult> GetTrip(Guid id)
         {
             try

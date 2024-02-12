@@ -8,6 +8,7 @@ using Core.Utility;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace Core.Services
 {
@@ -41,6 +42,13 @@ namespace Core.Services
             JwtSecurityTokenHandler tokenHandler = new();
             byte[] key = Encoding.ASCII.GetBytes(_jwtSettings.SecertKey);
 
+            var role = await _authRespository.GetRolesUser(user);
+
+            if (string.IsNullOrEmpty(role.FirstOrDefault()))
+            {
+                throw new ArgumentException($"User role is {JsonConvert.SerializeObject(user)}");
+            }
+
             SecurityTokenDescriptor tokenDescriptor = new()
             {
                 Subject = new ClaimsIdentity(new Claim[]
@@ -48,6 +56,7 @@ namespace Core.Services
                     new (ClaimTypes.Name, user.UserName),
                     new (ClaimTypes.NameIdentifier, user.Id),
                     new (ClaimTypes.Email, user.Email),
+                    new (ClaimTypes.Role, role.FirstOrDefault())
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)// we have to pass key and algo to create token,
@@ -70,25 +79,41 @@ namespace Core.Services
 
         public async Task<RegisterServiceOutput> Register(RegisterServiceInput input)
         {
-            IdentityResult existedUserName = await _authRespository.ExistedUserName(input.UserName);
+            IdentityResult existedUserName = await _authRespository.ExistedEmail(input.Email);
             if (existedUserName.Errors.Any())
             {
                 throw new Exception(existedUserName.Errors.First().Description);
             }
 
+            List<Contact> contacts = input.Contacts.Select(c => new Contact
+            {
+                Channel = c.Channel,
+                Name = c.Name
+            }).ToList();
+
             ApplicationUser newUser = new()
             {
                 UserName = input.UserName,
-                Email = input.UserName,
+                Email = input.Email,
                 DisplayName = input.DisplayName,
                 Bio = input.Bio,
                 Image = input.Image,
                 NormalizedUserName = input.UserName.ToUpper(),
-
+                Contacts = new List<Contact>(),
             };
             IdentityResult result = await _authRespository.CreateAsync(newUser, input.Password);
+
             if (result.Succeeded)
             {
+                //throw new Exception($"{JsonConvert.SerializeObject(newUser)}");
+
+                IdentityResult res = await _authRespository.AddRoleToUser(newUser, SD.GeneralUser);
+
+                if (!res.Succeeded || _authRespository.AddUserContact(newUser, contacts).Result < 1)
+                {
+                    throw new Exception("User role or contact is not added");
+                }
+
                 return new RegisterServiceOutput
                 {
                     data = input,

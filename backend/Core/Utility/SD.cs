@@ -9,5 +9,8 @@ namespace Core.Utility
     {
         public const string ApiKeyHeaderName = "X-API-Key";
         public const string ApiKeyName = "ApiKey";
+
+        public const string GeneralUser = "GenralUser";
+        public const string TourUser = "TourUser";
     }
 }

@@ -47,9 +47,9 @@ namespace Infrastructure.Database.Repositories
         {
             IdentityResult result = await _userManager.CreateAsync(entity, password);
             await _db.Contacts.AddRangeAsync(entity.Contacts);
+            //await _db.SaveChangesAsync();
             return result;
         }
-
         public async Task<IdentityResult> ExistedEmail(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -78,6 +78,26 @@ namespace Infrastructure.Database.Repositories
                 return true;
             }
             return false;
+        }
+
+        public async Task<string> GetGeneralUserRole()
+        {
+            var res = await _db.Roles.FirstOrDefaultAsync(u => u.Name == "GeneralUser");
+            return res.Name;
+        }
+
+        public async Task<IList<string>> GetRolesUser(ApplicationUser user) => await _userManager.GetRolesAsync(user);
+
+        public async Task<IdentityResult> AddRoleToUser(ApplicationUser user, string role)
+        {
+            return await _userManager.AddToRoleAsync(user, role);
+        }
+
+        public async Task<int> AddUserContact(ApplicationUser user, List<Contact> contacts)
+        {
+            user.Contacts = contacts;
+            _db.ApplicationUsers.Update(user);
+            return await _db.SaveChangesAsync();
         }
     }
 }

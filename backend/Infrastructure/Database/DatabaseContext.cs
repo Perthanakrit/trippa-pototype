@@ -29,7 +29,6 @@ namespace Infrastructure.Database
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new ApplictionUserConfiguration());
             builder.ApplyConfiguration(new TripConfiguration());

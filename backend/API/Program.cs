@@ -16,15 +16,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 #region Configure IOption Pattern 
 #endregion
-
-
 
 builder.Services.AddMapping();
 
@@ -70,6 +70,7 @@ async Task SeedDatabase()
         scope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
     try
     {
@@ -77,7 +78,7 @@ async Task SeedDatabase()
         await dbcontext.Database.MigrateAsync();
 
         // Seed data to the project
-        await Infrastructure.Seed.SeedData(dbcontext, userManager);
+        await Infrastructure.Seed.SeedData(dbcontext, userManager, roleManager);
     }
     catch (Exception ex)
     {

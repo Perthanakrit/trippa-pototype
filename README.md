@@ -2,9 +2,7 @@
 
 # Valiadtion
 
-- [] Add **Tag** to Trip
-- [] Add **Agenda** to Trip
-- [] Improve create Tirp and CustomTrip
-- [] Update Entity
+- [] Role Based Access
+- [] Add attendee and Expect them to join
 - [] Send Email to User
 - [] Payment

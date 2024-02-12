@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Utility;
 using Domain.Entities;
 using Infrastructure.Database;
 using Microsoft.AspNetCore.Identity;
@@ -11,7 +12,7 @@ namespace Infrastructure
 {
     public class Seed
     {
-        public static async Task SeedData(DatabaseContext context, UserManager<ApplicationUser> userManager)
+        public static async Task SeedData(DatabaseContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             List<ApplicationUser> users = null;
             List<TypeOfTrip> typeOfTrips = new List<TypeOfTrip>()
@@ -32,6 +33,12 @@ namespace Infrastructure
                     Name = "สายกิน"
                 },
             };
+
+            if (!await roleManager.RoleExistsAsync(SD.GeneralUser))
+            {
+                await roleManager.CreateAsync(new IdentityRole(SD.GeneralUser));
+                await roleManager.CreateAsync(new IdentityRole(SD.TourUser));
+            }
 
             if (!await context.Users.AnyAsync())
             {

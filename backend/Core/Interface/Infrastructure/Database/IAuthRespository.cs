@@ -16,5 +16,9 @@ namespace Core.Interface.Infrastructure.Database
         Task<ApplicationUser> FindByEmail(string email);
         Task<IdentityResult> CheckPassword(ApplicationUser entity, string password);
         Task<bool> ExistedUserId(string id);
+        Task<string> GetGeneralUserRole();
+        Task<IList<string>> GetRolesUser(ApplicationUser user);
+        Task<IdentityResult> AddRoleToUser(ApplicationUser user, string role);
+        Task<int> AddUserContact(ApplicationUser user, List<Contact> contacts);
     }
 }
