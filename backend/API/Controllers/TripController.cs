@@ -24,7 +24,7 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        [Authorize(Roles = "GeneralUser")]
+        [Authorize(Roles = SD.TourUser)]
         public async Task<IActionResult> CreateTrip(TripServiceInput input)
         {
             try
@@ -45,7 +45,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("[action]/{id}")]
-        [Authorize(Roles = SD.TourUser)]
+        [Authorize]
         public async Task<IActionResult> GetTrip(Guid id)
         {
             try
@@ -81,6 +81,7 @@ namespace API.Controllers
 
         [HttpPut]
         [Route("[action]/{id}")]
+        [Authorize(Roles = SD.TourUser)]
         public async Task<IActionResult> UpdateTrip(Guid id, TripServiceInput input)
         {
             try
@@ -99,7 +100,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = SD.TourUser)]
         public async Task<IActionResult> DeleteTrip(Guid id)
         {
             try
@@ -118,7 +119,6 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         [Route("[action]/{tripId}")]
         public async Task<IActionResult> UpdateAttendee(Guid tripId)
         {

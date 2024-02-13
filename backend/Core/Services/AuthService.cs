@@ -67,7 +67,9 @@ namespace Core.Services
             LoginServiceOutput output = new()
             {
                 Email = user.Email,
-                Token = tokenHandler.WriteToken(token)
+                Token = tokenHandler.WriteToken(token),
+                DisplayName = user.DisplayName,
+                Image = user.Image
             };
 
             if (string.IsNullOrEmpty(output.Email) || string.IsNullOrEmpty(output.Token))
