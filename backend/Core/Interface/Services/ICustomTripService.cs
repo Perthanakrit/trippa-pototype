@@ -14,7 +14,6 @@ namespace Core.Interface.Services
         Task DeleteTripAsync(Guid provinceId);
         Task<CustomTripAndTrip> GetTripAsync(Guid provinceId);
         Task<List<CustomTripAndTrip>> GetListOfAllTripsAsync();
-
     }
 
     // DTOs

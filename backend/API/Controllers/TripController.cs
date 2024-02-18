@@ -136,5 +136,43 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("[action]/{tripId}")]
+        public async Task<IActionResult> AcceptAttendee(Guid tripId, [FromQuery] string mail)
+        {
+            try
+            {
+                await _tripService.AcceptAttendeeAsync(tripId, mail);
+                return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("[action]/{tripId}")]
+        public async Task<IActionResult> RejectAttendee(Guid tripId, [FromQuery] string mail)
+        {
+            try
+            {
+                await _tripService.RejectAttendeeAsync(tripId, mail);
+                return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

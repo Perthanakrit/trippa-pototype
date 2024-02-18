@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Core.Interface.Infrastructure.Database;
 using Core.Interface.security;
+using Core.Interface.Services;
 using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 
@@ -15,12 +17,14 @@ namespace Core.Services
         private readonly ITripRepository _repository;
         private readonly IAuthRespository _authRepo;
         private readonly IUserAccessor _userAccessor;
+        private readonly IMailService _mail;
 
-        public TripService(ITripRepository repository, IAuthRespository authRepo, IUserAccessor userAccessor) // Inject the repository
+        public TripService(ITripRepository repository, IAuthRespository auth, IUserAccessor userAccessor, IMailService mail) // Inject the repository
         {
             _repository = repository; // Assign the repository to the private field
-            _authRepo = authRepo;
-            _userAccessor = userAccessor;
+            _userAccessor = userAccessor; ;
+            _mail = mail;
+            _authRepo = auth;
         }
 
         private TripServiceResponse ConvertToResponseModel(Trip entity)
@@ -197,6 +201,63 @@ namespace Core.Services
             }
 
             await _repository.SaveChangesAsync();
+        }
+
+        public async Task AcceptAttendeeAsync(Guid tripId, string userId)
+        {
+            // Accept the attendee -> IsAccepted = true
+            Trip trip = await _repository.GetOneTrip(tripId);
+            if (trip == null || trip.HostId != _userAccessor.GetUserId())
+            {
+                throw new ArgumentException("The trip is not found");
+            }
+
+            TripAttendee attendee = trip.Attendee.FirstOrDefault(x => x.ApplicationUser.Email == userId);
+
+            if (attendee == null)
+            {
+                throw new ArgumentException("The attendee is not found");
+            }
+
+            attendee.IsAccepted = true;
+
+            await _repository.SaveChangesAsync();
+
+            await _mail.SendEmailResponeToJoinTrip(new MessageRequest
+            {
+                ToEmail = attendee.ApplicationUser.Email,
+                Message = "Your request to join the trip has been accepted",
+                UserName = attendee.ApplicationUser.UserName
+            });
+        }
+
+        public async Task RejectAttendeeAsync(Guid tripId, string userId)
+        {
+            // Reject the attendee -> Remove the attendee from the list
+
+            Trip trip = await _repository.GetOneTrip(tripId);
+            if (trip == null || trip.HostId != _userAccessor.GetUserId())
+            {
+                throw new ArgumentException("The trip is not found");
+            }
+
+            TripAttendee attendee = trip.Attendee.FirstOrDefault(x => x.ApplicationUser.Email == userId);
+
+            if (attendee == null)
+            {
+                throw new ArgumentException("The attendee is not found");
+            }
+
+            trip.Attendee.Remove(attendee);
+
+            await _repository.SaveChangesAsync();
+
+            await _mail.SendEmailResponeToJoinTrip(new MessageRequest
+            {
+                ToEmail = attendee.ApplicationUser.Email,
+                Message = "Your request to join the trip has been rejected",
+                UserName = attendee.ApplicationUser.UserName
+            });
         }
     }
 }

@@ -30,13 +30,13 @@ namespace Core.Services
             ApplicationUser user = await _authRespository.FindByEmail(input.Email);
             if (user == null)
             {
-                throw new ArgumentException("Username or Password is not correct");
+                throw new ArgumentException("Email or Password is not correct");
             }
             IdentityResult result = await _authRespository.CheckPassword(user, input.Password);
 
             if (!result.Succeeded)
             {
-                throw new ArgumentException("Username or Password is not correct");
+                throw new ArgumentException("Email or Password is not correct");
             }
 
             JwtSecurityTokenHandler tokenHandler = new();
@@ -46,7 +46,7 @@ namespace Core.Services
 
             if (string.IsNullOrEmpty(role.FirstOrDefault()))
             {
-                throw new ArgumentException($"User role is {JsonConvert.SerializeObject(user)}");
+                throw new ArgumentException($"User {user.UserName} has no role");
             }
 
             SecurityTokenDescriptor tokenDescriptor = new()

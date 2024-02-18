@@ -83,6 +83,24 @@ namespace Infrastructure.Database.Repositories
             return trip;
         }
 
+        public async Task<List<TripAttendee>> GetAllAttendeeAsync(Guid tripId)
+        {
+            List<TripAttendee> attendees = await base._context.TripAttendees
+                            .Include(x => x.ApplicationUser)
+                            .Where(x => x.TripId == tripId)
+                            .ToListAsync();
+            return attendees;
+        }
 
+        public async Task<Trip> GetOneTrip(Guid tripId)
+        {
+            return await base._context.Trips
+                                .Where(x => x.Id == tripId)
+                                .Include(t => t.Attendee).ThenInclude(at => at.ApplicationUser)
+                                .Include(t => t.TripAgenda)
+                                .Include(t => t.TypeOfTrip)
+                                .Include(t => t.Photos)
+                                .FirstOrDefaultAsync();
+        }
     }
 }

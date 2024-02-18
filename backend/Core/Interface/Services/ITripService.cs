@@ -10,6 +10,8 @@ namespace Core.Services
         Task<TripServiceResponse> GetTripAsync(Guid provinceId);
         Task<TripsServiceResponseWithPaging> GetListOfAllTripsAsync();
         Task UpdateAttendeeAsync(Guid tripId);
+        Task AcceptAttendeeAsync(Guid tripId, string userId);
+        Task RejectAttendeeAsync(Guid tripId, string userId);
         //Task<ProvinceServiceResponseWithPaging> GetListOfAllActiveProvincesAsync(int pageNumber, int pageSize);
     }
 
@@ -60,6 +62,8 @@ namespace Core.Services
         public string DisplayName { get; set; }
         public string Bio { get; set; }
         public string Image { get; set; }
+        public bool IsHost { get; set; }
+        public bool IsAccepted { get; set; }
         public ICollection<ContactDto> Contacts { get; set; }
     }
 
