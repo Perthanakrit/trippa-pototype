@@ -35,7 +35,7 @@ builder.Services.AddInfraDependencyInjection(builder.Configuration);
 #endregion
 
 #region  Configure DI Container - Service Lifetimes - Business Services
-builder.Services.AddCoreDependencyInjection();
+builder.Services.AddCoreDependencyInjection(builder.Configuration);
 #endregion
 
 var app = builder.Build();

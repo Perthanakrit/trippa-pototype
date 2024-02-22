@@ -1,7 +1,8 @@
+using Core.Interface.Infrastructure.Cloudinary;
 using Core.Interface.Infrastructure.Database;
 using Domain.Entities;
+using Infrastructure.CloudinaryServices;
 using Infrastructure.Database;
-using Infrastructure.Database.Cache.Repositories;
 using Infrastructure.Database.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,14 +22,16 @@ namespace Infrastructure.Extension
             });
 
             services.AddScoped<ITripRepository, TripRepository>();
-            services.AddTransient<ICustomTripRepository, CustomTripRepository>();
-            services.AddTransient<IAuthRespository, AuthRespository>();
+            services.AddScoped<ICustomTripRepository, CustomTripRepository>();
+            services.AddScoped<IAuthRespository, AuthRespository>();
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DatabaseContext>();
             services.AddStackExchangeRedisCache(redisOptions =>
             {
                 string connection = config.GetConnectionString("Redis");
                 redisOptions.Configuration = connection;
             });
+            services.AddScoped(typeof(IPhotoRespository<>), typeof(PhotoRespository<>));
+            services.AddScoped<IPhotoCloudinary, PhotoCloudinary>();
             return services;
         }
 

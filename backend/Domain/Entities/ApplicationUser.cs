@@ -11,8 +11,9 @@ namespace Domain.Entities
     {
         public string DisplayName { get; set; }
         public string Bio { get; set; }
-        public string Image { get; set; }
         #region relationship 
+        public Guid UserPhotoId { get; set; }
+        public UserPhoto Image { get; set; }
         public ICollection<Contact> Contacts { get; set; }
         public ICollection<TripAttendee> AttendeedTrips { get; set; }
         #endregion

@@ -16,6 +16,10 @@ namespace Infrastructure.Configs
                 .WithOne(c => c.User)
                 .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(u => u.Image)
+                    .WithOne(i => i.User)
+                    .HasForeignKey<UserPhoto>(i => i.UserId);
         }
     }
 }

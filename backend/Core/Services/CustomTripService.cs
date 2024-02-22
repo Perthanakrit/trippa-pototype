@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using AutoMapper;
 using Core.Interface.Infrastructure.Database;
 using Core.Interface.security;
@@ -170,11 +171,11 @@ namespace Core.Services
             };
 
             var result = await _repository.AddAsync(customTrip);
-            await _repository.SaveChangesAsync();
-
-
+            bool invoke = await _repository.SaveChangesAsync<int>() > 0;
+            if (!invoke)
+            {
+                throw new ArgumentException("The custom trip is not created");
+            }
         }
-
-
     }
 }
