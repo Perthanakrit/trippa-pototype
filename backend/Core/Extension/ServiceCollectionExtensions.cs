@@ -30,6 +30,7 @@ namespace Core.Extension
             services.AddHttpContextAccessor();
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.Configure<CloudinaySettings>(config.GetSection("Cloudinay"));
+            services.AddScoped<IPhotoService, PhotoService>();
 
             return services;
         }

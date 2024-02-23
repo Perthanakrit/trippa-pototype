@@ -48,9 +48,11 @@ namespace Infrastructure.CloudinaryServices
             };
         }
 
-        public Task<string> DeletePhotoAsync(string id)
+        public async Task<string> DeletePhotoAsync(string id)
         {
-            throw new NotImplementedException();
+            DeletionParams deleteParams = new DeletionParams(id);
+            DeletionResult result = await _cloudinary.DestroyAsync(deleteParams);
+            return result.Result == "ok" ? result.Result : null;
         }
     }
 }

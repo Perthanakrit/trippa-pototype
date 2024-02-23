@@ -26,7 +26,6 @@ namespace Core.Interface.Services
         public string Email { get; set; }
         public string Password { get; set; }
         public string Bio { get; set; }
-        public IFormFile File { get; set; }
         public List<ContactInput> Contacts { get; set; }
     }
 
@@ -50,14 +49,10 @@ namespace Core.Interface.Services
     {
         public string Email { get; set; }
         public string DisplayName { get; set; }
-        public UploadPhotoResponse Image { get; set; }
+        public string Image { get; set; }
         public string Token { get; set; }
     }
 
-    public class UploadPhotoResponse
-    {
-        public string Url { get; set; }
-    }
 
     public class UserDto
     {

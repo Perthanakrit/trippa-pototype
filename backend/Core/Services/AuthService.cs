@@ -80,10 +80,7 @@ namespace Core.Services
                 Email = user.Email,
                 Token = tokenHandler.WriteToken(token),
                 DisplayName = user.DisplayName,
-                Image = new UploadPhotoResponse
-                {
-                    Url = user.Image.Url
-                }
+                Image = user.Image.Url
             };
 
             if (string.IsNullOrEmpty(output.Email) || string.IsNullOrEmpty(output.Token))
@@ -107,21 +104,15 @@ namespace Core.Services
                 Name = c.Name
             }).ToList();
 
-            UploadPhotoResult photoResult = await _photoCloudinary.AddAsync(input.File);
-
             ApplicationUser newUser = new()
             {
                 UserName = input.UserName,
                 Email = input.Email,
                 DisplayName = input.DisplayName,
                 Bio = input.Bio,
-                Image = new UserPhoto
-                {
-                    PublicId = photoResult.PublicId,
-                    Url = photoResult.Url
-                },
+                Image = null,
                 NormalizedUserName = input.UserName.ToUpper(),
-                Contacts = new List<Contact>(),
+                Contacts = contacts
             };
 
             IdentityResult result = await _authRespository.CreateAsync(newUser, input.Password);
