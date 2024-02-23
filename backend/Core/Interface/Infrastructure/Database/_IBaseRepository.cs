@@ -16,6 +16,6 @@ namespace Core.Interface.Infrastructure.Database
         Task<TEntity> AddAsync(TEntity entity);
         TEntity Update(TEntity entity);
         TEntity Remove(TEntity entity);
-        Task SaveChangesAsync();
+        Task<T> SaveChangesAsync<T>();
     }
 }

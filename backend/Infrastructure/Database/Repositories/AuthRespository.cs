@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Interface.Infrastructure.Database;
+using Core.Interface.Services;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -26,9 +27,24 @@ namespace Infrastructure.Database.Repositories
             return user;
         }
 
-        public async Task<ApplicationUser> FindByEmail(string email)
+        public async Task<UserDto> FindByEmail(string email)
         {
-            ApplicationUser user = await _db.ApplicationUsers.FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
+            UserDto user = await _db.ApplicationUsers
+                                    .Where(u => u.Email.ToLower() == email.ToLower())
+                                    .Select(u => new UserDto
+                                    {
+                                        UserName = u.UserName,
+                                        Email = u.Email,
+                                        DisplayName = u.DisplayName,
+                                        Bio = u.Bio,
+                                        Image = u.Image,
+                                        Contacts = u.Contacts.Where(c => c.UserId == u.Id).Select(c => new ContactInput
+                                        {
+                                            Channel = c.Channel,
+                                            Name = c.Name
+                                        }).ToList()
+                                    })
+                                    .FirstOrDefaultAsync();
             return user;
         }
 

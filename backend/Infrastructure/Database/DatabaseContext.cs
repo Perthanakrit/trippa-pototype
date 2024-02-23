@@ -25,6 +25,7 @@ namespace Infrastructure.Database
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<TripPhoto> TripPhotos { get; set; }
+        public DbSet<UserPhoto> UserPhotos { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -36,7 +37,7 @@ namespace Infrastructure.Database
             builder.ApplyConfiguration(new TripAttendeeConfiguration());
             builder.ApplyConfiguration(new TripAgendaConfiguration());
             builder.ApplyConfiguration(new TypeOfTripConfiguration());
-            builder.ApplyConfiguration(new TripPhotoConfiguration());
+            builder.ApplyConfiguration(new UserPhotoConfiguration());
         }
     }
 }

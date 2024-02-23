@@ -2,11 +2,14 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
+using Core.Interface.Infrastructure.Cloudinary;
 using Core.Interface.Infrastructure.Database;
 using Core.Interface.Services;
 using Core.Utility;
 using Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
@@ -14,12 +17,16 @@ namespace Core.Services
 {
     public class AuthService : IAuthService
     {
+        private readonly IPhotoRespository<UserPhoto> _photoRepo;
         private readonly IAuthRespository _authRespository;
         private readonly IMapper _mapper;
         private readonly JwtSettings _jwtSettings;
+        private readonly IPhotoCloudinary _photoCloudinary;
 
-        public AuthService(IAuthRespository authRespository, IMapper mapper, JwtSettings jwtSetting)
+        public AuthService(IAuthRespository authRespository, IMapper mapper, JwtSettings jwtSetting, IPhotoRespository<UserPhoto> photoRepo, IPhotoCloudinary photoCloudinary)
         {
+            _photoCloudinary = photoCloudinary;
+            _photoRepo = photoRepo;
             _authRespository = authRespository;
             _mapper = mapper;
             _jwtSettings = jwtSetting;
@@ -27,11 +34,15 @@ namespace Core.Services
 
         public async Task<LoginServiceOutput> Login(LoginServiceInput input)
         {
-            ApplicationUser user = await _authRespository.FindByEmail(input.Email);
-            if (user == null)
+            UserDto userInDb = await _authRespository.FindByEmail(input.Email);
+
+            if (userInDb == null)
             {
                 throw new ArgumentException("Email or Password is not correct");
             }
+
+            ApplicationUser user = await _authRespository.FindByUsername(userInDb.UserName);
+
             IdentityResult result = await _authRespository.CheckPassword(user, input.Password);
 
             if (!result.Succeeded)
@@ -69,7 +80,7 @@ namespace Core.Services
                 Email = user.Email,
                 Token = tokenHandler.WriteToken(token),
                 DisplayName = user.DisplayName,
-                Image = user.Image
+                Image = user.Image.Url
             };
 
             if (string.IsNullOrEmpty(output.Email) || string.IsNullOrEmpty(output.Token))
@@ -99,10 +110,11 @@ namespace Core.Services
                 Email = input.Email,
                 DisplayName = input.DisplayName,
                 Bio = input.Bio,
-                Image = input.Image,
+                Image = null,
                 NormalizedUserName = input.UserName.ToUpper(),
-                Contacts = new List<Contact>(),
+                Contacts = contacts
             };
+
             IdentityResult result = await _authRespository.CreateAsync(newUser, input.Password);
 
             if (result.Succeeded)
@@ -124,8 +136,5 @@ namespace Core.Services
             }
             throw new Exception(result.Errors.First().Description);
         }
-
-
     }
-
 }

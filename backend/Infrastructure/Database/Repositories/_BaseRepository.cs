@@ -63,11 +63,9 @@ namespace Infrastructure.Database.Repositories
             return entity;
         }
 
-        public Task SaveChangesAsync()
+        public Task<T> SaveChangesAsync<T>()
         {
-            return _context.SaveChangesAsync();
+            return _context.SaveChangesAsync() as Task<T>;
         }
-
-
     }
 }

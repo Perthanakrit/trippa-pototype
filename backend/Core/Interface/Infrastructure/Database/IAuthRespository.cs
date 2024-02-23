@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Core.Interface.Services;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -13,7 +10,7 @@ namespace Core.Interface.Infrastructure.Database
         Task<IdentityResult> ExistedUserName(string userName);
         Task<IdentityResult> ExistedEmail(string email);
         Task<ApplicationUser> FindByUsername(string userName);
-        Task<ApplicationUser> FindByEmail(string email);
+        Task<UserDto> FindByEmail(string email);
         Task<IdentityResult> CheckPassword(ApplicationUser entity, string password);
         Task<bool> ExistedUserId(string id);
         Task<string> GetGeneralUserRole();

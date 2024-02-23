@@ -105,7 +105,11 @@ namespace Core.Services
             };
 
             Trip insertedEntity = await _repository.AddAsync(trip); // TODO: Check if the entity is inserted successfully
-            await _repository.SaveChangesAsync();
+            bool invoke = await _repository.SaveChangesAsync<int>() > 0;
+            if (!invoke)
+            {
+                throw new ArgumentException("The trip is not created");
+            }
         }
 
         public async Task<TripServiceResponse> DeleteTripAsync(Guid tripId)
@@ -118,7 +122,12 @@ namespace Core.Services
             }
 
             existedTrip = _repository.Remove(existedTrip); // TODO: Check if the entity is removed successfully
-            await _repository.SaveChangesAsync();
+            bool invoke = await _repository.SaveChangesAsync<int>() > 0;
+            if (!invoke)
+            {
+                return null;
+            }
+
             return ConvertToResponseModel(existedTrip);
         }
 
@@ -156,7 +165,11 @@ namespace Core.Services
             existedTrip.Name = input.Name;
             existedTrip.Description = input.Description;
             existedTrip = _repository.Update(existedTrip); // TODO: Check if the entity is updated successfully, return null if not updated else return the updated entity 
-            await _repository.SaveChangesAsync();
+            bool invoke = await _repository.SaveChangesAsync<int>() > 0;
+            if (!invoke)
+            {
+                return null;
+            }
 
             return ConvertToResponseModel(existedTrip);
         }
@@ -200,7 +213,11 @@ namespace Core.Services
                 trip.Attendee.Add(attendee);
             }
 
-            await _repository.SaveChangesAsync();
+            bool invoke = await _repository.SaveChangesAsync<int>() > 0;
+            if (!invoke)
+            {
+                throw new ArgumentException("The attendee is not updated");
+            }
         }
 
         public async Task AcceptAttendeeAsync(Guid tripId, string userId)
