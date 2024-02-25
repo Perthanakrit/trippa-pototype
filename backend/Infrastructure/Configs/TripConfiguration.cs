@@ -43,7 +43,7 @@ namespace Infrastructure.Configs
 
             // Photo : One to Many
             builder
-                .HasMany(a => a.Photos)
+                .HasMany(p => p.Photos)
                 .WithOne(p => p.Trip)
                 .HasForeignKey(p => p.TripId);
 

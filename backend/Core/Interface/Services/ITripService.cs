@@ -42,11 +42,11 @@ namespace Core.Services
         public string Origin { get; set; }
         public string Destination { get; set; }
         public string Hostname { get; set; }
-        public int maxAttendee { get; set; }
+        public int MaxAttendee { get; set; }
         public TypeOfTripDto TypeOfTrip { get; set; }
-        public ICollection<TripAgendaDto> Agenda { get; set; }
-        public ICollection<TripPhotoDto> Photos { get; set; }
-        public ICollection<TripAttendeeDto> Attendee { get; set; }
+        public ICollection<TripAgendaDto> Agenda { get; set; } = new List<TripAgendaDto>();
+        public ICollection<TripPhotoDto> Photos { get; set; } = new List<TripPhotoDto>();
+        public ICollection<TripAttendeeDto> Attendee { get; set; } = new List<TripAttendeeDto>();
     }
 
     public class TripsServiceResponseWithPaging

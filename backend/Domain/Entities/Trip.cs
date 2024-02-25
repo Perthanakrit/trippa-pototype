@@ -21,9 +21,9 @@ namespace Domain.Entities
         public bool IsCustomTrip { get; set; }
         #region Relationships
         public TypeOfTrip TypeOfTrip { get; set; } // Navigation property
-        public ICollection<TripPhoto> Photos { get; set; } = new List<TripPhoto>();
-        public ICollection<TripAgenda> TripAgenda { get; set; } = new List<TripAgenda>(); // Navigation property
-        public ICollection<TripAttendee> Attendee { get; set; } = new List<TripAttendee>(); // Navigation property
+        public ICollection<TripPhoto> Photos { get; set; }
+        public ICollection<TripAgenda> TripAgenda { get; set; }  // Navigation property
+        public ICollection<TripAttendee> Attendee { get; set; } // Navigation property
         #endregion
     }
 }

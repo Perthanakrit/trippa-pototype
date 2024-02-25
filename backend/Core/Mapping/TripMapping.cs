@@ -16,16 +16,14 @@ namespace Core.Mapping
                 .ForMember(d => d.Trip, opt => opt.MapFrom(s => s.Trip));
 
             CreateMap<Trip, TripServiceResponse>()
-                .ForMember(d => d.Attendee, opt => opt.MapFrom(s => s.Attendee.Select(x => x.ApplicationUser)))
-                .ForMember(d => d.Hostname, opt => opt.MapFrom(s => s.Attendee.FirstOrDefault(x => x.IsHost).ApplicationUser.DisplayName))
-                .ForMember(d => d.Agenda, opt => opt.MapFrom(s => s.TripAgenda))
+                .ForMember(d => d.Hostname, opt => opt.MapFrom(s => s.Attendee.FirstOrDefault(a => a.IsHost).ApplicationUser.UserName))
                 .ForMember(d => d.TypeOfTrip, opt => opt.MapFrom(s => s.TypeOfTrip))
-                .ForMember(d => d.Photos, opt => opt.MapFrom(s => s.Photos));
-
-
+                .ForMember(d => d.Agenda, opt => opt.MapFrom(s => s.TripAgenda))
+                .ForMember(d => d.Photos, opt => opt.MapFrom(s => s.Photos))
+                .ForMember(d => d.Attendee, opt => opt.MapFrom(s => s.Attendee));
 
             CreateMap<TypeOfTrip, TypeOfTripDto>();
-
+            CreateMap<TripAttendee, TripAttendeeDto>();
             CreateMap<TripAgenda, TripAgendaDto>();
             CreateMap<TripPhoto, TripPhotoDto>();
         }
