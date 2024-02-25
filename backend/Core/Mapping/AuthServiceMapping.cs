@@ -13,8 +13,8 @@ namespace Core.Mapping
         public AuthServiceMapping()
         {
             CreateMap<RegisterServiceInput, ApplicationUser>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.DisplayName))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.Contacts, opt => opt.MapFrom(src => src.Contacts));
         }
     }

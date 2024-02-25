@@ -4,6 +4,7 @@ using Core.Interface.Infrastructure.Cloudinary;
 using Core.Utility;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace Infrastructure.CloudinaryServices
 {
@@ -20,6 +21,7 @@ namespace Infrastructure.CloudinaryServices
             };
 
             _cloudinary = new Cloudinary(account);
+
         }
 
         public async Task<UploadPhotoResult> AddAsync(IFormFile file)
@@ -38,6 +40,8 @@ namespace Infrastructure.CloudinaryServices
             };
 
             ImageUploadResult uploadResult = await _cloudinary.UploadAsync(uploadParams);
+
+            // throw new ArgumentException($"{JsonConvert.SerializeObject(uploadResult)}");
 
             if (uploadResult.Error != null) throw new Exception(uploadResult.Error.Message);
 

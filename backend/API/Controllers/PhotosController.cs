@@ -24,7 +24,7 @@ namespace API.Controllers
         {
             try
             {
-                PhotoUploadOutput res = await _photoService.UserAddPhoto(file, "");
+                PhotoUploadOutput res = await _photoService.UserAddPhoto(file);
                 return Ok(res);
             }
             catch (ArgumentException ex)

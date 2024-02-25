@@ -23,31 +23,28 @@ namespace Infrastructure.Database.Repositories
 
         public async Task<ApplicationUser> FindByUsername(string userName)
         {
-            ApplicationUser user = await _db.ApplicationUsers.FirstOrDefaultAsync(u => u.UserName.ToLower() == userName.ToLower());
+            ApplicationUser user = await _db.ApplicationUsers
+                                            .Where(u => u.UserName.ToLower() == userName.ToLower())
+                                            .Include(u => u.Contacts)
+                                            .Include(u => u.Image)
+                                            .FirstOrDefaultAsync();
             return user;
         }
 
-        public async Task<UserDto> FindByEmail(string email)
+        public async Task<ApplicationUser> FindByEmail(string email)
         {
-            UserDto user = await _db.ApplicationUsers
-                                    .Where(u => u.Email.ToLower() == email.ToLower())
-                                    .Select(u => new UserDto
-                                    {
-                                        UserName = u.UserName,
-                                        Email = u.Email,
-                                        DisplayName = u.DisplayName,
-                                        Bio = u.Bio,
-                                        Image = u.Image,
-                                        Contacts = u.Contacts.Where(c => c.UserId == u.Id).Select(c => new ContactInput
-                                        {
-                                            Channel = c.Channel,
-                                            Name = c.Name
-                                        }).ToList()
-                                    })
-                                    .FirstOrDefaultAsync();
+            ApplicationUser user = await _db.ApplicationUsers
+                                            .AsNoTracking()
+                                            .Where(u => u.Email.ToLower() == email.ToLower())
+                                            .Include(u => u.Image)
+                                            .FirstOrDefaultAsync();
+
             return user;
         }
-
+        /*
+            .Include(u => u.Contacts)
+                                            .Include(u => u.Image)
+        */
         public async Task<IdentityResult> CheckPassword(ApplicationUser entity, string password)
         {
             bool isPasswordValid = await _userManager.CheckPasswordAsync(entity, password);
@@ -62,7 +59,7 @@ namespace Infrastructure.Database.Repositories
         public async Task<IdentityResult> CreateAsync(ApplicationUser entity, string password)
         {
             IdentityResult result = await _userManager.CreateAsync(entity, password);
-            await _db.Contacts.AddRangeAsync(entity.Contacts);
+            //await _db.Contacts.AddRangeAsync(entity.Contacts);
             //await _db.SaveChangesAsync();
             return result;
         }

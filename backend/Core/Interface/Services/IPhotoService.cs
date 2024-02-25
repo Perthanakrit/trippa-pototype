@@ -8,7 +8,7 @@ namespace Core.Interface.Services
 {
     public interface IPhotoService
     {
-        Task<PhotoUploadOutput> UserAddPhoto(IFormFile file, string userId);
+        Task<PhotoUploadOutput> UserAddPhoto(IFormFile file);
         Task<string> UserDeletePhoto(string userId, string publicId);
         Task<PhotoUploadOutput> TripAddPhoto(IFormFile file, string tripId);
         Task<string> TripDeletePhoto(string tripId, string publicId);

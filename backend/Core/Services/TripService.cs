@@ -238,7 +238,12 @@ namespace Core.Services
 
             attendee.IsAccepted = true;
 
-            await _repository.SaveChangesAsync();
+            bool invoke = await _repository.SaveChangesAsync<int>() > 0;
+
+            if (!invoke)
+            {
+                throw new ArgumentException("The attendee is not accepted");
+            }
 
             await _mail.SendEmailResponeToJoinTrip(new MessageRequest
             {
@@ -267,7 +272,11 @@ namespace Core.Services
 
             trip.Attendee.Remove(attendee);
 
-            await _repository.SaveChangesAsync();
+            bool isInvoke = await _repository.SaveChangesAsync<int>() > 0;
+            if (!isInvoke)
+            {
+                throw new ArgumentException("Reject the attendee is not successful");
+            }
 
             await _mail.SendEmailResponeToJoinTrip(new MessageRequest
             {

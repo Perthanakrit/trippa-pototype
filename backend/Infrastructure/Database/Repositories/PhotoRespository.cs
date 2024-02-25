@@ -15,7 +15,7 @@ namespace Infrastructure.Database.Repositories
             _db = db;
         }
 
-        public async Task<bool> AddAsync(IFormFile file, TEntity entity)
+        public async Task<bool> AddAsync(TEntity entity)
         {
             // Add photo to cloudinary and save the url to the database 
 

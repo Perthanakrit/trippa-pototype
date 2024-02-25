@@ -7,9 +7,7 @@ using Core.Interface.Infrastructure.Database;
 using Core.Interface.Services;
 using Core.Utility;
 using Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
@@ -34,14 +32,12 @@ namespace Core.Services
 
         public async Task<LoginServiceOutput> Login(LoginServiceInput input)
         {
-            UserDto userInDb = await _authRespository.FindByEmail(input.Email);
+            ApplicationUser user = await _authRespository.FindByEmail(input.Email);
 
-            if (userInDb == null)
+            if (user == null)
             {
                 throw new ArgumentException("Email or Password is not correct");
             }
-
-            ApplicationUser user = await _authRespository.FindByUsername(userInDb.UserName);
 
             IdentityResult result = await _authRespository.CheckPassword(user, input.Password);
 
@@ -80,7 +76,7 @@ namespace Core.Services
                 Email = user.Email,
                 Token = tokenHandler.WriteToken(token),
                 DisplayName = user.DisplayName,
-                Image = user.Image.Url
+                Image = user.Image != null ? user.Image.Url : null
             };
 
             if (string.IsNullOrEmpty(output.Email) || string.IsNullOrEmpty(output.Token))
@@ -100,18 +96,19 @@ namespace Core.Services
 
             List<Contact> contacts = input.Contacts.Select(c => new Contact
             {
+                Id = Guid.NewGuid(),
                 Channel = c.Channel,
                 Name = c.Name
             }).ToList();
 
             ApplicationUser newUser = new()
             {
-                UserName = input.UserName,
+                UserName = input.DisplayName.ToLower(),
                 Email = input.Email,
                 DisplayName = input.DisplayName,
                 Bio = input.Bio,
                 Image = null,
-                NormalizedUserName = input.UserName.ToUpper(),
+                NormalizedUserName = input.DisplayName.ToUpper(),
                 Contacts = contacts
             };
 
@@ -134,6 +131,8 @@ namespace Core.Services
                     Message = "success"
                 };
             }
+
+            // _authRespository.Delete(newUser);
             throw new Exception(result.Errors.First().Description);
         }
     }

@@ -5,7 +5,7 @@ namespace Core.Interface.Infrastructure.Database
 {
     public interface IPhotoRespository<T> where T : IBaseEntity
     {
-        Task<bool> AddAsync(IFormFile file, T entity);
+        Task<bool> AddAsync(T entity);
         Task<string> DeletePhotoAsync(string id);
     }
 }
