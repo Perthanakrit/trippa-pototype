@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Domain.Entities;
 
 namespace Core.Services
@@ -17,17 +18,26 @@ namespace Core.Services
 
     public class TripServiceInput
     {
+        [Required]
         public string Name { get; set; }
         public string Description { get; set; }
         public string Landmark { get; set; }
+        [Required]
         public string Duration { get; set; }
+        [Required]
         public float Price { get; set; }
+        [Required]
         public float Fee { get; set; }
+        [Required]
         public string Origin { get; set; }
+        [Required]
         public string Destination { get; set; }
+        [Required(ErrorMessage = "The maximum attendee is required")]
         public int MaxAttendee { get; set; }
+        [Required]
         public List<TripAgendaDto> TripAgendas { get; set; }
-        public List<TripPhotoDto> Photos { get; set; }
+        public List<TripPhotoDto> Photos { get; set; } = new List<TripPhotoDto>();
+        [Required]
         public Guid TypeOfTripId { get; set; }
     }
 
@@ -82,7 +92,7 @@ namespace Core.Services
     {
         public string Description { get; set; }
         public DateOnly Date { get; set; }
-        public string Time { get; set; }
+        public TimeOnly Time { get; set; }
     }
 
     public class TripPhotoDto

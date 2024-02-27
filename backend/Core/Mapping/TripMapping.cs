@@ -23,7 +23,13 @@ namespace Core.Mapping
                 .ForMember(d => d.Attendee, opt => opt.MapFrom(s => s.Attendee));
 
             CreateMap<TypeOfTrip, TypeOfTripDto>();
-            CreateMap<TripAttendee, TripAttendeeDto>();
+            CreateMap<TripAttendee, TripAttendeeDto>()
+                .ForMember(d => d.DisplayName, opt => opt.MapFrom(s => s.ApplicationUser.DisplayName))
+                .ForMember(d => d.Image, opt => opt.MapFrom(s => s.ApplicationUser.Image.Url))
+                .ForMember(d => d.IsHost, opt => opt.MapFrom(s => s.IsHost))
+                .ForMember(d => d.IsAccepted, opt => opt.MapFrom(s => s.IsAccepted))
+                .ForMember(d => d.Bio, opt => opt.MapFrom(s => s.ApplicationUser.Bio));
+
             CreateMap<TripAgenda, TripAgendaDto>();
             CreateMap<TripPhoto, TripPhotoDto>();
         }

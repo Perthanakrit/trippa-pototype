@@ -23,4 +23,9 @@ namespace Core.Interface.Services
         public string PublicId { get; set; }
         public string Url { get; set; }
     }
+
+    public class PhotoUserOutput
+    {
+        public string Url { get; set; }
+    }
 }

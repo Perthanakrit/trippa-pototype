@@ -16,6 +16,8 @@ namespace Core.Mapping
                 .ForMember(d => d.IsAccepted, o => o.MapFrom(s => s.AttendeedTrips.Where(x => x.IsAccepted).Any()))
                 .ForMember(d => d.Contacts, o => o.MapFrom(s => s.Contacts.Select(x => x)));
 
+            CreateMap<UserPhoto, PhotoUserOutput>();
+
             CreateMap<Contact, ContactDto>()
                 .ForMember(d => d.Channel, o => o.MapFrom(s => s.Channel))
                 .ForMember(d => d.Value, o => o.MapFrom(s => s.Name));

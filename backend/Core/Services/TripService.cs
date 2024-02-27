@@ -60,13 +60,13 @@ namespace Core.Services
             for (int i = 0; i < input.TripAgendas.Count; i++)
             {
                 // string[] date = input.TripAgendas[i].Date;
-                string[] time = input.TripAgendas[i].Time.Split(":");
+                var time = input.TripAgendas[i].Time;//.Split(":");
                 TripAgenda tripAgenda = new()
                 {
                     Id = i + 1,
                     Description = input.TripAgendas[i].Description,
                     Date = input.TripAgendas[i].Date,
-                    Time = new TimeOnly(int.Parse(time[0]), int.Parse(time[1]))
+                    Time = time//new TimeOnly(int.Parse(time[0]), int.Parse(time[1]))
                 };
                 tripAgendas.Add(tripAgenda);
             }

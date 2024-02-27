@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using AutoMapper;
 using Core.Interface.Infrastructure.Database;
 using Core.Interface.security;
@@ -92,9 +93,43 @@ namespace Core.Services
             return result;
         }
 
-        public Task<CustomTripServiceResponse> UpdateTripAsync(Guid customTripId, CustomTripServiceInput input)
+        public async Task<CustomTripServiceResponse> UpdateTripAsync(Guid customTripId, CustomTripServiceInput input)
         {
-            throw new NotImplementedException();
+            CustomTrip customTrip = await _repository.GetById(customTripId);
+            if (customTrip != null)
+            {
+                throw new ArgumentException("The custom trip is not found");
+            }
+
+            throw new ArgumentException($"{JsonSerializer.Serialize(customTrip)}");
+
+            customTrip.Trip.Name = input.Name;
+            customTrip.Trip.Description = input.Description;
+            customTrip.Trip.Landmark = input.Landmark;
+            customTrip.Trip.Duration = input.Duration;
+            customTrip.Trip.Price = input.Price;
+            customTrip.Trip.Fee = input.Fee;
+            customTrip.Trip.Origin = input.Origin;
+            customTrip.Trip.Destination = input.Destination;
+            customTrip.Trip.MaxAttendees = input.MaxAttendee;
+            customTrip.Trip.TypeOfTripId = input.TypeOfTripId;
+            customTrip.Trip.TripAgenda = input.TripAgendas.Select(t => new TripAgenda
+            {
+                Description = t.Description,
+                Date = t.Date,
+                Time = t.Time,
+            }).ToList();
+
+            // customTrip.Trip.Photos = input.Photos.Select(x => new TripPhoto
+            // {
+            //     Id = Guid.NewGuid(),
+            //     Url = x.Url,
+            // }).ToList();
+
+            // If trip has images, then update the images
+
+
+            throw new System.NotImplementedException();
         }
 
         public async Task CreateNewTripAsync(CustomTripServiceInput input)
@@ -121,13 +156,13 @@ namespace Core.Services
             for (int i = 0; i < input.TripAgendas.Count; i++)
             {
                 // string[] date = input.TripAgendas[i].Date;
-                string[] time = input.TripAgendas[i].Time.Split(":");
+                var time = input.TripAgendas[i].Time;
                 TripAgenda tripAgenda = new()
                 {
                     Id = i + 1,
                     Description = input.TripAgendas[i].Description,
                     Date = input.TripAgendas[i].Date,
-                    Time = new TimeOnly(int.Parse(time[0]), int.Parse(time[1]))
+                    Time = time,//new TimeOnly(int.Parse(time[0]), int.Parse(time[1]))
                 };
                 tripAgendas.Add(tripAgenda);
             }
