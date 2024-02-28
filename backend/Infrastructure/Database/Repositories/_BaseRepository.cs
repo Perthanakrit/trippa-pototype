@@ -47,7 +47,6 @@ namespace Infrastructure.Database.Repositories
         {
             return await _context.Set<TEntity>().FindAsync(id);
         }
-
         public TEntity Update(TEntity entity)
         {
             entity.UpdatedAt = DateTime.UtcNow;

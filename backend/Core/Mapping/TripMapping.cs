@@ -9,11 +9,29 @@ namespace Core.Mapping
         public TripMapping()
         {
             CreateMap<CustomTripServiceInput, Trip>();
-            // Map attendee to tripservice response
+            CreateMap<CustomTrip, CustomTrip>();
+            CreateMap<TripServiceInput, Trip>();
+            CreateMap<TripUpdateInput, Trip>()
+                .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name))
+                .ForMember(d => d.Description, opt => opt.MapFrom(s => s.Description))
+                .ForMember(d => d.TypeOfTripId, opt => opt.MapFrom(s => s.TypeOfTripId))
+                .ForMember(d => d.Landmark, opt => opt.MapFrom(s => s.Landmark))
+                .ForMember(d => d.Duration, opt => opt.MapFrom(s => s.Duration))
+                .ForMember(d => d.Price, opt => opt.MapFrom(s => s.Price))
+                .ForMember(d => d.Fee, opt => opt.MapFrom(s => s.Fee))
+                .ForMember(d => d.Origin, opt => opt.MapFrom(s => s.Origin))
+                .ForMember(d => d.Destination, opt => opt.MapFrom(s => s.Destination))
+                .ForMember(d => d.MaxAttendees, opt => opt.MapFrom(s => s.MaxAttendee));
 
-            CreateMap<CustomTrip, CustomTripAndTrip>()
-                .ForMember(d => d.CustomTripId, opt => opt.MapFrom(s => s.Id))
-                .ForMember(d => d.Trip, opt => opt.MapFrom(s => s.Trip));
+            CreateMap<CustomTrip, CustomTripAndTrip>();
+
+            CreateMap<CustomTripAndTrip, CustomTrip>()
+                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id))
+                .ForMember(d => d.Trip, opt => opt.MapFrom(s => s.Trip))
+                .ForMember(d => d.TripId, opt => opt.MapFrom(s => s.Trip.Id))
+                .ForMember(d => d.CreatedAt, opt => opt.MapFrom(s => s.Trip.CreatedAt))
+                .ForMember(d => d.UpdatedAt, opt => opt.MapFrom(s => s.Trip.UpdatedAt))
+                .ForMember(d => d.IsActive, opt => opt.MapFrom(s => s.Trip.IsActive));
 
             CreateMap<Trip, TripServiceResponse>()
                 .ForMember(d => d.Hostname, opt => opt.MapFrom(s => s.Attendee.FirstOrDefault(a => a.IsHost).ApplicationUser.UserName))
@@ -30,8 +48,21 @@ namespace Core.Mapping
                 .ForMember(d => d.IsAccepted, opt => opt.MapFrom(s => s.IsAccepted))
                 .ForMember(d => d.Bio, opt => opt.MapFrom(s => s.ApplicationUser.Bio));
 
-            CreateMap<TripAgenda, TripAgendaDto>();
+            CreateMap<TripAgenda, TripAgendaDto>()
+                .ForMember(d => d.Time, opt => opt.MapFrom(s => s.Time));
+            CreateMap<TripAgendaDto, TripAgenda>()
+                .ForMember(d => d.Time, opt => opt.MapFrom(s => s.Time));
+
             CreateMap<TripPhoto, TripPhotoDto>();
+            CreateMap<TripPhotoDto, TripPhoto>();
+
+            CreateMap<CustomTripServiceInput, CustomTrip>()
+                .ForMember(d => d.Trip, opt => opt.MapFrom(s => s));
+
+
+            CreateMap<CustomTrip, CustomTripServiceResponse>()
+                .ForMember(d => d.Trip, opt => opt.MapFrom(s => s.Trip));
+
         }
     }
 }

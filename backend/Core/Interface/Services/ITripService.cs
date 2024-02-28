@@ -6,7 +6,7 @@ namespace Core.Services
     public interface ITripService
     {
         Task CreateNewTripAsync(TripServiceInput input);
-        Task<TripServiceResponse> UpdateTripAsync(Guid provinceId, TripServiceInput input);
+        Task UpdateTripAsync(Guid provinceId, TripUpdateInput input);
         Task<TripServiceResponse> DeleteTripAsync(Guid provinceId);
         Task<TripServiceResponse> GetTripAsync(Guid provinceId);
         Task<TripsServiceResponseWithPaging> GetListOfAllTripsAsync();
@@ -59,6 +59,19 @@ namespace Core.Services
         public ICollection<TripAttendeeDto> Attendee { get; set; } = new List<TripAttendeeDto>();
     }
 
+    public class TripUpdateInput
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Landmark { get; set; }
+        public string Duration { get; set; }
+        public float Price { get; set; }
+        public float Fee { get; set; }
+        public string Origin { get; set; }
+        public string Destination { get; set; }
+        public int MaxAttendee { get; set; }
+        public Guid TypeOfTripId { get; set; }
+    }
     public class TripsServiceResponseWithPaging
     {
         public int TotalRows { get; set; }
@@ -92,7 +105,7 @@ namespace Core.Services
     {
         public string Description { get; set; }
         public DateOnly Date { get; set; }
-        public TimeOnly Time { get; set; }
+        public string Time { get; set; }
     }
 
     public class TripPhotoDto

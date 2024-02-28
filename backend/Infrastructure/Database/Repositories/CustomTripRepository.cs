@@ -18,7 +18,7 @@ namespace Infrastructure.Database.Repositories
 
         public async Task<CustomTripAndTrip> GetTripByCustomTripId(Guid id)
         {
-            var result = await base._context.CustomTrips
+            CustomTripAndTrip result = await base._context.CustomTrips
                 .Where(x => x.Id == id)
                 .ProjectTo<CustomTripAndTrip>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
@@ -43,6 +43,16 @@ namespace Infrastructure.Database.Repositories
             base._context.CustomTrips.Remove(trip);
             base._context.Trips.Remove(trip.Trip);
             await base._context.SaveChangesAsync();
+        }
+
+        public async Task<CustomTrip> GetCustomTripById(Guid id)
+        {
+            var result = await base._context.CustomTrips
+                .Where(x => x.Id == id)
+                .ProjectTo<CustomTrip>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+
+            return result;
         }
     }
 }

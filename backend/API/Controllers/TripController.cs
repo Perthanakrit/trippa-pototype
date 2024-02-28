@@ -81,13 +81,12 @@ namespace API.Controllers
 
         [HttpPut]
         [Route("[action]/{id}")]
-        [Authorize(Roles = SD.TourUser)]
-        public async Task<IActionResult> UpdateTrip(Guid id, TripServiceInput input)
+        public async Task<IActionResult> UpdateTrip(Guid id, TripUpdateInput input)
         {
             try
             {
-                var result = await _tripService.UpdateTripAsync(id, input);
-                return Ok(result);
+                await _tripService.UpdateTripAsync(id, input);
+                return Ok(new { message = "Success" });
             }
             catch (ArgumentException ex)
             {

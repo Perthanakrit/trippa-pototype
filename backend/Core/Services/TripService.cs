@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Core.Interface.Infrastructure.Database;
 using Core.Interface.security;
 using Core.Interface.Services;
@@ -16,15 +17,17 @@ namespace Core.Services
     {
         private readonly ITripRepository _repository;
         private readonly IAuthRespository _authRepo;
+        private readonly IMapper _mapper;
         private readonly IUserAccessor _userAccessor;
         private readonly IMailService _mail;
 
-        public TripService(ITripRepository repository, IAuthRespository auth, IUserAccessor userAccessor, IMailService mail) // Inject the repository
+        public TripService(ITripRepository repository, IAuthRespository auth, IUserAccessor userAccessor, IMailService mail, IMapper mapper) // Inject the repository
         {
             _repository = repository; // Assign the repository to the private field
             _userAccessor = userAccessor; ;
             _mail = mail;
             _authRepo = auth;
+            _mapper = mapper;
         }
 
         private TripServiceResponse ConvertToResponseModel(Trip entity)
@@ -66,7 +69,7 @@ namespace Core.Services
                     Id = i + 1,
                     Description = input.TripAgendas[i].Description,
                     Date = input.TripAgendas[i].Date,
-                    Time = time//new TimeOnly(int.Parse(time[0]), int.Parse(time[1]))
+                    Time = new TimeOnly()//new TimeOnly(int.Parse(time[0]), int.Parse(time[1]))
                 };
                 tripAgendas.Add(tripAgenda);
             }
@@ -153,7 +156,7 @@ namespace Core.Services
             };
         }
 
-        public async Task<TripServiceResponse> UpdateTripAsync(Guid tripId, TripServiceInput input)
+        public async Task UpdateTripAsync(Guid tripId, TripUpdateInput input)
         {
             Trip existedTrip = await _repository.GetById(tripId);
             bool theTripIsNotExist = existedTrip == null;
@@ -164,14 +167,23 @@ namespace Core.Services
 
             existedTrip.Name = input.Name;
             existedTrip.Description = input.Description;
+            existedTrip.Landmark = input.Landmark;
+            existedTrip.Duration = input.Duration;
+            existedTrip.Price = input.Price;
+            existedTrip.Fee = input.Fee;
+            existedTrip.Origin = input.Origin;
+            existedTrip.Destination = input.Destination;
+            existedTrip.MaxAttendees = input.MaxAttendee;
+            existedTrip.TypeOfTripId = input.TypeOfTripId;
+
+            // throw new ArgumentException($"{JsonConvert.SerializeObject(existedTrip)}");
+
             existedTrip = _repository.Update(existedTrip); // TODO: Check if the entity is updated successfully, return null if not updated else return the updated entity 
             bool invoke = await _repository.SaveChangesAsync<int>() > 0;
             if (!invoke)
             {
-                return null;
+                throw new Exception("The trip is not updated");
             }
-
-            return ConvertToResponseModel(existedTrip);
         }
 
         public async Task UpdateAttendeeAsync(Guid tripId)

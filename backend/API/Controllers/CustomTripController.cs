@@ -70,12 +70,12 @@ namespace API.Controllers
 
         [HttpPut]
         [Route("[action]/{id}")]
-        public async Task<IActionResult> UpdateCustomTrip(Guid id, CustomTripServiceInput input)
+        public async Task<IActionResult> UpdateCustomTrip(Guid id, CustomTripUpdateInput input)
         {
             try
             {
-                var result = await _customTripService.UpdateTripAsync(id, input);
-                return Ok(result);
+                await _customTripService.UpdateTripAsync(id, input);
+                return Ok(new { message = "Success" });
             }
             catch (ArgumentException ex)
             {
