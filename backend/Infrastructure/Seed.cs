@@ -185,129 +185,129 @@ namespace Infrastructure
                 await context.SaveChangesAsync();
             }
 
-            if (!await context.CustomTrips.AnyAsync())
-            {
-                List<CustomTrip> customTrips = new List<CustomTrip> {
-                    new CustomTrip
-                    {
-                        Trip = new Trip {
-                            Name = "My Trip 1",
-                            Description = "My Trip 1 Description",
-                            Landmark = "Landmark 1",
-                            Duration = "3 Days 2 Nights",
-                            Price = 500,
-                            Fee = 5,
-                            Origin = "Bangkok",
-                            Destination = "Phuket",
-                            HostId = users[0].Id,
-                            Attendee = new List<TripAttendee>()
-                            {
-                                new TripAttendee
-                                {
-                                    ApplicationUser = users[0],
-                                    IsHost = true,
-                                    AttendAt = DateTime.UtcNow,
-                                    CancelAt = null,
-                                },
-                                new TripAttendee
-                                {
-                                    ApplicationUser = users[1],
-                                    IsHost = false,
-                                    AttendAt = DateTime.UtcNow,
-                                    CancelAt = null,
-                                }
-                            },
-                            TypeOfTripId = typeOfTrips[2].Id,
-                            TypeOfTrip = typeOfTrips[2],
-                            TripAgenda = new List<TripAgenda>
-                            {
-                                new TripAgenda
-                                {
-                                    Id = 1,
-                                    Date = new DateOnly(2024, 5, 12),
-                                    Time = new TimeOnly(8, 30),
-                                    Description = "Start Trip"
-                                },
-                                new TripAgenda
-                                {
-                                    Id = 2,
-                                    Date = new DateOnly(2024, 5, 15),
-                                    Time = new TimeOnly(17, 30),
-                                    Description = "End Trip"
-                                }
-                            },
-                            IsCustomTrip = true,
-                            CreatedAt = DateTime.UtcNow,
-                            UpdatedAt = DateTime.UtcNow,
-                            IsActive = true
-                        },
+            // if (!await context.CustomTrips.AnyAsync())
+            // {
+            //     List<CustomTrip> customTrips = new List<CustomTrip> {
+            //         new CustomTrip
+            //         {
+            //             Trip = new Trip {
+            //                 Name = "My Trip 1",
+            //                 Description = "My Trip 1 Description",
+            //                 Landmark = "Landmark 1",
+            //                 Duration = "3 Days 2 Nights",
+            //                 Price = 500,
+            //                 Fee = 5,
+            //                 Origin = "Bangkok",
+            //                 Destination = "Phuket",
+            //                 HostId = users[0].Id,
+            //                 Attendee = new List<TripAttendee>()
+            //                 {
+            //                     new TripAttendee
+            //                     {
+            //                         ApplicationUser = users[0],
+            //                         IsHost = true,
+            //                         AttendAt = DateTime.UtcNow,
+            //                         CancelAt = null,
+            //                     },
+            //                     new TripAttendee
+            //                     {
+            //                         ApplicationUser = users[1],
+            //                         IsHost = false,
+            //                         AttendAt = DateTime.UtcNow,
+            //                         CancelAt = null,
+            //                     }
+            //                 },
+            //                 TypeOfTripId = typeOfTrips[2].Id,
+            //                 TypeOfTrip = typeOfTrips[2],
+            //                 TripAgenda = new List<TripAgenda>
+            //                 {
+            //                     new TripAgenda
+            //                     {
+            //                         Id = 1,
+            //                         Date = new DateOnly(2024, 5, 12),
+            //                         Time = new TimeOnly(8, 30),
+            //                         Description = "Start Trip"
+            //                     },
+            //                     new TripAgenda
+            //                     {
+            //                         Id = 2,
+            //                         Date = new DateOnly(2024, 5, 15),
+            //                         Time = new TimeOnly(17, 30),
+            //                         Description = "End Trip"
+            //                     }
+            //                 },
+            //                 IsCustomTrip = true,
+            //                 CreatedAt = DateTime.UtcNow,
+            //                 UpdatedAt = DateTime.UtcNow,
+            //                 IsActive = true
+            //             },
 
-                        CreatedAt = DateTime.UtcNow,
-                        UpdatedAt = DateTime.UtcNow,
-                        IsActive = true
-                    },
-                    new CustomTrip
-                    {
-                        Trip = new Trip {
-                            Name = "My Trip 2",
-                            Description = "My Trip 2 Description",
-                            Landmark = "Landmark 2",
-                            Duration = "3 Days 2 Nights",
-                            Price = 500,
-                            Fee = 5,
-                            Origin = "Bangkok",
-                            Destination = "Nakhon Ratchasima",
-                            HostId = users[1].Id,
-                            Attendee = new List<TripAttendee>()
-                            {
-                                new TripAttendee
-                                {
-                                    ApplicationUser = users[0],
-                                    IsHost = false,
-                                    AttendAt = DateTime.UtcNow,
-                                    CancelAt = null,
-                                },
-                                new TripAttendee
-                                {
-                                    ApplicationUser = users[1],
-                                    IsHost = true,
-                                    AttendAt = DateTime.UtcNow,
-                                    CancelAt = null,
-                                }
-                            },
-                            TypeOfTripId = typeOfTrips[0].Id,
-                            TypeOfTrip = typeOfTrips[0],
-                            TripAgenda = new List<TripAgenda>
-                            {
-                                    new TripAgenda
-                                {
-                                    Id = 1,
-                                    Date = new DateOnly(2024, 5, 12),
-                                    Time = new TimeOnly(8, 30),
-                                    Description = "Start Trip"
-                                },
-                                new TripAgenda
-                                {
-                                    Id = 2,
-                                    Date = new DateOnly(2024, 5, 15),
-                                    Time = new TimeOnly(17, 30),
-                                    Description = "End Trip"
-                                }
-                            },
-                            IsCustomTrip = true,
-                            CreatedAt = DateTime.UtcNow,
-                            UpdatedAt = DateTime.UtcNow,
-                            IsActive = true
-                        },
+            //             CreatedAt = DateTime.UtcNow,
+            //             UpdatedAt = DateTime.UtcNow,
+            //             IsActive = true
+            //         },
+            //         new CustomTrip
+            //         {
+            //             Trip = new Trip {
+            //                 Name = "My Trip 2",
+            //                 Description = "My Trip 2 Description",
+            //                 Landmark = "Landmark 2",
+            //                 Duration = "3 Days 2 Nights",
+            //                 Price = 500,
+            //                 Fee = 5,
+            //                 Origin = "Bangkok",
+            //                 Destination = "Nakhon Ratchasima",
+            //                 HostId = users[1].Id,
+            //                 Attendee = new List<TripAttendee>()
+            //                 {
+            //                     new TripAttendee
+            //                     {
+            //                         ApplicationUser = users[0],
+            //                         IsHost = false,
+            //                         AttendAt = DateTime.UtcNow,
+            //                         CancelAt = null,
+            //                     },
+            //                     new TripAttendee
+            //                     {
+            //                         ApplicationUser = users[1],
+            //                         IsHost = true,
+            //                         AttendAt = DateTime.UtcNow,
+            //                         CancelAt = null,
+            //                     }
+            //                 },
+            //                 TypeOfTripId = typeOfTrips[0].Id,
+            //                 TypeOfTrip = typeOfTrips[0],
+            //                 TripAgenda = new List<TripAgenda>
+            //                 {
+            //                         new TripAgenda
+            //                     {
+            //                         Id = 1,
+            //                         Date = new DateOnly(2024, 5, 12),
+            //                         Time = new TimeOnly(8, 30),
+            //                         Description = "Start Trip"
+            //                     },
+            //                     new TripAgenda
+            //                     {
+            //                         Id = 2,
+            //                         Date = new DateOnly(2024, 5, 15),
+            //                         Time = new TimeOnly(17, 30),
+            //                         Description = "End Trip"
+            //                     }
+            //                 },
+            //                 IsCustomTrip = true,
+            //                 CreatedAt = DateTime.UtcNow,
+            //                 UpdatedAt = DateTime.UtcNow,
+            //                 IsActive = true
+            //             },
 
-                        CreatedAt = DateTime.UtcNow,
-                        UpdatedAt = DateTime.UtcNow,
-                        IsActive = true
-                    },
-                };
-                await context.CustomTrips.AddRangeAsync(customTrips);
-                await context.SaveChangesAsync();
-            }
+            //             CreatedAt = DateTime.UtcNow,
+            //             UpdatedAt = DateTime.UtcNow,
+            //             IsActive = true
+            //         },
+            //     };
+            //     await context.CustomTrips.AddRangeAsync(customTrips);
+            //     await context.SaveChangesAsync();
+            // }
 
 
         }

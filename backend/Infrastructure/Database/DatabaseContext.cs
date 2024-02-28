@@ -20,7 +20,7 @@ namespace Infrastructure.Database
         public DbSet<Trip> Trips { get; set; }
         public DbSet<TypeOfTrip> TypeOfTrips { get; set; }
         public DbSet<TripAgenda> TripAgendas { get; set; }
-        public DbSet<CustomTrip> CustomTrips { get; set; }
+        // public DbSet<CustomTrip> CustomTrips { get; set; }
         public DbSet<TripAttendee> TripAttendees { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Contact> Contacts { get; set; }
@@ -33,7 +33,7 @@ namespace Infrastructure.Database
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new ApplictionUserConfiguration());
             builder.ApplyConfiguration(new TripConfiguration());
-            builder.ApplyConfiguration(new CustomTripConfiguration());
+            // builder.ApplyConfiguration(new CustomTripConfiguration());
             builder.ApplyConfiguration(new TripAttendeeConfiguration());
             builder.ApplyConfiguration(new TripAgendaConfiguration());
             builder.ApplyConfiguration(new TypeOfTripConfiguration());

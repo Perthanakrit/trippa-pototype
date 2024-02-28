@@ -26,7 +26,7 @@ namespace Core.Extension
             services.Configure<MailSettings>(config.GetSection("MailSettings"));
 
             services.AddScoped<ITripService, TripService>();
-            services.AddScoped<ICustomTripService, CustomTripService>();
+            // services.AddScoped<ICustomTripService, CustomTripService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddTransient<IApiKeyValidation, ApiKeyValidation>();
             services.AddHttpContextAccessor();
