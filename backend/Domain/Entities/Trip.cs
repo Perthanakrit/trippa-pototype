@@ -17,8 +17,6 @@ namespace Domain.Entities
         public string Destination { get; set; }
         public int MaxAttendees { get; set; }
         public Guid TypeOfTripId { get; set; } // Foreign key
-        public string HostId { get; set; }
-        public bool IsCustomTrip { get; set; }
         #region Relationships
         public TypeOfTrip TypeOfTrip { get; set; } // Navigation property
         public ICollection<TripPhoto> Photos { get; set; }

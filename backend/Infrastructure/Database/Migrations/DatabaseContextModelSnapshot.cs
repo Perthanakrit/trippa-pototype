@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Infrastructure.database.Migrations
+namespace Infrastructure.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     partial class DatabaseContextModelSnapshot : ModelSnapshot
@@ -80,9 +80,6 @@ namespace Infrastructure.database.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
-                    b.Property<Guid>("UserPhotoId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -93,6 +90,126 @@ namespace Infrastructure.database.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.CommunityTrip", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AgeRange")
+                        .IsRequired()
+                        .HasMaxLength(125)
+                        .HasColumnType("character varying(125)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Duration")
+                        .HasMaxLength(225)
+                        .HasColumnType("character varying(225)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasMaxLength(125)
+                        .HasColumnType("character varying(125)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CommunityTrips", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.CommunityTripAppointment", b =>
+                {
+                    b.Property<Guid>("CommuTripId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<TimeOnly>("Time")
+                        .HasColumnType("time without time zone");
+
+                    b.HasKey("CommuTripId", "Id");
+
+                    b.HasIndex("CommuTripId")
+                        .IsUnique();
+
+                    b.ToTable("CommunityTripAppointments", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.CommunityTripAttendee", b =>
+                {
+                    b.Property<Guid>("CommunityTripId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("AttendAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("CancelAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsAccepted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsHost")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("CommunityTripId", "ApplicationUserId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("CommunityTripAttendees", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.CommunityTripPhoto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CommunityTripId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommunityTripId");
+
+                    b.ToTable("CommunityTripPhotos", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Contact", b =>
@@ -115,32 +232,6 @@ namespace Infrastructure.database.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Contacts");
-                });
-
-            modelBuilder.Entity("Domain.Entities.CustomTrip", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("TripId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TripId")
-                        .IsUnique();
-
-                    b.ToTable("CustomTrips", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Trip", b =>
@@ -166,14 +257,7 @@ namespace Infrastructure.database.Migrations
                     b.Property<float>("Fee")
                         .HasColumnType("real");
 
-                    b.Property<string>("HostId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsCustomTrip")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Landmark")
@@ -471,6 +555,47 @@ namespace Infrastructure.database.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.CommunityTripAppointment", b =>
+                {
+                    b.HasOne("Domain.Entities.CommunityTrip", "CommuTrip")
+                        .WithOne("Appointment")
+                        .HasForeignKey("Domain.Entities.CommunityTripAppointment", "CommuTripId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CommuTrip");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CommunityTripAttendee", b =>
+                {
+                    b.HasOne("Domain.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany("AttendeedCommunityTrip")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.CommunityTrip", "CommunityTrip")
+                        .WithMany("Attendees")
+                        .HasForeignKey("CommunityTripId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("CommunityTrip");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CommunityTripPhoto", b =>
+                {
+                    b.HasOne("Domain.Entities.CommunityTrip", "CommunityTrip")
+                        .WithMany("Photos")
+                        .HasForeignKey("CommunityTripId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CommunityTrip");
+                });
+
             modelBuilder.Entity("Domain.Entities.Contact", b =>
                 {
                     b.HasOne("Domain.Entities.ApplicationUser", "User")
@@ -479,17 +604,6 @@ namespace Infrastructure.database.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.CustomTrip", b =>
-                {
-                    b.HasOne("Domain.Entities.Trip", "Trip")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.CustomTrip", "TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Trip");
                 });
 
             modelBuilder.Entity("Domain.Entities.Trip", b =>
@@ -608,11 +722,22 @@ namespace Infrastructure.database.Migrations
 
             modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
                 {
+                    b.Navigation("AttendeedCommunityTrip");
+
                     b.Navigation("AttendeedTrips");
 
                     b.Navigation("Contacts");
 
                     b.Navigation("Image");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CommunityTrip", b =>
+                {
+                    b.Navigation("Appointment");
+
+                    b.Navigation("Attendees");
+
+                    b.Navigation("Photos");
                 });
 
             modelBuilder.Entity("Domain.Entities.Trip", b =>

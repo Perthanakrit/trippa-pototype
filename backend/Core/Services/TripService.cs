@@ -97,8 +97,6 @@ namespace Core.Services
                     Id = Guid.NewGuid(),
                     Url = x.Url,
                 }).ToList(),
-                HostId = _userAccessor.GetUserId(),
-                IsCustomTrip = true,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
                 IsActive = true
@@ -190,15 +188,15 @@ namespace Core.Services
                 throw new ArgumentException($"The user is not found, {JsonConvert.SerializeObject(_userAccessor.GetUsername())}");
             }
 
-            string Host = trip.HostId;
+            string host = trip.Attendee.FirstOrDefault(x => x.IsHost).ApplicationUserId;
 
             TripAttendee attendee = trip.Attendee.FirstOrDefault(x => x.ApplicationUser.UserName == user.UserName);
             // If the user is the host, cancel the activity
-            if (attendee != null && Host == user.Id)
+            if (attendee != null && host == user.Id)
                 trip.IsActive = !trip.IsActive;
 
             // If the user is not the host, add or remove the user from the attendees
-            if (attendee != null && Host != user.Id)
+            if (attendee != null && host != user.Id)
                 trip.Attendee.Remove(attendee);
 
             // AddAttendee
@@ -224,7 +222,10 @@ namespace Core.Services
         {
             // Accept the attendee -> IsAccepted = true
             Trip trip = await _repository.GetOneTrip(tripId);
-            if (trip == null || trip.HostId != _userAccessor.GetUserId())
+
+            string hostId = trip.Attendee.FirstOrDefault(x => x.IsHost).ApplicationUserId;
+
+            if (trip == null || hostId != _userAccessor.GetUserId())
             {
                 throw new ArgumentException("The trip is not found");
             }
@@ -258,7 +259,8 @@ namespace Core.Services
             // Reject the attendee -> Remove the attendee from the list
 
             Trip trip = await _repository.GetOneTrip(tripId);
-            if (trip == null || trip.HostId != _userAccessor.GetUserId())
+            string hostId = trip.Attendee.FirstOrDefault(x => x.IsHost).ApplicationUserId;
+            if (trip == null || hostId != _userAccessor.GetUserId())
             {
                 throw new ArgumentException("The trip is not found");
             }

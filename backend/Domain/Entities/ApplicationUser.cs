@@ -13,10 +13,10 @@ namespace Domain.Entities
         public string DisplayName { get; set; }
         public string Bio { get; set; }
         #region relationship 
-        public Guid UserPhotoId { get; set; }
         public virtual UserPhoto Image { get; set; }
         public virtual ICollection<Contact> Contacts { get; set; }
         public virtual ICollection<TripAttendee> AttendeedTrips { get; set; }
+        public virtual ICollection<CommunityTripAttendee> AttendeedCommunityTrip { get; set; }
         #endregion
     }
 }

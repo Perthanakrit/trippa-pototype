@@ -27,8 +27,8 @@ namespace Infrastructure.Configs
             builder.Property(e => e.Fee).IsRequired();
             builder.Property(e => e.Origin).IsRequired();
             builder.Property(e => e.Destination).IsRequired();
-            builder.Property(e => e.HostId).IsRequired();
-
+            builder.Property(e => e.MaxAttendees).IsRequired();
+            builder.Property(e => e.TypeOfTripId).IsRequired();
             // TripAgenda
             builder
                 .HasMany(a => a.TripAgenda)

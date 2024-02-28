@@ -10,7 +10,8 @@ namespace Domain.Entities
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
         public bool IsHost { get; set; }
-        public DateTime AttendAt { get; set; }
-        public DateTime? CancelAt { get; set; }
+        public bool IsAccepted { get; set; } = false;
+        public DateTime AttendAt { get; set; } = DateTime.UtcNow;
+        public DateTime? CancelAt { get; set; } = DateTime.UtcNow;
     }
 }

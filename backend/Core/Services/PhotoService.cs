@@ -65,7 +65,7 @@ namespace Core.Services
 
             if (user.Image != null)
             {
-                await _photoCloudinary.DeletePhotoAsync(user.UserPhotoId.ToString());
+                await _photoCloudinary.DeletePhotoAsync(user.Image.PublicId);
             }
 
             bool isInvoke = await _userPhotoRepo.AddAsync(userPhoto);
@@ -75,7 +75,6 @@ namespace Core.Services
             }
 
             user.Image = userPhoto;
-            user.UserPhotoId = userPhoto.Id;
 
             await _userManager.UpdateAsync(user);
 

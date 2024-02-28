@@ -4,10 +4,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Infrastructure.database.Migrations
+namespace Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigrations : Migration
+    public partial class InitialEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,7 +33,6 @@ namespace Infrastructure.database.Migrations
                     Id = table.Column<string>(type: "text", nullable: false),
                     DisplayName = table.Column<string>(type: "text", nullable: true),
                     Bio = table.Column<string>(type: "text", nullable: true),
-                    Image = table.Column<string>(type: "text", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -52,6 +51,23 @@ namespace Infrastructure.database.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CommunityTrips",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Location = table.Column<string>(type: "character varying(125)", maxLength: 125, nullable: false),
+                    Duration = table.Column<string>(type: "character varying(225)", maxLength: 225, nullable: true),
+                    AgeRange = table.Column<string>(type: "character varying(125)", maxLength: 125, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CommunityTrips", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -193,6 +209,101 @@ namespace Infrastructure.database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserPhotos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    Url = table.Column<string>(type: "text", nullable: false),
+                    PublicId = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserPhotos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserPhotos_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CommunityTripAppointments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    CommuTripId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    Time = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    Description = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CommunityTripAppointments", x => new { x.CommuTripId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_CommunityTripAppointments_CommunityTrips_CommuTripId",
+                        column: x => x.CommuTripId,
+                        principalTable: "CommunityTrips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CommunityTripAttendees",
+                columns: table => new
+                {
+                    ApplicationUserId = table.Column<string>(type: "text", nullable: false),
+                    CommunityTripId = table.Column<Guid>(type: "uuid", nullable: false),
+                    IsHost = table.Column<bool>(type: "boolean", nullable: false),
+                    IsAccepted = table.Column<bool>(type: "boolean", nullable: false),
+                    AttendAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CancelAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CommunityTripAttendees", x => new { x.CommunityTripId, x.ApplicationUserId });
+                    table.ForeignKey(
+                        name: "FK_CommunityTripAttendees_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CommunityTripAttendees_CommunityTrips_CommunityTripId",
+                        column: x => x.CommunityTripId,
+                        principalTable: "CommunityTrips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CommunityTripPhotos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CommunityTripId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    Url = table.Column<string>(type: "text", nullable: false),
+                    PublicId = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CommunityTripPhotos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CommunityTripPhotos_CommunityTrips_CommunityTripId",
+                        column: x => x.CommunityTripId,
+                        principalTable: "CommunityTrips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Trips",
                 columns: table => new
                 {
@@ -205,8 +316,7 @@ namespace Infrastructure.database.Migrations
                     Fee = table.Column<float>(type: "real", nullable: false),
                     Origin = table.Column<string>(type: "text", nullable: false),
                     Destination = table.Column<string>(type: "text", nullable: false),
-                    HostId = table.Column<string>(type: "text", nullable: false),
-                    IsCustomTrip = table.Column<bool>(type: "boolean", nullable: false),
+                    MaxAttendees = table.Column<int>(type: "integer", nullable: false),
                     TypeOfTripId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -224,34 +334,13 @@ namespace Infrastructure.database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CustomTrips",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    TripId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CustomTrips", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CustomTrips_Trips_TripId",
-                        column: x => x.TripId,
-                        principalTable: "Trips",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TripAgendas",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false),
                     TripId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Time = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    Time = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
                     Description = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false)
                 },
                 constraints: table =>
@@ -272,6 +361,7 @@ namespace Infrastructure.database.Migrations
                     ApplicationUserId = table.Column<string>(type: "text", nullable: false),
                     TripId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsHost = table.Column<bool>(type: "boolean", nullable: false),
+                    IsAccepted = table.Column<bool>(type: "boolean", nullable: false),
                     AttendAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CancelAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
@@ -286,6 +376,29 @@ namespace Infrastructure.database.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TripAttendees_Trips_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TripPhotos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TripId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    Url = table.Column<string>(type: "text", nullable: true),
+                    PublicId = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TripPhotos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TripPhotos_Trips_TripId",
                         column: x => x.TripId,
                         principalTable: "Trips",
                         principalColumn: "Id",
@@ -330,14 +443,25 @@ namespace Infrastructure.database.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_CommunityTripAppointments_CommuTripId",
+                table: "CommunityTripAppointments",
+                column: "CommuTripId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CommunityTripAttendees_ApplicationUserId",
+                table: "CommunityTripAttendees",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CommunityTripPhotos_CommunityTripId",
+                table: "CommunityTripPhotos",
+                column: "CommunityTripId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Contacts_UserId",
                 table: "Contacts",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CustomTrips_TripId",
-                table: "CustomTrips",
-                column: "TripId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TripAttendees_TripId",
@@ -345,9 +469,20 @@ namespace Infrastructure.database.Migrations
                 column: "TripId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TripPhotos_TripId",
+                table: "TripPhotos",
+                column: "TripId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Trips_TypeOfTripId",
                 table: "Trips",
                 column: "TypeOfTripId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPhotos_UserId",
+                table: "UserPhotos",
+                column: "UserId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -369,10 +504,16 @@ namespace Infrastructure.database.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Contacts");
+                name: "CommunityTripAppointments");
 
             migrationBuilder.DropTable(
-                name: "CustomTrips");
+                name: "CommunityTripAttendees");
+
+            migrationBuilder.DropTable(
+                name: "CommunityTripPhotos");
+
+            migrationBuilder.DropTable(
+                name: "Contacts");
 
             migrationBuilder.DropTable(
                 name: "TripAgendas");
@@ -381,13 +522,22 @@ namespace Infrastructure.database.Migrations
                 name: "TripAttendees");
 
             migrationBuilder.DropTable(
+                name: "TripPhotos");
+
+            migrationBuilder.DropTable(
+                name: "UserPhotos");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "CommunityTrips");
 
             migrationBuilder.DropTable(
                 name: "Trips");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "TypeOfTrips");

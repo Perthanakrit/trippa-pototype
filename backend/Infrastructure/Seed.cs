@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Core.Utility;
 using Domain.Entities;
 using Infrastructure.Database;
@@ -61,6 +57,14 @@ namespace Infrastructure
                                 Channel = "Phone",
                                 Name = "012345678"
                             }
+                        },
+                        Image = new UserPhoto
+                        {
+                            Url = "https://fastly.picsum.photos/id/1/367/267.jpg?hmac=jZdc5TviQPVhxLyvyU8siO-I5FMVXVZpBhsBYKbBJpM",
+                            UserId = "13b51690-a6e1-40b5-ae7b-651626f07a80",
+                            CreatedAt = DateTime.UtcNow,
+                            UpdatedAt = DateTime.UtcNow,
+                            IsActive = true
                         }
                     },
                     new ApplicationUser
@@ -81,6 +85,14 @@ namespace Infrastructure
                                 Channel = "Phone",
                                 Name = "987654321"
                             }
+                        },
+                        Image = new UserPhoto
+                        {
+                            Url = "https://fastly.picsum.photos/id/1/367/267.jpg?hmac=jZdc5TviQPVhxLyvyU8siO-I5FMVXVZpBhsBYKbBJpM",
+                            UserId = "13b51690-a6e1-40b5-ae7b-651626f07a80",
+                            CreatedAt = DateTime.UtcNow,
+                            UpdatedAt = DateTime.UtcNow,
+                            IsActive = true
                         }
                     },
                     new ApplicationUser
@@ -101,6 +113,14 @@ namespace Infrastructure
                                 Channel = "Phone",
                                 Name = "123456789"
                             }
+                        },
+                        Image = new UserPhoto
+                        {
+                            Url = "https://fastly.picsum.photos/id/1/367/267.jpg?hmac=jZdc5TviQPVhxLyvyU8siO-I5FMVXVZpBhsBYKbBJpM",
+                            UserId = "13b51690-a6e1-40b5-ae7b-651626f07a80",
+                            CreatedAt = DateTime.UtcNow,
+                            UpdatedAt = DateTime.UtcNow,
+                            IsActive = true
                         }
                     },
                 };
@@ -124,6 +144,7 @@ namespace Infrastructure
                 {
                     new Trip
                     {
+                        Id = Guid.NewGuid(),
                         Name = "Trip 1",
                         Description = "Trip 1 Description",
                         Landmark = "Landmark 1",
@@ -132,7 +153,25 @@ namespace Infrastructure
                         Fee = 10,
                         Origin = "Origin 1",
                         Destination = "Destination 1",
-                        HostId = users[2].Id,
+                        MaxAttendees = 10,
+                        // HostId = users[2].Id,
+                        TripAgenda = new List<TripAgenda>
+                        {
+                            new TripAgenda
+                            {
+                                Id = 1,
+                                Date = new DateOnly(2024, 3, 1),
+                                Time = new TimeOnly(9, 30),
+                                Description = "Start Trip"
+                            },
+                            new TripAgenda
+                            {
+                                Id = 2,
+                                Date = new DateOnly(2024, 3, 3),
+                                Time = new TimeOnly(16, 30),
+                                Description = "End Trip"
+                            }
+                        },
                         Attendee = new List<TripAttendee>()
                         {
                             new TripAttendee
@@ -145,13 +184,14 @@ namespace Infrastructure
                         },
                         TypeOfTripId = typeOfTrips[0].Id,
                         TypeOfTrip = typeOfTrips[0],
-                        IsCustomTrip = false,
+
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
                         IsActive = true
                     },
                     new Trip
                     {
+                        Id = Guid.NewGuid(),
                         Name = "Trip 2",
                         Description = "Trip 2 Description",
                         Landmark = "Landmark 2",
@@ -160,7 +200,25 @@ namespace Infrastructure
                         Fee = 20,
                         Origin = "Origin 2",
                         Destination = "Destination 2",
-                        HostId = users[2].Id,
+                        MaxAttendees = 20,
+
+                        TripAgenda = new List<TripAgenda>
+                        {
+                            new TripAgenda
+                            {
+                                Id = 1,
+                                Date = new DateOnly(2024, 4, 1),
+                                Time = new TimeOnly(9, 30),
+                                Description = "Start Trip"
+                            },
+                            new TripAgenda
+                            {
+                                Id = 2,
+                                Date = new DateOnly(2024, 4, 3),
+                                Time = new TimeOnly(16, 30),
+                                Description = "End Trip"
+                            }
+                        },
                         Attendee = new List<TripAttendee>()
                         {
                             new TripAttendee
@@ -173,7 +231,7 @@ namespace Infrastructure
                         },
                         TypeOfTripId = typeOfTrips[2].Id,
                         TypeOfTrip = typeOfTrips[2],
-                        IsCustomTrip = false,
+                        // IsCustomTrip = false,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
                         IsActive = true
@@ -185,129 +243,89 @@ namespace Infrastructure
                 await context.SaveChangesAsync();
             }
 
-            // if (!await context.CustomTrips.AnyAsync())
-            // {
-            //     List<CustomTrip> customTrips = new List<CustomTrip> {
-            //         new CustomTrip
-            //         {
-            //             Trip = new Trip {
-            //                 Name = "My Trip 1",
-            //                 Description = "My Trip 1 Description",
-            //                 Landmark = "Landmark 1",
-            //                 Duration = "3 Days 2 Nights",
-            //                 Price = 500,
-            //                 Fee = 5,
-            //                 Origin = "Bangkok",
-            //                 Destination = "Phuket",
-            //                 HostId = users[0].Id,
-            //                 Attendee = new List<TripAttendee>()
-            //                 {
-            //                     new TripAttendee
-            //                     {
-            //                         ApplicationUser = users[0],
-            //                         IsHost = true,
-            //                         AttendAt = DateTime.UtcNow,
-            //                         CancelAt = null,
-            //                     },
-            //                     new TripAttendee
-            //                     {
-            //                         ApplicationUser = users[1],
-            //                         IsHost = false,
-            //                         AttendAt = DateTime.UtcNow,
-            //                         CancelAt = null,
-            //                     }
-            //                 },
-            //                 TypeOfTripId = typeOfTrips[2].Id,
-            //                 TypeOfTrip = typeOfTrips[2],
-            //                 TripAgenda = new List<TripAgenda>
-            //                 {
-            //                     new TripAgenda
-            //                     {
-            //                         Id = 1,
-            //                         Date = new DateOnly(2024, 5, 12),
-            //                         Time = new TimeOnly(8, 30),
-            //                         Description = "Start Trip"
-            //                     },
-            //                     new TripAgenda
-            //                     {
-            //                         Id = 2,
-            //                         Date = new DateOnly(2024, 5, 15),
-            //                         Time = new TimeOnly(17, 30),
-            //                         Description = "End Trip"
-            //                     }
-            //                 },
-            //                 IsCustomTrip = true,
-            //                 CreatedAt = DateTime.UtcNow,
-            //                 UpdatedAt = DateTime.UtcNow,
-            //                 IsActive = true
-            //             },
+            if (!await context.CommunityTrips.AnyAsync())
+            {
+                List<CommunityTrip> communityTrips = new()
+                {
+                    new CommunityTrip
+                    {
+                        Id = Guid.NewGuid(),
+                        Location = "Location 1",
+                        Duration = "1 Day",
+                        AgeRange = "20-30",
+                        Appointment = new CommunityTripAppointment
+                        {
+                            Id = 1,
+                            Description = "At Trian Station",
+                            Date = new DateOnly(),
+                            Time = new TimeOnly(),
+                        },
+                        Attendees = new List<CommunityTripAttendee>
+                        {
+                            new CommunityTripAttendee
+                            {
+                                ApplicationUser = users[2],
+                                IsHost = true,
+                                AttendAt = DateTime.UtcNow,
+                                CancelAt = null,
+                            }
+                        },
+                        Photos = new List<CommunityTripPhoto>
+                        {
+                            new CommunityTripPhoto
+                            {
+                                Url = "https://fastly.picsum.photos/id/10/367/267.jpg?hmac=XRdepQX9y39tepelazZaEAxb6SbCWtual9_w28FPb6U",
+                                CreatedAt = DateTime.UtcNow,
+                                UpdatedAt = DateTime.UtcNow,
+                                IsActive = true
+                            }
+                        },
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow,
+                        IsActive = true
+                    },
+                    new CommunityTrip
+                    {
+                        Id = Guid.NewGuid(),
+                        Location = "Location 2",
+                        Duration = "2 Days 1 Night",
+                        AgeRange = "20-30",
+                        Appointment = new CommunityTripAppointment
+                        {
+                            Id = 1,
+                            Description = "At Trian Station",
+                            Date = new DateOnly(),
+                            Time = new TimeOnly(),
+                        },
+                        Attendees = new List<CommunityTripAttendee>
+                        {
+                            new CommunityTripAttendee
+                            {
+                                ApplicationUser = users[2],
+                                IsHost = true,
+                                AttendAt = DateTime.UtcNow,
+                                CancelAt = null,
+                            }
+                        },
+                        Photos = new List<CommunityTripPhoto>
+                        {
+                            new CommunityTripPhoto
+                            {
+                                Url = "https://fastly.picsum.photos/id/11/367/267.jpg?hmac=Pqqy5lI70sWPJXIxlIgdd2tcga3zmI8Otf9rnP5t8T0",
+                                CreatedAt = DateTime.UtcNow,
+                                UpdatedAt = DateTime.UtcNow,
+                                IsActive = true
+                            }
+                        },
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow,
+                        IsActive = true
+                    },
+                };
 
-            //             CreatedAt = DateTime.UtcNow,
-            //             UpdatedAt = DateTime.UtcNow,
-            //             IsActive = true
-            //         },
-            //         new CustomTrip
-            //         {
-            //             Trip = new Trip {
-            //                 Name = "My Trip 2",
-            //                 Description = "My Trip 2 Description",
-            //                 Landmark = "Landmark 2",
-            //                 Duration = "3 Days 2 Nights",
-            //                 Price = 500,
-            //                 Fee = 5,
-            //                 Origin = "Bangkok",
-            //                 Destination = "Nakhon Ratchasima",
-            //                 HostId = users[1].Id,
-            //                 Attendee = new List<TripAttendee>()
-            //                 {
-            //                     new TripAttendee
-            //                     {
-            //                         ApplicationUser = users[0],
-            //                         IsHost = false,
-            //                         AttendAt = DateTime.UtcNow,
-            //                         CancelAt = null,
-            //                     },
-            //                     new TripAttendee
-            //                     {
-            //                         ApplicationUser = users[1],
-            //                         IsHost = true,
-            //                         AttendAt = DateTime.UtcNow,
-            //                         CancelAt = null,
-            //                     }
-            //                 },
-            //                 TypeOfTripId = typeOfTrips[0].Id,
-            //                 TypeOfTrip = typeOfTrips[0],
-            //                 TripAgenda = new List<TripAgenda>
-            //                 {
-            //                         new TripAgenda
-            //                     {
-            //                         Id = 1,
-            //                         Date = new DateOnly(2024, 5, 12),
-            //                         Time = new TimeOnly(8, 30),
-            //                         Description = "Start Trip"
-            //                     },
-            //                     new TripAgenda
-            //                     {
-            //                         Id = 2,
-            //                         Date = new DateOnly(2024, 5, 15),
-            //                         Time = new TimeOnly(17, 30),
-            //                         Description = "End Trip"
-            //                     }
-            //                 },
-            //                 IsCustomTrip = true,
-            //                 CreatedAt = DateTime.UtcNow,
-            //                 UpdatedAt = DateTime.UtcNow,
-            //                 IsActive = true
-            //             },
-
-            //             CreatedAt = DateTime.UtcNow,
-            //             UpdatedAt = DateTime.UtcNow,
-            //             IsActive = true
-            //         },
-            //     };
-            //     await context.CustomTrips.AddRangeAsync(customTrips);
-            //     await context.SaveChangesAsync();
-            // }
+                await context.CommunityTrips.AddRangeAsync(communityTrips);
+                await context.SaveChangesAsync();
+            }
 
 
         }

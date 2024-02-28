@@ -16,15 +16,21 @@ namespace Infrastructure.Database
         }
 
         #region DbSet List
+        public DbSet<TypeOfTrip> TypeOfTrips { get; set; }
 
         public DbSet<Trip> Trips { get; set; }
-        public DbSet<TypeOfTrip> TypeOfTrips { get; set; }
         public DbSet<TripAgenda> TripAgendas { get; set; }
-        // public DbSet<CustomTrip> CustomTrips { get; set; }
         public DbSet<TripAttendee> TripAttendees { get; set; }
+        public DbSet<TripPhoto> TripPhotos { get; set; }
+
+        public DbSet<CommunityTrip> CommunityTrips { get; set; }
+        public DbSet<CommunityTripAppointment> CommunityTripAppointments { get; set; }
+        public DbSet<CommunityTripAttendee> CommunityTripAttendees { get; set; }
+        public DbSet<CommunityTripPhoto> CommunityTripPhotos { get; set; }
+
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Contact> Contacts { get; set; }
-        public DbSet<TripPhoto> TripPhotos { get; set; }
+
         public DbSet<UserPhoto> UserPhotos { get; set; }
         #endregion
 
@@ -32,12 +38,18 @@ namespace Infrastructure.Database
         {
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new ApplictionUserConfiguration());
+            builder.ApplyConfiguration(new UserPhotoConfiguration());
+
             builder.ApplyConfiguration(new TripConfiguration());
-            // builder.ApplyConfiguration(new CustomTripConfiguration());
             builder.ApplyConfiguration(new TripAttendeeConfiguration());
             builder.ApplyConfiguration(new TripAgendaConfiguration());
+
             builder.ApplyConfiguration(new TypeOfTripConfiguration());
-            builder.ApplyConfiguration(new UserPhotoConfiguration());
+
+            builder.ApplyConfiguration(new CommunityTripConfiguration());
+            builder.ApplyConfiguration(new CommunityTripAppointmentConfiguration());
+            builder.ApplyConfiguration(new CommunityTripAttendeeConfiguration());
+            builder.ApplyConfiguration(new CommunityTripPhotoConfiguration());
         }
     }
 }
