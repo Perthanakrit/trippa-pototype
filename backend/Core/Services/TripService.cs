@@ -180,7 +180,7 @@ namespace Core.Services
             {
                 throw new ArgumentException("The trip is not found");
             }
-
+            // throw new ArgumentException($"{JsonConvert.SerializeObject(_userAccessor.GetUserId())}");
             // ExistedUser
             ApplicationUser user = await _authRepo.FindByUsername(_userAccessor.GetUsername());
             if (user == null)

@@ -60,6 +60,7 @@ namespace Infrastructure.Database.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Location = table.Column<string>(type: "character varying(125)", maxLength: 125, nullable: false),
                     Duration = table.Column<string>(type: "character varying(225)", maxLength: 225, nullable: true),
+                    MaxAttendees = table.Column<int>(type: "integer", nullable: false),
                     AgeRange = table.Column<string>(type: "character varying(125)", maxLength: 125, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),

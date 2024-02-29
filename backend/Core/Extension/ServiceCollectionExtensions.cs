@@ -23,14 +23,16 @@ namespace Core.Extension
                 });
             });
 
-            services.Configure<MailSettings>(config.GetSection("MailSettings"));
-
-            services.AddScoped<ITripService, TripService>();
-            // services.AddScoped<ICustomTripService, CustomTripService>();
-            services.AddScoped<IAuthService, AuthService>();
-            services.AddTransient<IApiKeyValidation, ApiKeyValidation>();
             services.AddHttpContextAccessor();
             services.AddScoped<IUserAccessor, UserAccessor>();
+
+            services.Configure<MailSettings>(config.GetSection("MailSettings"));
+            services.AddScoped<ITripService, TripService>();
+            services.AddScoped<ICommunityTripService, CommunityTripService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddTransient<IApiKeyValidation, ApiKeyValidation>();
+
+
             services.AddScoped<IMailService, MailService>();
             services.Configure<CloudinaySettings>(config.GetSection("CloudinaySettings"));
             services.AddScoped<IPhotoService, PhotoService>();

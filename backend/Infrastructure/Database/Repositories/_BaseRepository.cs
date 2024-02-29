@@ -57,15 +57,26 @@ namespace Infrastructure.Database.Repositories
 
         public TEntity Remove(TEntity entity)
         {
-            entity.UpdatedAt = DateTime.UtcNow;
-            entity.IsActive = false;
+            // entity.UpdatedAt = DateTime.UtcNow;
+            // entity.IsActive = false;
             _context.Remove(entity);
             return entity;
         }
 
-        public Task<T> SaveChangesAsync<T>()
+        public async Task<T> SaveChangesAsync<T>()
         {
-            return _context.SaveChangesAsync() as Task<T>;
+            return await (_context.SaveChangesAsync() as Task<T>);
         }
+
+        public IQueryable<TEntity> GetByIdQueryable(Guid id)
+        {
+            return _context.Set<TEntity>().AsQueryable<TEntity>();
+        }
+
+        public IQueryable<TEntity> GetAllQueryable()
+        {
+            return _context.Set<TEntity>().AsQueryable<TEntity>();
+        }
+
     }
 }

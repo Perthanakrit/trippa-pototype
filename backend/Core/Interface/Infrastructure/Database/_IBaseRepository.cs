@@ -11,7 +11,9 @@ namespace Core.Interface.Infrastructure.Database
     public interface IBaseRepository<TEntity> where TEntity : IBaseEntity
     {
         Task<TEntity> GetById(Guid id);
+        IQueryable<TEntity> GetByIdQueryable(Guid id);
         Task<List<TEntity>> GetAll();
+        IQueryable<TEntity> GetAllQueryable();
         Task<bool> Exists(Expression<Func<TEntity, bool>> predicate);
         Task<TEntity> AddAsync(TEntity entity);
         TEntity Update(TEntity entity);

@@ -35,7 +35,7 @@ namespace Infrastructure.Database.Repositories
         {
             ApplicationUser user = await _db.ApplicationUsers
                                             .AsNoTracking()
-                                            .Where(u => u.Email.ToLower() == email.ToLower())
+                                            .Where(u => u.Email == email.ToLower())
                                             .Include(u => u.Image)
                                             .FirstOrDefaultAsync();
 
@@ -83,14 +83,10 @@ namespace Infrastructure.Database.Repositories
             return IdentityResult.Success;
         }
 
-        public async Task<bool> ExistedUserId(string id)
+        public async Task<ApplicationUser> ExistedUserId(string id)
         {
-            var user = await _db.ApplicationUsers.FirstOrDefaultAsync(u => u.Id == id);
-            if (user != null)
-            {
-                return true;
-            }
-            return false;
+            ApplicationUser user = await _db.ApplicationUsers.FirstOrDefaultAsync(u => u.Id == id);
+            return user;
         }
 
         public async Task<string> GetGeneralUserRole()

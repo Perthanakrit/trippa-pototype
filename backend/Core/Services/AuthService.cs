@@ -104,7 +104,7 @@ namespace Core.Services
             ApplicationUser newUser = new()
             {
                 UserName = input.DisplayName.ToLower(),
-                Email = input.Email,
+                Email = input.Email.ToLower(),
                 DisplayName = input.DisplayName,
                 Bio = input.Bio,
                 Image = null,

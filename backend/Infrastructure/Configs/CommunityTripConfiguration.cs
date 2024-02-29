@@ -28,6 +28,9 @@ namespace Infrastructure.Configs
                 .HasMaxLength(125)
                 .IsRequired();
 
+            builder
+                .Property(m => m.MaxAttendees)
+                .IsRequired();
 
             builder
                 .HasOne(a => a.Appointment)

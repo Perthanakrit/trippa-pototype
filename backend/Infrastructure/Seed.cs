@@ -201,7 +201,6 @@ namespace Infrastructure
                         Origin = "Origin 2",
                         Destination = "Destination 2",
                         MaxAttendees = 20,
-
                         TripAgenda = new List<TripAgenda>
                         {
                             new TripAgenda
@@ -253,6 +252,7 @@ namespace Infrastructure
                         Location = "Location 1",
                         Duration = "1 Day",
                         AgeRange = "20-30",
+                        MaxAttendees = 10,
                         Appointment = new CommunityTripAppointment
                         {
                             Id = 1,
@@ -281,6 +281,7 @@ namespace Infrastructure
                             }
                         },
                         CreatedAt = DateTime.UtcNow,
+
                         UpdatedAt = DateTime.UtcNow,
                         IsActive = true
                     },
@@ -290,6 +291,7 @@ namespace Infrastructure
                         Location = "Location 2",
                         Duration = "2 Days 1 Night",
                         AgeRange = "20-30",
+                        MaxAttendees = 10,
                         Appointment = new CommunityTripAppointment
                         {
                             Id = 1,

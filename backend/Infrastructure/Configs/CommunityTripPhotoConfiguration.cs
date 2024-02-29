@@ -18,6 +18,7 @@ namespace Infrastructure.Configs
             builder.HasOne(a => a.CommunityTrip)
                 .WithMany(a => a.Photos)
                 .HasForeignKey(a => a.CommunityTripId);
+
             builder
                 .ToTable("CommunityTripPhotos");
         }

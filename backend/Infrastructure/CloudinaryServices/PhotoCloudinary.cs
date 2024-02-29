@@ -24,7 +24,7 @@ namespace Infrastructure.CloudinaryServices
 
         }
 
-        public async Task<UploadPhotoResult> AddAsync(IFormFile file)
+        public async Task<UploadPhotoResult> AddAsync(IFormFile file, string folderName = "")
         {
             if (file.Length <= 0) return default;
 
@@ -35,6 +35,7 @@ namespace Infrastructure.CloudinaryServices
 
             ImageUploadParams uploadParams = new()
             {
+                Folder = folderName,
                 File = new FileDescription(fileName, stream),
                 Transformation = new Transformation().Height(500).Width(500).Crop("fill").Gravity("face")
             };

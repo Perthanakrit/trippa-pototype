@@ -12,7 +12,7 @@ namespace Core.Interface.Infrastructure.Database
         Task<ApplicationUser> FindByUsername(string userName);
         Task<ApplicationUser> FindByEmail(string email);
         Task<IdentityResult> CheckPassword(ApplicationUser entity, string password);
-        Task<bool> ExistedUserId(string id);
+        Task<ApplicationUser> ExistedUserId(string id);
         Task<string> GetGeneralUserRole();
         Task<IList<string>> GetRolesUser(ApplicationUser user);
         Task<IdentityResult> AddRoleToUser(ApplicationUser user, string role);

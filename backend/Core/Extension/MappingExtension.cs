@@ -14,6 +14,7 @@ namespace Core.Extension
             services.AddAutoMapper(typeof(TripMapping).Assembly);
             services.AddAutoMapper(typeof(AuthServiceMapping).Assembly);
             services.AddAutoMapper(typeof(UserMapping).Assembly);
+            services.AddAutoMapper(typeof(CommunityTripMapping).Assembly);
             return services;
         }
     }

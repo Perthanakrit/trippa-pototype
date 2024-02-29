@@ -9,5 +9,6 @@ namespace Core.Interface.security
     {
         string GetUsername();
         string GetUserId();
+        string GetEmail();
     }
 }

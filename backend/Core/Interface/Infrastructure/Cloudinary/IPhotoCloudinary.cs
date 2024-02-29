@@ -8,7 +8,7 @@ namespace Core.Interface.Infrastructure.Cloudinary
 {
     public interface IPhotoCloudinary
     {
-        Task<UploadPhotoResult> AddAsync(IFormFile file);
+        Task<UploadPhotoResult> AddAsync(IFormFile file, string folderName = "");
         Task<string> DeletePhotoAsync(string id);
     }
 

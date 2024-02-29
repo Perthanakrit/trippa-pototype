@@ -4,6 +4,7 @@ namespace Domain.Entities
     {
         public string Location { get; set; }
         public string Duration { get; set; }
+        public int MaxAttendees { get; set; }
         public string AgeRange { get; set; }
         public CommunityTripAppointment Appointment { get; set; }
         public ICollection<CommunityTripAttendee> Attendees { get; set; } = new List<CommunityTripAttendee>();

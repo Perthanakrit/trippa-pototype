@@ -118,6 +118,9 @@ namespace Infrastructure.Database.Migrations
                         .HasMaxLength(125)
                         .HasColumnType("character varying(125)");
 
+                    b.Property<int>("MaxAttendees")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 

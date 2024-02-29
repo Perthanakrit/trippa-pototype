@@ -22,6 +22,7 @@ namespace Infrastructure.Extension
             });
 
             services.AddScoped<ITripRepository, TripRepository>();
+            services.AddScoped<ICommunityTripRespository, CommunityTripRespository>();
             services.AddScoped<IAuthRespository, AuthRespository>();
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DatabaseContext>();
             services.AddStackExchangeRedisCache(redisOptions =>
