@@ -35,7 +35,7 @@ namespace Infrastructure.Database.Repositories
 
             if (string.IsNullOrEmpty(cachedTrip))
             {
-                trip = await base.GetById(id);
+                trip = await base.GetById<Trip>(id);
 
                 if (trip is null)
                 {

@@ -108,5 +108,15 @@ namespace Infrastructure.Database.Repositories
             _db.ApplicationUsers.Update(user);
             return await _db.SaveChangesAsync();
         }
+
+        public Task<bool> IsHostInTrip(string userId, Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> IsHostInCommuTrip(string userId, Guid tripId)
+        {
+            return await _db.CommunityTripAttendees.AnyAsync(u => u.ApplicationUserId == userId && u.CommunityTripId == tripId);
+        }
     }
 }

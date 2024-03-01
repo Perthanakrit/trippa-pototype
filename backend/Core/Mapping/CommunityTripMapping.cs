@@ -22,6 +22,11 @@ namespace Core.Mapping
 
             CreateMap<CommunityTripPhoto, CommuTripPhoto>()
                 .ForMember(d => d.Url, opt => opt.MapFrom(s => s.Url));
+
+            CreateMap<CommuTripAppointmentInput, CommunityTripAppointment>()
+                .ForMember(d => d.Date, opt => opt.MapFrom(s => s.Date))
+                .ForMember(d => d.Time, opt => opt.MapFrom(s => new TimeOnly(s.TimeHour, s.TimeMinute)))
+                .ForMember(d => d.Description, opt => opt.MapFrom(s => s.Description));
         }
     }
 }

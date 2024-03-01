@@ -43,15 +43,19 @@ namespace Infrastructure.Database.Repositories
             return await _context.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<TEntity> GetById(Guid id)
+        public async Task<TEntity> GetById<Tpop>(Guid id, Expression<Func<TEntity, Tpop>> include = null)
         {
+            if (include != null)
+            {
+                return await _context.Set<TEntity>().Include(include).FirstOrDefaultAsync(e => e.Id == id);
+            }
             return await _context.Set<TEntity>().FindAsync(id);
         }
 
         public TEntity Update(TEntity entity)
         {
             entity.UpdatedAt = DateTime.UtcNow;
-
+            _context.Set<TEntity>().Update(entity);
             return entity;
         }
 
@@ -68,15 +72,18 @@ namespace Infrastructure.Database.Repositories
             return await (_context.SaveChangesAsync() as Task<T>);
         }
 
-        public IQueryable<TEntity> GetByIdQueryable(Guid id)
+        public IQueryable<TEntity> GetByIdQueryable(Guid id, Expression<Func<TEntity, TEntity>> orderBy = null)
         {
-            return _context.Set<TEntity>().AsQueryable<TEntity>();
+            // if (orderBy != null)
+            // {
+            //     return _context.Set<TEntity>().Where(e => e.Id == id).OrderBy(orderBy);
+            // }
+            return _context.Set<TEntity>().Where(e => e.Id == id).AsQueryable();
         }
 
         public IQueryable<TEntity> GetAllQueryable()
         {
             return _context.Set<TEntity>().AsQueryable<TEntity>();
         }
-
     }
 }

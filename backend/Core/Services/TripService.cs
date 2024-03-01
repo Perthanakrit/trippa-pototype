@@ -112,7 +112,7 @@ namespace Core.Services
 
         public async Task<TripServiceResponse> DeleteTripAsync(Guid tripId)
         {
-            Trip existedTrip = await _repository.GetById(tripId);
+            Trip existedTrip = await _repository.GetById<Trip>(tripId);
             bool theTripIsNotExist = existedTrip == null;
             if (theTripIsNotExist)
             {
@@ -153,7 +153,7 @@ namespace Core.Services
 
         public async Task<TripServiceResponse> UpdateTripAsync(Guid tripId, TripServiceInput input)
         {
-            Trip existedTrip = await _repository.GetById(tripId);
+            Trip existedTrip = await _repository.GetById<Trip>(tripId);
             bool theTripIsNotExist = existedTrip == null;
             if (theTripIsNotExist)
             {

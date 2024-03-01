@@ -11,7 +11,6 @@ using Newtonsoft.Json;
 namespace Core.Services
 {
     public class CommunityTripService : ICommunityTripService
-
     {
         private readonly ICommunityTripRespository _commuTripRespo;
         private readonly IMapper _mapper;
@@ -141,11 +140,42 @@ namespace Core.Services
             throw new NotImplementedException();
         }
 
-        public Task UpdateTripAsync(Guid id, CommuTripInput input)
+        public async Task UpdateTripAsync(Guid id, CommuTripInput input)
         {
+            CommunityTrip trip = await _commuTripRespo.GetByIdQueryable(id).Include(t => t.Appointment).Select(t =>
+                new CommunityTrip
+                {
+                    Id = t.Id,
+                    Location = t.Location,
+                    Duration = t.Duration,
+                    AgeRange = t.AgeRange,
+                    MaxAttendees = t.MaxAttendees,
+                    Appointment = t.Appointment
+                }).FirstOrDefaultAsync(
+            );
 
+            if (trip is null)
+            {
+                throw new ArgumentException("Trip not found");
+            }
 
-            throw new NotImplementedException();
+            trip.Location = input.Location;
+            trip.Duration = input.Duration;
+            trip.AgeRange = input.AgeRange;
+            trip.MaxAttendees = input.MaxAttendees;
+            trip.Appointment.Date = input.Appointment.Date;
+            trip.Appointment.Time = new TimeOnly(input.Appointment.TimeHour, input.Appointment.TimeMinute);
+            trip.Appointment.Description = input.Appointment.Description;
+            // trip.Appointment = _mapper.Map<CommunityTripAppointment>(input.Appointment);
+
+            // throw new ArgumentException($"{JsonConvert.SerializeObject(trip)}");
+            _commuTripRespo.Update(trip);
+
+            bool isInvoke = await _commuTripRespo.SaveChangesAsync<int>() > 0;
+            if (!isInvoke)
+            {
+                throw new ArgumentException("Failed to update trip");
+            }
         }
 
         public async Task UploadPhotoAsync(Guid tripId, IFormFile file)

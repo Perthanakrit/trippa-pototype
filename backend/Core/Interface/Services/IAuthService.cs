@@ -11,6 +11,7 @@ namespace Core.Interface.Services
     {
         Task<LoginServiceOutput> Login(LoginServiceInput input);
         Task<RegisterServiceOutput> Register(RegisterServiceInput input);
+        Task<IEnumerable<CommunityTrip>> GetCommunityTripAsync(string userId);
     }
 
     public class LoginServiceInput

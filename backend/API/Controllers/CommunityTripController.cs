@@ -37,12 +37,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("{tripId}")]
-        public async Task<IActionResult> GetTrip(Guid tripId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetTrip(Guid id)
         {
             try
             {
-                var result = await _tripService.GetTripAsync(tripId);
+                var result = await _tripService.GetTripAsync(id);
                 return Ok(result);
             }
             catch (ArgumentException ex)
@@ -73,12 +73,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpDelete("{tripId}")]
-        public async Task<IActionResult> DeleteTrip(Guid tripId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTrip(Guid id)
         {
             try
             {
-                await _tripService.DeleteTripAsync(tripId);
+                await _tripService.DeleteTripAsync(id);
                 return Ok(new { message = "success" });
             }
             catch (ArgumentException ex)
@@ -91,12 +91,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("{tripId}/photo")]
-        public async Task<IActionResult> AddPhotoToTrip(Guid tripId, IFormFile file)
+        [HttpPost("{id}/photo")]
+        public async Task<IActionResult> AddPhotoToTrip(Guid id, IFormFile file)
         {
             try
             {
-                await _tripService.UploadPhotoAsync(tripId, file);
+                await _tripService.UploadPhotoAsync(id, file);
                 return Created("api/CommunityTrip", new { message = "success" });
             }
             catch (ArgumentException ex)
@@ -109,12 +109,13 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("{tripId}")]
-        public async Task<IActionResult> UpdateTrip(Guid tripId, [FromBody] CommuTripInput input)
+        [HttpPut("{id}")]
+        [Authorize(Policy = "IsTripHost")]
+        public async Task<IActionResult> UpdateTrip(Guid id, [FromBody] CommuTripInput input)
         {
             try
             {
-                await _tripService.UpdateTripAsync(tripId, input);
+                await _tripService.UpdateTripAsync(id, input);
                 return Ok(new { message = "success" });
             }
             catch (ArgumentException ex)

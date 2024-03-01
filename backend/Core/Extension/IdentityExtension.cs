@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.security;
 using Core.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Core.Extension
 {
-    public static class JwtExtension
+    public static class IdentityExtension
     {
         public static IServiceCollection AddJwtExtension(this IServiceCollection services, IConfiguration config)
         {
@@ -37,7 +38,16 @@ namespace Core.Extension
                 var defaultAuthBuilder = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme);
                 defaultAuthBuilder = defaultAuthBuilder.RequireAuthenticatedUser();
                 opt.DefaultPolicy = defaultAuthBuilder.Build();
+
+                opt.AddPolicy("IsTripHost", policy =>
+                {
+                    policy.Requirements.Add(new IsHostRequirementTrip());
+                    policy.Requirements.Add(new IsHostRequirement());
+                });
             });
+
+            services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
+            services.AddTransient<IAuthorizationHandler, IsHostRequirementTripHandler>();
 
             return services;
         }

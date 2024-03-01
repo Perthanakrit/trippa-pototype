@@ -30,6 +30,11 @@ namespace Core.Services
             _jwtSettings = jwtSetting;
         }
 
+        public Task<IEnumerable<CommunityTrip>> GetCommunityTripAsync(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<LoginServiceOutput> Login(LoginServiceInput input)
         {
             ApplicationUser user = await _authRespository.FindByEmail(input.Email);
@@ -135,5 +140,6 @@ namespace Core.Services
             // _authRespository.Delete(newUser);
             throw new Exception(result.Errors.First().Description);
         }
+
     }
 }

@@ -17,5 +17,7 @@ namespace Core.Interface.Infrastructure.Database
         Task<IList<string>> GetRolesUser(ApplicationUser user);
         Task<IdentityResult> AddRoleToUser(ApplicationUser user, string role);
         Task<int> AddUserContact(ApplicationUser user, List<Contact> contacts);
+        Task<bool> IsHostInTrip(string userId, Guid id);
+        Task<bool> IsHostInCommuTrip(string userId, Guid tripId);
     }
 }
