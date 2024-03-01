@@ -12,6 +12,6 @@ namespace Domain.Entities
         public bool IsHost { get; set; }
         public bool IsAccepted { get; set; } = false;
         public DateTime AttendAt { get; set; } = DateTime.UtcNow;
-        public DateTime? CancelAt { get; set; } = DateTime.UtcNow;
+        public DateTime? CancelAt { get; set; } = null;
     }
 }

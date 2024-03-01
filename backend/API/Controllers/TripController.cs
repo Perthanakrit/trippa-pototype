@@ -81,7 +81,7 @@ namespace API.Controllers
 
         [HttpPut]
         [Route("[action]/{id}")]
-        [Authorize(Roles = SD.TourUser)]
+        [Authorize(Policy = "IsHostPolicy", Roles = SD.TourUser)]
         public async Task<IActionResult> UpdateTrip(Guid id, TripServiceInput input)
         {
             try
@@ -100,7 +100,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = SD.TourUser)]
+        [Authorize(Policy = "IsHostPolicy", Roles = SD.TourUser)]
         public async Task<IActionResult> DeleteTrip(Guid id)
         {
             try
@@ -138,6 +138,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "IsHostPolicy")]
         [Route("[action]/{tripId}")]
         public async Task<IActionResult> AcceptAttendee(Guid tripId, [FromQuery] string mail)
         {
@@ -157,6 +158,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "IsHostPolicy")]
         [Route("[action]/{tripId}")]
         public async Task<IActionResult> RejectAttendee(Guid tripId, [FromQuery] string mail)
         {

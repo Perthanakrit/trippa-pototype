@@ -223,13 +223,6 @@ namespace Core.Services
             // Accept the attendee -> IsAccepted = true
             Trip trip = await _repository.GetOneTrip(tripId);
 
-            string hostId = trip.Attendee.FirstOrDefault(x => x.IsHost).ApplicationUserId;
-
-            if (trip == null || hostId != _userAccessor.GetUserId())
-            {
-                throw new ArgumentException("The trip is not found");
-            }
-
             TripAttendee attendee = trip.Attendee.FirstOrDefault(x => x.ApplicationUser.Email == userId);
 
             if (attendee == null)

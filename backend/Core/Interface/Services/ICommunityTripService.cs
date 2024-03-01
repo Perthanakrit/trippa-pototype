@@ -14,8 +14,8 @@ namespace Core.Interface.Services
         Task<CommuTripResponse> GetTripAsync(Guid id);
         Task<List<CommuTripResponse>> GetListOfAllTripsAsync();
         Task UpdateAttendeeAsync(Guid tripId);
-        Task AcceptAttendeeAsync(Guid tripId, string userId);
-        Task RejectAttendeeAsync(Guid tripId, string userId);
+        Task AcceptAttendeeAsync(Guid tripId, MailInput email);
+        Task RejectAttendeeAsync(Guid tripId, MailInput email);
         Task UploadPhotoAsync(Guid tripId, IFormFile file);
     }
 
@@ -29,6 +29,7 @@ namespace Core.Interface.Services
         public CommuTripAppointmentDto Appointment { get; set; }
         public ICollection<CommuTripAttendeeDto> Attendees { get; set; } = new List<CommuTripAttendeeDto>();
         public ICollection<CommuTripPhoto> Photos { get; set; } = new List<CommuTripPhoto>();
+        public bool IsActive { get; set; }
     }
 
     public class CommuTripInput
@@ -68,5 +69,9 @@ namespace Core.Interface.Services
         public bool IsAccepted { get; set; }
     }
 
+    public struct MailInput
+    {
+        public string Email { get; set; }
+    }
 
 }

@@ -7,6 +7,14 @@ namespace Core.Mapping
     {
         public CommunityTripMapping()
         {
+            CreateMap<CommunityTrip, CommunityTrip>()
+                .ForMember(d => d.Attendees, opt => opt.MapFrom(s => s.Attendees.Select(a => new CommunityTripAttendee
+                {
+                    ApplicationUser = a.ApplicationUser,
+                    IsHost = a.IsHost,
+                    IsAccepted = a.IsAccepted
+                })));
+
             CreateMap<CommunityTrip, CommuTripResponse>()
                 .ForMember(d => d.Attendees, opt => opt.MapFrom(s => s.Attendees))
                 .ForMember(d => d.Appointment, opt => opt.MapFrom(s => s.Appointment))
@@ -14,9 +22,7 @@ namespace Core.Mapping
 
             CreateMap<CommunityTripAttendee, CommuTripAttendeeDto>()
                 .ForMember(d => d.UserName, opt => opt.MapFrom(s => s.ApplicationUser.UserName))
-                .ForMember(d => d.UserPhoto, opt => opt.MapFrom(s => s.ApplicationUser.Image.Url))
-                .ForMember(d => d.IsHost, opt => opt.MapFrom(s => s.IsHost))
-                .ForMember(d => d.IsAccepted, opt => opt.MapFrom(s => s.IsAccepted));
+                .ForMember(d => d.UserPhoto, opt => opt.MapFrom(s => s.ApplicationUser.Image.Url));
 
             CreateMap<CommunityTripAppointment, CommuTripAppointmentDto>();
 
@@ -27,6 +33,9 @@ namespace Core.Mapping
                 .ForMember(d => d.Date, opt => opt.MapFrom(s => s.Date))
                 .ForMember(d => d.Time, opt => opt.MapFrom(s => new TimeOnly(s.TimeHour, s.TimeMinute)))
                 .ForMember(d => d.Description, opt => opt.MapFrom(s => s.Description));
+
+            // CreateMap
+
         }
     }
 }

@@ -128,5 +128,59 @@ namespace API.Controllers
             }
         }
 
+
+        [HttpPost("{id}/attend")]
+        public async Task<IActionResult> UpdateAttendee(Guid id)
+        {
+            try
+            {
+                await _tripService.UpdateAttendeeAsync(id);
+                return Ok(new { message = "success" });
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost("{id}/attendee")]
+        public async Task<IActionResult> AddAttendee(Guid id, [FromBody] MailInput input)
+        {
+            try
+            {
+                await _tripService.AcceptAttendeeAsync(id, input);
+                return Ok(new { message = "success" });
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}/attendee")]
+        public async Task<IActionResult> RejectAttendee(Guid id, [FromBody] MailInput input)
+        {
+            try
+            {
+                await _tripService.RejectAttendeeAsync(id, input);
+                return Ok(new { message = "success" });
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

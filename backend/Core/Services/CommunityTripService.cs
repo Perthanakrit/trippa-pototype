@@ -1,4 +1,5 @@
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Core.Interface.Infrastructure.Cloudinary;
 using Core.Interface.Infrastructure.Database;
 using Core.Interface.security;
@@ -17,15 +18,17 @@ namespace Core.Services
         private readonly IPhotoCloudinary _cloudinary;
         private readonly IUserAccessor _userAccessor;
         private readonly IAuthRespository _authRespo;
+        private readonly IMailService _mail;
         private static string FolderName = "community_trip";
 
-        public CommunityTripService(ICommunityTripRespository commuTripRespo, IMapper mapper, IPhotoCloudinary cloudinary, IUserAccessor userAccessor, IAuthRespository authRespo)
+        public CommunityTripService(ICommunityTripRespository commuTripRespo, IMailService mail, IMapper mapper, IPhotoCloudinary cloudinary, IUserAccessor userAccessor, IAuthRespository authRespo)
         {
             _commuTripRespo = commuTripRespo;
             _mapper = mapper;
             _cloudinary = cloudinary;
             _userAccessor = userAccessor;
             _authRespo = authRespo;
+            _mail = mail;
         }
 
         public async Task CreateNewTripAsync(CommuTripInput input)
@@ -125,34 +128,123 @@ namespace Core.Services
             return res;
         }
 
-        public Task RejectAttendeeAsync(Guid tripId, string userId)
+        public async Task RejectAttendeeAsync(Guid tripId, MailInput email)
         {
-            throw new NotImplementedException();
+            // Reject the attendee -> Remove the attendee from the list
+
+            CommunityTrip trip = await _commuTripRespo.GetByIdQueryable(tripId).Include(t => t.Attendees).ThenInclude(a => a.ApplicationUser).SingleOrDefaultAsync();
+            string hostId = trip.Attendees.FirstOrDefault(x => x.IsHost).ApplicationUserId;
+            if (trip == null || hostId != _userAccessor.GetUserId())
+            {
+                throw new ArgumentException("The trip is not found");
+            }
+
+            CommunityTripAttendee attendee = trip.Attendees.FirstOrDefault(x => x.ApplicationUser.Email == email.Email);
+
+            if (attendee == null)
+            {
+                throw new ArgumentException("The attendee is not found");
+            }
+
+            trip.Attendees.Remove(attendee);
+
+            bool isInvoke = await _commuTripRespo.SaveChangesAsync<int>() > 0;
+            if (!isInvoke)
+            {
+                throw new ArgumentException("Reject the attendee is not successful");
+            }
+
+            await _mail.SendEmailResponeToJoinTrip(new MessageRequest
+            {
+                ToEmail = attendee.ApplicationUser.Email,
+                Message = "Your request to join the trip has been rejected",
+                UserName = attendee.ApplicationUser.UserName
+            });
         }
 
-        public Task AcceptAttendeeAsync(Guid tripId, string userId)
+        public async Task AcceptAttendeeAsync(Guid tripId, MailInput input)
         {
-            throw new NotImplementedException();
+            CommunityTrip trip = await _commuTripRespo.GetByIdQueryable(tripId).Include(t => t.Attendees).ThenInclude(a => a.ApplicationUser).SingleOrDefaultAsync();
+
+            CommunityTripAttendee attendee = trip.Attendees.FirstOrDefault(x => x.ApplicationUser.Email == input.Email);
+
+            if (attendee == null)
+            {
+                throw new ArgumentException("The attendee is not found");
+            }
+
+            attendee.IsAccepted = true;
+
+            bool invoke = await _commuTripRespo.SaveChangesAsync<int>() > 0;
+
+            if (!invoke)
+            {
+                throw new ArgumentException("The attendee is not accepted");
+            }
+
+            await _mail.SendEmailResponeToJoinTrip(new MessageRequest
+            {
+                ToEmail = attendee.ApplicationUser.Email,
+                Message = "Your request to join the trip has been accepted",
+                UserName = attendee.ApplicationUser.UserName
+            });
         }
 
-        public Task UpdateAttendeeAsync(Guid tripId)
+        public async Task UpdateAttendeeAsync(Guid tripId)
         {
-            throw new NotImplementedException();
+            // ExistedTrip
+            CommunityTrip trip = await _commuTripRespo.GetByIdQueryable(tripId).Include(t => t.Attendees).ThenInclude(a => a.ApplicationUser)
+                                                        .SingleOrDefaultAsync();
+
+            if (trip == null)
+            {
+                throw new ArgumentException("The trip is not found");
+            }
+
+            // ExistedUser
+            ApplicationUser user = await _authRespo.ExistedUserId(_userAccessor.GetUserId());
+
+            if (user == null)
+            {
+                throw new ArgumentException($"The user is not found, {JsonConvert.SerializeObject(_userAccessor.GetUsername())}");
+            }
+
+            string host = trip.Attendees.FirstOrDefault(x => x.IsHost).ApplicationUserId;
+
+            CommunityTripAttendee attendee = trip.Attendees.FirstOrDefault(x => x.ApplicationUser.UserName == user.UserName);
+
+            // If the user is the host, cancel the activity
+            if (attendee != null && host == user.Id)
+                trip.IsActive = !trip.IsActive;
+
+            // If the user is not the host, add or remove the user from the attendees
+            if (attendee != null && host != user.Id)
+                trip.Attendees.Remove(attendee);
+
+            // AddAttendee
+            if (attendee == null)
+            {
+                attendee = new CommunityTripAttendee
+                {
+                    CommunityTrip = trip,
+                    ApplicationUser = user,
+                    IsHost = false,
+                };
+                trip.Attendees.Add(attendee);
+            }
+
+            _commuTripRespo.Update(trip);
+
+            bool invoke = await _commuTripRespo.SaveChangesAsync<int>() > 0;
+            if (!invoke)
+            {
+                throw new Exception("The attendee is not updated");
+            }
         }
 
         public async Task UpdateTripAsync(Guid id, CommuTripInput input)
         {
-            CommunityTrip trip = await _commuTripRespo.GetByIdQueryable(id).Include(t => t.Appointment).Select(t =>
-                new CommunityTrip
-                {
-                    Id = t.Id,
-                    Location = t.Location,
-                    Duration = t.Duration,
-                    AgeRange = t.AgeRange,
-                    MaxAttendees = t.MaxAttendees,
-                    Appointment = t.Appointment
-                }).FirstOrDefaultAsync(
-            );
+            CommunityTrip trip = await _commuTripRespo.GetByIdQueryable(id).Include(t => t.Appointment).SingleOrDefaultAsync();
 
             if (trip is null)
             {

@@ -14,9 +14,9 @@ namespace Domain.Entities
         public string Bio { get; set; }
         #region relationship 
         public virtual UserPhoto Image { get; set; }
-        public virtual ICollection<Contact> Contacts { get; set; }
-        public virtual ICollection<TripAttendee> AttendeedTrips { get; set; }
-        public virtual ICollection<CommunityTripAttendee> AttendeedCommunityTrip { get; set; }
+        public virtual ICollection<Contact> Contacts { get; set; } = new List<Contact>();
+        public virtual ICollection<TripAttendee> AttendeedTrips { get; set; } = new List<TripAttendee>();
+        public virtual ICollection<CommunityTripAttendee> AttendeedCommunityTrip { get; set; } = new List<CommunityTripAttendee>();
         #endregion
     }
 }
