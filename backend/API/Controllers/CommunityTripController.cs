@@ -108,5 +108,24 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
             }
         }
+
+        [HttpPut("{tripId}")]
+        public async Task<IActionResult> UpdateTrip(Guid tripId, [FromBody] CommuTripInput input)
+        {
+            try
+            {
+                await _tripService.UpdateTripAsync(tripId, input);
+                return Ok(new { message = "success" });
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+            }
+        }
+
     }
 }
