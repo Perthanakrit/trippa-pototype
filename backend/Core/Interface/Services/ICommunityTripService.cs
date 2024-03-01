@@ -9,7 +9,7 @@ namespace Core.Interface.Services
     public interface ICommunityTripService
     {
         Task CreateNewTripAsync(CommuTripInput input);
-        Task UpdateTripAsync(Guid id);
+        Task UpdateTripAsync(Guid id, CommuTripInput input);
         Task DeleteTripAsync(Guid id);
         Task<CommuTripResponse> GetTripAsync(Guid id);
         Task<List<CommuTripResponse>> GetListOfAllTripsAsync();

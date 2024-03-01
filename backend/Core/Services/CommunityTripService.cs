@@ -141,8 +141,10 @@ namespace Core.Services
             throw new NotImplementedException();
         }
 
-        public Task UpdateTripAsync(Guid provinceId)
+        public Task UpdateTripAsync(Guid id, CommuTripInput input)
         {
+
+
             throw new NotImplementedException();
         }
 
