@@ -166,9 +166,7 @@ namespace Core.Services
             trip.Appointment.Date = input.Appointment.Date;
             trip.Appointment.Time = new TimeOnly(input.Appointment.TimeHour, input.Appointment.TimeMinute);
             trip.Appointment.Description = input.Appointment.Description;
-            // trip.Appointment = _mapper.Map<CommunityTripAppointment>(input.Appointment);
 
-            // throw new ArgumentException($"{JsonConvert.SerializeObject(trip)}");
             _commuTripRespo.Update(trip);
 
             bool isInvoke = await _commuTripRespo.SaveChangesAsync<int>() > 0;
