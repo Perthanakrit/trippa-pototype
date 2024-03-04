@@ -162,6 +162,15 @@ namespace Core.Services
 
             existedTrip.Name = input.Name;
             existedTrip.Description = input.Description;
+            existedTrip.Landmark = input.Landmark;
+            existedTrip.Duration = input.Duration;
+            existedTrip.Price = input.Price;
+            existedTrip.Fee = input.Fee;
+            existedTrip.Origin = input.Origin;
+            existedTrip.Destination = input.Destination;
+            existedTrip.MaxAttendees = input.MaxAttendee;
+            existedTrip.TypeOfTripId = input.TypeOfTripId;
+
             existedTrip = _repository.Update(existedTrip); // TODO: Check if the entity is updated successfully, return null if not updated else return the updated entity 
             bool invoke = await _repository.SaveChangesAsync<int>() > 0;
             if (!invoke)
