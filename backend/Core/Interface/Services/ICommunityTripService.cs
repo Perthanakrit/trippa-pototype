@@ -12,7 +12,7 @@ namespace Core.Interface.Services
         Task UpdateTripAsync(Guid id, CommuTripInput input);
         Task DeleteTripAsync(Guid id);
         Task<CommuTripResponse> GetTripAsync(Guid id);
-        Task<List<CommuTripResponse>> GetListOfAllTripsAsync();
+        Task<IEnumerable<CommuTripResponse>> GetListOfAllTripsAsync();
         Task UpdateAttendeeAsync(Guid tripId);
         Task AcceptAttendeeAsync(Guid tripId, MailInput email);
         Task RejectAttendeeAsync(Guid tripId, MailInput email);

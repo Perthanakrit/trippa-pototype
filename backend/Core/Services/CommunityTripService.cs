@@ -19,9 +19,12 @@ namespace Core.Services
         private readonly IUserAccessor _userAccessor;
         private readonly IAuthRespository _authRespo;
         private readonly IMailService _mail;
+        private readonly ICacheDbRespository _cacheRespos;
         private static string FolderName = "community_trip";
+        private static string CacheKey = "CommunityTrip";
 
-        public CommunityTripService(ICommunityTripRespository commuTripRespo, IMailService mail, IMapper mapper, IPhotoCloudinary cloudinary, IUserAccessor userAccessor, IAuthRespository authRespo)
+        public CommunityTripService(ICommunityTripRespository commuTripRespo, IMailService mail, IMapper mapper, IPhotoCloudinary cloudinary,
+                                        IUserAccessor userAccessor, IAuthRespository authRespo, ICacheDbRespository cacheRespos)
         {
             _commuTripRespo = commuTripRespo;
             _mapper = mapper;
@@ -29,6 +32,7 @@ namespace Core.Services
             _userAccessor = userAccessor;
             _authRespo = authRespo;
             _mail = mail;
+            _cacheRespos = cacheRespos;
         }
 
         public async Task CreateNewTripAsync(CommuTripInput input)
@@ -65,6 +69,7 @@ namespace Core.Services
             {
                 throw new ArgumentException("Failed to create new trip");
             }
+            await _cacheRespos.RemoveData(CacheKey);
         }
 
         public async Task DeleteTripAsync(Guid id)
@@ -89,31 +94,39 @@ namespace Core.Services
                     throw new ArgumentException("Failed to delete photo");
                 }
             }
+            await _cacheRespos.RemoveData(CacheKey);
         }
 
-        public async Task<List<CommuTripResponse>> GetListOfAllTripsAsync()
+        public async Task<IEnumerable<CommuTripResponse>> GetListOfAllTripsAsync()
         {
-            List<CommunityTrip> trips = await _commuTripRespo.GetAllQueryable().AsNoTracking()
+            IEnumerable<CommuTripResponse> res = await _cacheRespos.GetData<IEnumerable<CommuTripResponse>>(CacheKey);
+
+            if (res is null)
+            {
+                List<CommuTripResponse> trips = await _commuTripRespo.GetAllQueryable().AsNoTracking()
                                                 .Include(t => t.Attendees).ThenInclude(a => a.ApplicationUser).ThenInclude(u => u.Image)
-                                                .Select(t => new CommunityTrip
+                                                .Select(t => new CommuTripResponse
                                                 {
                                                     Id = t.Id,
                                                     Location = t.Location,
                                                     Duration = t.Duration,
                                                     AgeRange = t.AgeRange,
                                                     MaxAttendees = t.MaxAttendees,
-                                                    Attendees = t.Attendees.Where(a => a.IsHost).Select(a => new CommunityTripAttendee
+                                                    Attendees = t.Attendees.Select(a => new CommuTripAttendeeDto
                                                     {
-                                                        ApplicationUser = a.ApplicationUser,
+                                                        UserName = a.ApplicationUser.UserName,
+                                                        UserPhoto = a.ApplicationUser.Image.Url,
                                                         IsHost = a.IsHost,
                                                         IsAccepted = a.IsAccepted
                                                     }).ToList(),
+                                                    IsActive = t.IsActive,
                                                 })
                                                 .ToListAsync();
 
-            // throw new ArgumentException($"{JsonConvert.SerializeObject(trips)}");
+                await _cacheRespos.SetData(CacheKey, trips, TimeSpan.FromHours(1));
 
-            List<CommuTripResponse> res = trips.Select(t => _mapper.Map<CommuTripResponse>(t)).ToList();
+                return trips;
+            }
 
             return res;
         }
@@ -160,6 +173,8 @@ namespace Core.Services
                 Message = "Your request to join the trip has been rejected",
                 UserName = attendee.ApplicationUser.UserName
             });
+
+            await _cacheRespos.RemoveData(CacheKey);
         }
 
         public async Task AcceptAttendeeAsync(Guid tripId, MailInput input)
@@ -188,6 +203,7 @@ namespace Core.Services
                 Message = "Your request to join the trip has been accepted",
                 UserName = attendee.ApplicationUser.UserName
             });
+            await _cacheRespos.RemoveData(CacheKey);
         }
 
         public async Task UpdateAttendeeAsync(Guid tripId)
@@ -206,7 +222,7 @@ namespace Core.Services
 
             if (user == null)
             {
-                throw new ArgumentException($"The user is not found, {JsonConvert.SerializeObject(_userAccessor.GetUsername())}");
+                throw new ArgumentException($"The user is not found");
             }
 
             string host = trip.Attendees.FirstOrDefault(x => x.IsHost).ApplicationUserId;
@@ -240,6 +256,8 @@ namespace Core.Services
             {
                 throw new Exception("The attendee is not updated");
             }
+
+            RemoveCacheData();
         }
 
         public async Task UpdateTripAsync(Guid id, CommuTripInput input)
@@ -266,6 +284,7 @@ namespace Core.Services
             {
                 throw new ArgumentException("Failed to update trip");
             }
+            await _cacheRespos.RemoveData(CacheKey);
         }
 
         public async Task UploadPhotoAsync(Guid tripId, IFormFile file)
@@ -302,6 +321,8 @@ namespace Core.Services
                 throw new ArgumentException("Failed to upload photo");
             }
 
+            RemoveCacheData();
+
             // throw new ArgumentException($"{JsonConvert.SerializeObject(trip)}");
         }
 
@@ -316,6 +337,11 @@ namespace Core.Services
             }
 
             return user;
+        }
+
+        private async void RemoveCacheData()
+        {
+            await _cacheRespos.RemoveData(CacheKey);
         }
     }
 }

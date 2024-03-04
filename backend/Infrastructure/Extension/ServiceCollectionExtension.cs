@@ -3,6 +3,7 @@ using Core.Interface.Infrastructure.Database;
 using Domain.Entities;
 using Infrastructure.CloudinaryServices;
 using Infrastructure.Database;
+using Infrastructure.Database.Cache;
 using Infrastructure.Database.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,7 @@ namespace Infrastructure.Extension
                 string connection = config.GetConnectionString("Redis");
                 redisOptions.Configuration = connection;
             });
+            services.AddScoped<ICacheDbRespository, CacheDbRepository>();
             services.AddScoped(typeof(IPhotoRespository<>), typeof(PhotoRespository<>));
             services.AddScoped<IPhotoCloudinary, PhotoCloudinary>();
             return services;
